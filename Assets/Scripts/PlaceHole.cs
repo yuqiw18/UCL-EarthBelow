@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 
-public class ARTapToPlaceObject : MonoBehaviour
+public class PlaceHole : MonoBehaviour
 {
     public GameObject placementIndicator;
     public GameObject objectToPlace;
