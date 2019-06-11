@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class GetLocation : MonoBehaviour
 {
 
-    public Text debugText;
+    public Text latitudeDebugText;
+    public Text longitudeDebugText;
 
     public static Vector2 userLatLong;
     public static float northRotation;
@@ -14,16 +15,15 @@ public class GetLocation : MonoBehaviour
     // Use this for initialization
     IEnumerator Start()
     {
-
-        Debug.Log("Taking GPS Info");
-
         if (!Input.location.isEnabledByUser)
         {
-            userLatLong = new Vector2(51.5f, -0.118f); //Default location - London
+            userLatLong = new Vector2(51.5f, -0.118f);
+            Debug.Log("Location service is not enabled.");
             yield break;
+
         }
 
-        //Initialise location services and compass
+        // Initialise location service
         Input.compass.enabled = true;
         Input.location.Start();
 
@@ -35,12 +35,12 @@ public class GetLocation : MonoBehaviour
         }
         if (maxWait < 1)
         {
-            print("Timed out");
+            Debug.Log("Timeout");
             yield return false;
         }
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            print("Unable to determine device location");
+            Debug.Log("Unable to get location information");
             yield return false;
         }
         else
@@ -48,10 +48,8 @@ public class GetLocation : MonoBehaviour
             userLatLong = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
             northRotation = Input.compass.trueHeading;
 
-            Debug.Log("GPS INFOOO");
-            Debug.Log(Input.location.lastData.latitude);
-
-            debugText.text = Input.location.lastData.latitude.ToString();
+            latitudeDebugText.text = Input.location.lastData.latitude.ToString();
+            longitudeDebugText.text = Input.location.lastData.longitude.ToString();
         }
 
         Input.location.Stop();
