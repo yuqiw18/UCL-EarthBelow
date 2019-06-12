@@ -4,22 +4,27 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 
-public class PlaceHole : MonoBehaviour
+public class HoleSpawner : MonoBehaviour
 {
-    public GameObject placementIndicator;
-    public GameObject objectToPlace;
+    #region Prefab
+    public GameObject indicatorPrefab;
+    public GameObject holePrefab;
+    #endregion
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
     private bool placementPoseIsValid = false;
+
     private GameObject spawnedHole;
+    private GameObject highlightedIndicator;
 
     // Start is called before the first frame update
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
+        highlightedIndicator = Instantiate(indicatorPrefab);
     }
 
     // Update is called once per frame
@@ -28,12 +33,29 @@ public class PlaceHole : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
+        //if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
 
-            PlaceObject();
-        }
+        //    SpawnHole();
+        //}
 
     }
+
+    private void OnDisable()
+    {
+        if (spawnedHole != null) {
+            spawnedHole.SetActive(false);
+        }
+        highlightedIndicator.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        if (spawnedHole !=null) {
+            spawnedHole.SetActive(true);
+        }
+        highlightedIndicator.SetActive(true);
+    }
+
 
     private void UpdatePlacementPose()
     {
@@ -56,17 +78,28 @@ public class PlaceHole : MonoBehaviour
     private void UpdatePlacementIndicator() { 
    
         if (placementPoseIsValid) {
-            placementIndicator.SetActive(true);
-            placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
+            // Show the indicator if the pose is valid and rotate it to match the view
+            highlightedIndicator.SetActive(true);
+            highlightedIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
         }
         else {
-            placementIndicator.SetActive(false);
+            // Otherwise hide it
+            highlightedIndicator.SetActive(false);
         }
     }
 
-    private void PlaceObject(){
+    private void SpawnHole(){
+
+        // Only spawn one hole
         Destroy(spawnedHole);
-        spawnedHole = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
+    }
+
+    public void SpawnHole2() {
+        if (placementPoseIsValid)
+        {
+            SpawnHole();
+        }
     }
 
 
