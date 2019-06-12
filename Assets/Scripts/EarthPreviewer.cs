@@ -24,11 +24,11 @@ public class EarthPreviewer : MonoBehaviour
         {
         
             // Get the displacement delta
-            Vector2 rotateAngle = Input.GetTouch(0).deltaPosition;
+            Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
 
             // Use the parent's local axis direction as reference
-            earthObject.transform.Rotate(earthObject.transform.parent.transform.up, -rotateAngle.x * rotationSpeed, Space.World);
-            earthObject.transform.Rotate(earthObject.transform.parent.transform.right, rotateAngle.y * rotationSpeed, Space.World);
+            earthObject.transform.Rotate(earthObject.transform.parent.transform.up, -deltaPosition.x * rotationSpeed, Space.World);
+            earthObject.transform.Rotate(earthObject.transform.parent.transform.right, deltaPosition.y * rotationSpeed, Space.World);
 
         }
     }
