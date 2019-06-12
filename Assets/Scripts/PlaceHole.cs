@@ -13,6 +13,7 @@ public class PlaceHole : MonoBehaviour
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
     private bool placementPoseIsValid = false;
+    private GameObject spawnedHole;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +65,8 @@ public class PlaceHole : MonoBehaviour
     }
 
     private void PlaceObject(){
-        Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        Destroy(spawnedHole);
+        spawnedHole = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
     }
 
 
