@@ -229,12 +229,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 780006876}
+    m_TransformParent: {fileID: 302988619}
     m_Modifications:
     - target: {fileID: -927199367670048503, guid: d5715f041feb94de8957348376511d5a,
         type: 3}
       propertyPath: m_Name
-      value: earth_day
+      value: Earth
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: d5715f041feb94de8957348376511d5a,
         type: 3}
@@ -311,6 +311,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: d5715f041feb94de8957348376511d5a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e38b7cc6fe32a47d489bc278525d7796, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5715f041feb94de8957348376511d5a, type: 3}
 --- !u!1 &223974226
@@ -460,6 +465,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259715463}
   m_CullTransparentMesh: 0
+--- !u!1 &302988618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 302988619}
+  m_Layer: 0
+  m_Name: EarthObjectParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &302988619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302988618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1710119736}
+  m_Father: {fileID: 780006876}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &463930438
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &463930439
 Transform:
   m_ObjectHideFlags: 0
@@ -504,6 +540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   earthObject: {fileID: 1793089056}
+  dayMaterial: {fileID: 2100000, guid: 87b5b759bddf04e2684c7aef2d365148, type: 2}
+  nightMaterial: {fileID: 2100000, guid: e38b7cc6fe32a47d489bc278525d7796, type: 2}
 --- !u!1 &575768794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1047,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1710119736}
+  - {fileID: 302988619}
   m_Father: {fileID: 575768797}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1029,7 +1067,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &854905463
 MonoBehaviour:
   m_ObjectHideFlags: 0
