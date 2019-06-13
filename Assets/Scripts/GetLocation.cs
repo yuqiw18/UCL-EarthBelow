@@ -14,15 +14,20 @@ public class GetLocation : MonoBehaviour
 
     public GameObject pinPrefab;
 
-    private readonly float earthRadius = 1.0f;
+    private readonly float earthRadius = 1.0f / 2.0f;
     private readonly float flattening = 1.0f / 298.257224f;
+    private Vector3 coordOffset;
+
 
     // Use this for initialization
     IEnumerator Start()
     {
+        coordOffset = this.gameObject.transform.position;
+
         if (!Input.location.isEnabledByUser)
         {
             userLatLong = new Vector2(51.5f, -0.118f);
+            ECEFCoordinateFromLonLat(userLatLong);
             Debug.Log("Location service is not enabled.");
             yield break;
 
@@ -66,10 +71,9 @@ public class GetLocation : MonoBehaviour
     private void ECEFCoordinateFromLonLat(Vector2 latlon)
     {
 
+        latlon.x = latlon.x + ((latlon.x - 30f) / 2f);
         latlon = latlon * (Mathf.PI) / 180.0f;
        
-
-
         //apply latlong -> ecef conversion formula
         var c = 1 / Mathf.Sqrt(Mathf.Cos(latlon.x) * Mathf.Cos(latlon.x) + (1 - flattening) * (1 - flattening) * Mathf.Sin(latlon.x) * Mathf.Sin(latlon.x));
         var s = (1 - flattening) * (1 - flattening) * c;
@@ -77,9 +81,11 @@ public class GetLocation : MonoBehaviour
         var Y = (earthRadius * c + 0) * Mathf.Cos(latlon.x) * Mathf.Sin(latlon.y);
         var Z = (earthRadius * s + 0) * Mathf.Sin(latlon.x);
 
-        Vector3 coord3D = new Vector3(-Y, Z, X);
-        Instantiate(pinPrefab, coord3D, Quaternion.Euler(0, 0, 0), this.gameObject.transform);
+        Vector3 coordConverted = new Vector3(-Y, Z, X);
 
+        Debug.Log("COORDINATE:" + coordConverted);
+
+        Instantiate(pinPrefab, coordConverted + coordOffset, Quaternion.identity, this.gameObject.transform);
     }
 
 }
