@@ -95,26 +95,4 @@ public class EarthPreviewer : MonoBehaviour
         }
     
     }
-
-    private Vector3 ECEFCoordinateFromLonLat(Vector2 latlon)
-    {
-        //need to convert to radians
-        latlon = latlon * (Mathf.PI) / 180.0f;
-
-        //    //apply latlong -> ecef conversion formula
-        //    var c = 1 / Mathf.Sqrt(Mathf.Cos(lonlat.x) * Mathf.Cos(lonlat.x) + (1 - flattening) * (1 - flattening) * Mathf.Sin(lonlat.x) * Mathf.Sin(lonlat.x));
-
-        //    var s = (1 - flattening) * (1 - flattening) * c;
-
-        //    var X = (radius * c + height) * Mathf.Cos(pos.x) * Mathf.Cos(pos.y);
-        //    var Y = (radius * c + height) * Mathf.Cos(pos.x) * Mathf.Sin(pos.y);
-        //    var Z = (radius * s + height) * Mathf.Sin(pos.x);
-
-        //    ecefPos = new Vector3(-Y, Z, X);
-
-        //    //needs to be scaled to match environment proportions 
-        //    return ecefPos * (1.0f / (100.0f * 2.0f));
-
-        return new Vector3(earthRadius * Mathf.Cos(latlon.x) * Mathf.Cos(latlon.y), earthRadius * Mathf.Cos(latlon.x) * Mathf.Sin(latlon.y), earthRadius * Mathf.Sin(latlon.x));
-    }
 }
