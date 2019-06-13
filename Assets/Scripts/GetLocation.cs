@@ -14,15 +14,18 @@ public class GetLocation : MonoBehaviour
 
     public GameObject pinPrefab;
 
+    private List<GameObject> pinList;
+
     private readonly float earthRadius = 1.0f / 2.0f;
     private readonly float flattening = 1.0f / 298.257224f;
     private Vector3 coordOffset;
-
 
     // Use this for initialization
     IEnumerator Start()
     {
         coordOffset = this.gameObject.transform.position;
+        
+        Debug.Log("COORDINATE OFFSET:" + coordOffset);
 
         if (!Input.location.isEnabledByUser)
         {
@@ -67,7 +70,6 @@ public class GetLocation : MonoBehaviour
         Input.location.Stop();
     }
 
-
     private void ECEFCoordinateFromLonLat(Vector2 latlon)
     {
 
@@ -83,9 +85,20 @@ public class GetLocation : MonoBehaviour
 
         Vector3 coordConverted = new Vector3(-Y, Z, X);
 
-        Debug.Log("COORDINATE:" + coordConverted);
+        Debug.Log("COORDINATE CONVERTED:" + coordConverted);
 
-        Instantiate(pinPrefab, coordConverted + coordOffset, Quaternion.identity, this.gameObject.transform);
+        GameObject temporaryPin = Instantiate(pinPrefab, new Vector3(0,0,0), Quaternion.identity, this.gameObject.transform);
+
+        // Shift the pin to the center of the earth
+        temporaryPin.transform.localPosition += coordOffset;
+
+        // Map the pin to the correct 3D coordinate
+        temporaryPin.transform.localPosition += coordConverted;
+
+        // Keep track of pins
+        pinList.Add(temporaryPin);
+
+        Debug.Log("COORDINATE ADJUSTED:" + temporaryPin.transform.localPosition);
     }
 
 }
