@@ -2129,6 +2129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89e2bf01d8984b0fa4ac3b9e16b4a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arSessionOrigin: {fileID: 575768794}
 --- !u!1001 &1941651938468788288
 PrefabInstance:
   m_ObjectHideFlags: 0
