@@ -8,6 +8,8 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject arSessionOrigin;
 
+    public GameObject earthObject;
+
     private ARSessionOrigin arOrigin;
     private ARRaycastManager arRaycastManager;
     //private ARPlaneManager arPlaneManager;
@@ -20,6 +22,13 @@ public class EarthMapper : MonoBehaviour
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         //arPlaneManager = FindObjectOfType<ARPlaneManager>();
         //arPointCloudManager = FindObjectOfType<ARPointCloudManager>();
+
+        //Vector3 currentPinPosition = (GetLocation.pinList[0].transform.position.normalized - earthObject.transform.position.normalized).normalized;
+        //Vector3 targetPinPosition = (earthObject.transform.parent.transform.up - earthObject.transform.position.normalized).normalized;
+
+        //Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
+        //earthObject.transform.rotation = rotateToTop;
+
     }
 
     // Update is called once per frame

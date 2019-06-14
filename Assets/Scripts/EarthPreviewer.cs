@@ -65,7 +65,6 @@ public class EarthPreviewer : MonoBehaviour
         //    earthMaterialRenderer.material.SetFloat("BlendAlpha", transitionSpeed * Time.deltaTime);
         //}
 
-
     }
 
     private void OnDisable()

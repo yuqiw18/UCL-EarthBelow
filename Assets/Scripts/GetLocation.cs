@@ -14,25 +14,26 @@ public class GetLocation : MonoBehaviour
 
     public GameObject pinPrefab;
 
-    private List<GameObject> pinList = new List<GameObject>();
+    public static List<GameObject> pinList = new List<GameObject>();
     private List<Vector2> latlongList = new List<Vector2>();
 
     private readonly float earthRadius = 1.0f / 2.0f;
     private readonly float flattening = 1.0f / 298.257224f;
-    private Vector3 coordOffset;
+    private Vector3 earthCenter;
 
     // Use this for initialization
     IEnumerator Start()
     {
 
 
-        coordOffset = this.gameObject.transform.position;
+        earthCenter = this.gameObject.transform.position;
 
         if (!Input.location.isEnabledByUser)
         {
             userLatLong = new Vector2(51.5f, -0.118f);
+            //ECEFCoordinateFromLonLat(userLatLong);
             GeneratePredefinedPinLocation();
-            ECEFCoordinateFromLonLat(userLatLong);
+            TestRotation();
             Debug.Log("Location service is not enabled.");
             yield break;
 
@@ -65,8 +66,9 @@ public class GetLocation : MonoBehaviour
 
             latitudeDebugText.text = Input.location.lastData.latitude.ToString();
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
+            //ECEFCoordinateFromLonLat(userLatLong);
             GeneratePredefinedPinLocation();
-            ECEFCoordinateFromLonLat(userLatLong);
+            TestRotation();
         }
 
         Input.location.Stop();
@@ -124,7 +126,7 @@ public class GetLocation : MonoBehaviour
         GameObject temporaryPin = Instantiate(pinPrefab, new Vector3(0,0,0), Quaternion.identity, this.gameObject.transform);
 
         // Shift the pin to the center of the earth
-        temporaryPin.transform.localPosition += coordOffset;
+        temporaryPin.transform.localPosition += earthCenter;
 
         // Map the pin to the correct 3D coordinate
         temporaryPin.transform.localPosition += coordConverted;
@@ -133,6 +135,22 @@ public class GetLocation : MonoBehaviour
         pinList.Add(temporaryPin);
 
         Debug.Log("COORDINATE ADJUSTED:" + temporaryPin.transform.localPosition);
+    }
+
+    private void TestRotation() {
+
+        Debug.Log("LocalPos:" + pinList[0].gameObject.transform.localPosition);
+
+        Vector3 currentPinPosition = pinList[0].gameObject.transform.localPosition - this.gameObject.transform.localPosition;
+        Vector3 targetPinPosition = Vector3.up * earthRadius - this.gameObject.transform.localPosition;
+        Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
+
+        Debug.Log("current:" + currentPinPosition);
+        Debug.Log("target" + targetPinPosition);
+        Debug.Log("Qauternion:" + rotateToTop);
+
+        //this.gameObject.transform.rotation = rotateToTop;
+
     }
 
 }
