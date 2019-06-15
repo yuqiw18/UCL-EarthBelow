@@ -8,7 +8,7 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject arSessionOrigin;
 
-    public GameObject earthObject;
+    public GameObject earthObjectToCopy;
 
     private ARSessionOrigin arOrigin;
     private ARRaycastManager arRaycastManager;

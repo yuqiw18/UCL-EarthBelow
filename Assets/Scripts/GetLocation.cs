@@ -12,9 +12,10 @@ public class GetLocation : MonoBehaviour
     public static Vector2 userLatLong;
     public static float northRotation;
 
+    public GameObject earthObject;
     public GameObject pinPrefab;
 
-    public static List<GameObject> pinList = new List<GameObject>();
+    //public static List<GameObject> pinList = new List<GameObject>();
     private List<Vector2> latlongList = new List<Vector2>();
 
     private readonly float earthRadius = 1.0f / 2.0f;
@@ -26,7 +27,7 @@ public class GetLocation : MonoBehaviour
     {
 
 
-        earthCenter = this.gameObject.transform.position;
+        earthCenter = earthObject.gameObject.transform.position;
 
         if (!Input.location.isEnabledByUser)
         {
@@ -123,33 +124,34 @@ public class GetLocation : MonoBehaviour
         Debug.Log("COORDINATE CONVERTED:" + coordConverted);
 
         // Instantiate the pin
-        GameObject temporaryPin = Instantiate(pinPrefab, new Vector3(0,0,0), Quaternion.identity, this.gameObject.transform);
+        GameObject pin = Instantiate(pinPrefab, new Vector3(0,0,0), Quaternion.identity, earthObject.gameObject.transform);
 
         // Shift the pin to the center of the earth
-        temporaryPin.transform.localPosition += earthCenter;
+        pin.transform.localPosition += earthCenter;
 
         // Map the pin to the correct 3D coordinate
-        temporaryPin.transform.localPosition += coordConverted;
+        pin.transform.localPosition += coordConverted;
 
         // Keep track of pins
-        pinList.Add(temporaryPin);
+        GLOBAL.PIN_LIST.Add(pin);
+        //pinList.Add(pin);
 
-        Debug.Log("COORDINATE ADJUSTED:" + temporaryPin.transform.localPosition);
+        Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
     }
 
     private void TestRotation() {
 
-        Debug.Log("LocalPos:" + pinList[0].gameObject.transform.localPosition);
+        Debug.Log("LocalPos:" + GLOBAL.PIN_LIST[0].gameObject.transform.localPosition);
 
-        Vector3 currentPinPosition = pinList[0].gameObject.transform.localPosition - this.gameObject.transform.localPosition;
-        Vector3 targetPinPosition = Vector3.up * earthRadius - this.gameObject.transform.localPosition;
+        Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
+        Vector3 targetPinPosition = Vector3.up * earthRadius - earthObject.gameObject.transform.localPosition;
         Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
 
         Debug.Log("current:" + currentPinPosition);
         Debug.Log("target" + targetPinPosition);
         Debug.Log("Qauternion:" + rotateToTop);
 
-        //this.gameObject.transform.rotation = rotateToTop;
+        earthObject.gameObject.transform.localRotation = rotateToTop;
 
     }
 

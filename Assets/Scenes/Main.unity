@@ -621,22 +621,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1941651938468788288}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &316080948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316080947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da4bc742a088483799bc2c1a66afe2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latitudeDebugText: {fileID: 1240719703}
-  longitudeDebugText: {fileID: 1020108215}
-  pinPrefab: {fileID: 621629459070395488, guid: 88fd93632faca4173a9bc1598aa2ac09,
-    type: 3}
 --- !u!4 &316080951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1941651938222701431, guid: ea266439440004ffb8436fc02e573b1f,
@@ -1133,7 +1117,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: NaN, w: 8.4e-44}
+  m_BoundingSphereOverride: {x: 1e-45, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1650,6 +1634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1262687730}
   - component: {fileID: 1262687731}
+  - component: {fileID: 1262687732}
   - component: {fileID: 1262687729}
   m_Layer: 0
   m_Name: ModeManager
@@ -1702,6 +1687,23 @@ MonoBehaviour:
   earthPreviewer: {fileID: 463930438}
   holeSpawner: {fileID: 854905462}
   earthMapper: {fileID: 1985308836}
+--- !u!114 &1262687732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262687728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3da4bc742a088483799bc2c1a66afe2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latitudeDebugText: {fileID: 1240719703}
+  longitudeDebugText: {fileID: 1020108215}
+  earthObject: {fileID: 316080947}
+  pinPrefab: {fileID: 621629459070395488, guid: 88fd93632faca4173a9bc1598aa2ac09,
+    type: 3}
 --- !u!1 &1370639140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2355,7 +2357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arSessionOrigin: {fileID: 575768794}
-  earthObject: {fileID: 316080947}
+  earthObjectToCopy: {fileID: 316080947}
 --- !u!1001 &1941651938468788288
 PrefabInstance:
   m_ObjectHideFlags: 0
