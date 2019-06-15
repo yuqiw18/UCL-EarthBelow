@@ -5,6 +5,8 @@ using UnityEngine;
 public class EarthPreviewer : MonoBehaviour
 {
 
+    public GameObject switchButton;
+
     public GameObject earthObject;
 
     public Material dayMaterial;
@@ -70,11 +72,13 @@ public class EarthPreviewer : MonoBehaviour
     private void OnDisable()
     {
         earthObject.SetActive(false);
+        switchButton.SetActive(false);
     }
 
     private void OnEnable()
     {
         earthObject.SetActive(true);
+        switchButton.SetActive(true);
     }
 
     public void SwitchDayNight() { 

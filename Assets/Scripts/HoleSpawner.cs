@@ -5,10 +5,14 @@ using UnityEngine.XR.ARFoundation;
 
 public class HoleSpawner : MonoBehaviour
 {
+    public GameObject spawnButton;
+
     #region Prefab
     public GameObject indicatorPrefab;
     public GameObject holePrefab;
     #endregion
+
+
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -31,12 +35,6 @@ public class HoleSpawner : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-
-        //if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
-
-        //    SpawnHole();
-        //}
-
     }
 
     private void OnDisable()
@@ -45,6 +43,7 @@ public class HoleSpawner : MonoBehaviour
             spawnedHole.SetActive(false);
         }
         highlightedIndicator.SetActive(false);
+        spawnButton.SetActive(false);
     }
 
     private void OnEnable()
@@ -53,6 +52,7 @@ public class HoleSpawner : MonoBehaviour
             spawnedHole.SetActive(true);
         }
         highlightedIndicator.SetActive(true);
+        spawnButton.SetActive(true);
     }
 
 
@@ -75,7 +75,6 @@ public class HoleSpawner : MonoBehaviour
     }
 
     private void UpdatePlacementIndicator() { 
-   
         if (placementPoseIsValid) {
             // Show the indicator if the pose is valid and rotate it to match the view
             highlightedIndicator.SetActive(true);
@@ -87,17 +86,12 @@ public class HoleSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnHole(){
-
-        // Only spawn one hole
-        Destroy(spawnedHole);
-        spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
-    }
-
-    public void SpawnHole2() {
+    public void SpawnHole() {
         if (placementPoseIsValid)
         {
-            SpawnHole();
+            // Only spawn one hole
+            Destroy(spawnedHole);
+            spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
         }
     }
 

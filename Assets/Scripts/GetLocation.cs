@@ -26,7 +26,7 @@ public class GetLocation : MonoBehaviour
         {
             ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
             GeneratePredefinedPinLocation();
-            TestRotation();
+            ComputeRotation();
             Debug.Log("Location service is not enabled.");
             yield break;
 
@@ -61,7 +61,7 @@ public class GetLocation : MonoBehaviour
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
             ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
             GeneratePredefinedPinLocation();
-            TestRotation();
+            ComputeRotation();
         }
 
         Input.location.Stop();
@@ -137,19 +137,19 @@ public class GetLocation : MonoBehaviour
         Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
     }
 
-    private void TestRotation() {
+    private void ComputeRotation() {
 
         Debug.Log("LocalPos:" + GLOBAL.PIN_LIST[0].gameObject.transform.localPosition);
 
         Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
         Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
-        Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
+        GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
 
         Debug.Log("current:" + currentPinPosition);
         Debug.Log("target" + targetPinPosition);
-        Debug.Log("Qauternion:" + rotateToTop);
+        Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
 
-        earthObject.gameObject.transform.localRotation = rotateToTop;
+        earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
 
     }
 
