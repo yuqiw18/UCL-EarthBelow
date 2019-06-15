@@ -5,11 +5,17 @@ using UnityEngine;
 public class GLOBAL: MonoBehaviour
 {
     #region DATA_LIST
+    public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
     public static List<GameObject> PIN_LIST = new List<GameObject>();
     public static List<Vector2> LATLONG_LIST = new List<Vector2>();
     #endregion
 
-    #region EARTH_PARAMETERS
+    #region EARTH_MATH_PARAMETERS
+    public static readonly float EARTH_PREFAB_RADIUS = 0.5f;
+    public static readonly float EARTH_FLATTENING = 1.0f / 298.257224f;
+    #endregion
+
+    #region EARTH_GEOLOGY_PARAMETERS
     public static readonly float EARTH_INNER_CORE_RADIUS = 1216f;
     public static readonly float EARTH_OUTER_CORE_RADIUS = EARTH_INNER_CORE_RADIUS + 2270f;
     public static readonly float EARTH_LOWER_MANTLE_RADIUS = EARTH_OUTER_CORE_RADIUS + 2885f;

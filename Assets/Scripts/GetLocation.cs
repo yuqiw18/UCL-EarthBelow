@@ -9,30 +9,22 @@ public class GetLocation : MonoBehaviour
     public Text latitudeDebugText;
     public Text longitudeDebugText;
 
-    public static Vector2 userLatLong;
     public static float northRotation;
 
     public GameObject earthObject;
     public GameObject pinPrefab;
 
-    //public static List<GameObject> pinList = new List<GameObject>();
-    private List<Vector2> latlongList = new List<Vector2>();
-
-    private readonly float earthRadius = 1.0f / 2.0f;
-    private readonly float flattening = 1.0f / 298.257224f;
     private Vector3 earthCenter;
 
     // Use this for initialization
     IEnumerator Start()
     {
 
-
         earthCenter = earthObject.gameObject.transform.position;
 
         if (!Input.location.isEnabledByUser)
         {
-            userLatLong = new Vector2(51.5f, -0.118f);
-            //ECEFCoordinateFromLonLat(userLatLong);
+            ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
             GeneratePredefinedPinLocation();
             TestRotation();
             Debug.Log("Location service is not enabled.");
@@ -62,12 +54,12 @@ public class GetLocation : MonoBehaviour
         }
         else
         {
-            userLatLong = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+            GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
             northRotation = Input.compass.trueHeading;
 
             latitudeDebugText.text = Input.location.lastData.latitude.ToString();
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
-            //ECEFCoordinateFromLonLat(userLatLong);
+            ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
             GeneratePredefinedPinLocation();
             TestRotation();
         }
@@ -79,23 +71,23 @@ public class GetLocation : MonoBehaviour
     private void GeneratePredefinedPinLocation() {
 
         // Source: https://www.latlong.net/
-        latlongList.Add(new Vector2(51.509865f, -0.118092f)); // London, UK
-        latlongList.Add(new Vector2(48.864716f, 2.349014f)); // Paris, FR
-        latlongList.Add(new Vector2(40.730610f, -73.935242f)); // New York, US
-        latlongList.Add(new Vector2(-37.840935f, 144.946457f)); // Melbourne, AU
-        latlongList.Add(new Vector2(35.652832f, 139.839478f)); // Tokyo, JP
-        latlongList.Add(new Vector2(-36.848461f, 174.763336f)); // Auckland, NZ
-        latlongList.Add(new Vector2(31.224361f, 121.469170f)); // Shanghai, CN
-        latlongList.Add(new Vector2(49.246292f, -123.116226f)); // Vancouver, CA
-        latlongList.Add(new Vector2(55.751244f, 37.618423f)); // Moscow, RU
+        //GLOBAL.LATLONG_LIST.Add(new Vector2(51.509865f, -0.118092f)); // London, UK
+        GLOBAL.LATLONG_LIST.Add(new Vector2(48.864716f, 2.349014f)); // Paris, FR
+        GLOBAL.LATLONG_LIST.Add(new Vector2(40.730610f, -73.935242f)); // New York, US
+        GLOBAL.LATLONG_LIST.Add(new Vector2(-37.840935f, 144.946457f)); // Melbourne, AU
+        GLOBAL.LATLONG_LIST.Add(new Vector2(35.652832f, 139.839478f)); // Tokyo, JP
+        GLOBAL.LATLONG_LIST.Add(new Vector2(-36.848461f, 174.763336f)); // Auckland, NZ
+        GLOBAL.LATLONG_LIST.Add(new Vector2(31.224361f, 121.469170f)); // Shanghai, CN
+        GLOBAL.LATLONG_LIST.Add(new Vector2(49.246292f, -123.116226f)); // Vancouver, CA
+        GLOBAL.LATLONG_LIST.Add(new Vector2(55.751244f, 37.618423f)); // Moscow, RU
 
-        foreach (Vector2 v in latlongList) {
-            ECEFCoordinateFromLonLat(v);
+        foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
+            ECEFCoordinateFromLonLat(v,false);
         }
 
     }
 
-    private void ECEFCoordinateFromLonLat(Vector2 latlong)
+    private void ECEFCoordinateFromLonLat(Vector2 latlong, bool isImportant)
     {
 
         // Determine the sign for latitude conversion
@@ -114,11 +106,11 @@ public class GetLocation : MonoBehaviour
         latlong = latlong * (Mathf.PI) / 180.0f;
        
         // Convert latitude-longitude to ECEF coordinate
-        float c = 1 / Mathf.Sqrt(Mathf.Cos(latlong.x) * Mathf.Cos(latlong.x) + (1 - flattening) * (1 - flattening) * Mathf.Sin(latlong.x) * Mathf.Sin(latlong.x));
-        float s = (1 - flattening) * (1 - flattening) * c;
-        float X = (earthRadius * c + 0) * Mathf.Cos(latlong.x) * Mathf.Cos(latlong.y);
-        float Y = (earthRadius * c + 0) * Mathf.Cos(latlong.x) * Mathf.Sin(latlong.y);
-        float Z = (earthRadius * s + 0) * Mathf.Sin(latlong.x);
+        float c = 1 / Mathf.Sqrt(Mathf.Cos(latlong.x) * Mathf.Cos(latlong.x) + (1 - GLOBAL.EARTH_FLATTENING) * (1 - GLOBAL.EARTH_FLATTENING) * Mathf.Sin(latlong.x) * Mathf.Sin(latlong.x));
+        float s = (1 - GLOBAL.EARTH_FLATTENING) * (1 - GLOBAL.EARTH_FLATTENING) * c;
+        float X = (GLOBAL.EARTH_PREFAB_RADIUS * c + 0) * Mathf.Cos(latlong.x) * Mathf.Cos(latlong.y);
+        float Y = (GLOBAL.EARTH_PREFAB_RADIUS * c + 0) * Mathf.Cos(latlong.x) * Mathf.Sin(latlong.y);
+        float Z = (GLOBAL.EARTH_PREFAB_RADIUS * s + 0) * Mathf.Sin(latlong.x);
         Vector3 coordConverted = new Vector3(-Y, Z, X);
 
         Debug.Log("COORDINATE CONVERTED:" + coordConverted);
@@ -132,6 +124,12 @@ public class GetLocation : MonoBehaviour
         // Map the pin to the correct 3D coordinate
         pin.transform.localPosition += coordConverted;
 
+        // Set color for important pins
+        if (isImportant) {
+            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+        }
+
         // Keep track of pins
         GLOBAL.PIN_LIST.Add(pin);
         //pinList.Add(pin);
@@ -144,7 +142,7 @@ public class GetLocation : MonoBehaviour
         Debug.Log("LocalPos:" + GLOBAL.PIN_LIST[0].gameObject.transform.localPosition);
 
         Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
-        Vector3 targetPinPosition = Vector3.up * earthRadius - earthObject.gameObject.transform.localPosition;
+        Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
 
         Debug.Log("current:" + currentPinPosition);
