@@ -12,6 +12,7 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
+    public Material earthMaterial;
 
     private ARSessionOrigin arOrigin;
     private ARRaycastManager arRaycastManager;
@@ -104,20 +105,24 @@ public class EarthMapper : MonoBehaviour
 
     public void MapEarth() {
         Debug.Log("Mapping Triggered");
-        GameObject largeEarth = Instantiate(earthObjectToCopy);
-        largeEarth.SetActive(true);
-        //largeEarth.gameObject.transform.rotation = GLOBAL.ROTATE_TO_TOP;
-        //largeEarth.transform.position = new Vector3(0, 0, 0);
-        //largeEarth.transform.localScale = new Vector3(20, 20, 20);
         Destroy(mappedEarth);
-        mappedEarth = Instantiate(largeEarth, placementPose.position, placementPose.rotation);
-
         Debug.Log("PLACEMENT-Y" + placementPose.position.y);
+        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, placementPose.rotation);
+        mappedEarth.transform.localScale = new Vector3(200, 200, 200);
+        mappedEarth.transform.Translate(new Vector3(0, -200*GLOBAL.EARTH_PREFAB_RADIUS, 0));
 
-        Destroy(largeEarth);
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
-        mappedEarth.transform.localScale = new Vector3(1, 1, 1);
-        mappedEarth.transform.Translate(new Vector3(0, 1* placementPose.position.y, 0));
+
+        //mappedEarth.gameObject.GetComponent<Renderer>().sharedMaterial = earthMaterial;
+
+        mappedEarth.SetActive(true);
+        //mappedEarth = Instantiate(largeEarth, new Vector3(placementPose.position.x, placementPose.position.y - GLOBAL.EARTH_PREFAB_RADIUS, placementPose.position.z), placementPose.rotation);
+
+        //mappedEarth.transform.Translate(new Vector3(0, (placementPose.position.y - GLOBAL.EARTH_PREFAB_RADIUS)/2.0f, 0));
+
+
+        //mappedEarth.transform.localScale = new Vector3(2000, 2000, 2000);
+        //mappedEarth.transform.Translate(new Vector3(0, -2000* GLOBAL.EARTH_PREFAB_RADIUS, 0));
     }
 
 
