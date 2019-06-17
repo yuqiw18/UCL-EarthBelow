@@ -15,6 +15,7 @@ public class GetLocation : MonoBehaviour
     public GameObject pinPrefab;
 
     private Vector3 earthCenter;
+    private List<Vector3> pinPosition = new List<Vector3>();
 
     // Use this for initialization
     IEnumerator Start()
@@ -24,8 +25,12 @@ public class GetLocation : MonoBehaviour
 
         if (!Input.location.isEnabledByUser)
         {
-            ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
+            if (pinPosition.Count != 0) {
+                pinPosition.Clear();
+            }
+            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
             GeneratePredefinedPinLocation();
+            GeneratePins();
             ComputeRotation();
             Debug.Log("Location service is not enabled.");
             yield break;
@@ -54,13 +59,22 @@ public class GetLocation : MonoBehaviour
         }
         else
         {
+
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
             northRotation = Input.compass.trueHeading;
 
             latitudeDebugText.text = Input.location.lastData.latitude.ToString();
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
-            ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, true);
+
+            if (pinPosition.Count != 0)
+            {
+                pinPosition.Clear();
+            }
+
+            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+
             GeneratePredefinedPinLocation();
+            GeneratePins();
             ComputeRotation();
         }
 
@@ -82,59 +96,35 @@ public class GetLocation : MonoBehaviour
         GLOBAL.LATLONG_LIST.Add(new Vector2(55.751244f, 37.618423f)); // Moscow, RU
 
         foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
-            ECEFCoordinateFromLonLat(v,false);
+            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
         }
-
     }
 
-    private void ECEFCoordinateFromLonLat(Vector2 latlong, bool isImportant)
-    {
 
-        // Determine the sign for latitude conversion
-        float sign = 1.0f;
-        if (latlong.x >= 0) {
-            sign = -1.0f;
+    private void GeneratePins() { 
+        for (int i = 0; i < pinPosition.Count; i++) {
+            // Instantiate the pin
+            GameObject pin = Instantiate(pinPrefab, new Vector3(0, 0, 0), Quaternion.identity, earthObject.gameObject.transform);
+
+            // Shift the pin to the center of the earth
+            pin.transform.localPosition += earthCenter;
+
+            // Map the pin to the correct 3D coordinate
+            pin.transform.localPosition += pinPosition[i];
+
+            // Set color for important pins
+            if (i == 0)
+            {
+                pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+            }
+
+            // Keep track of pins
+            GLOBAL.PIN_LIST.Add(pin);
+            //pinList.Add(pin);
+
+            Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
         }
-        else {
-            sign = 1.0f;
-        }
-
-        // Preprocess the latitude
-        latlong.x = latlong.x + ((latlong.x + 30f*sign) / 2f);
-
-        // Convert the latitude-longitude to radian
-        latlong = latlong * (Mathf.PI) / 180.0f;
-       
-        // Convert latitude-longitude to ECEF coordinate
-        float c = 1 / Mathf.Sqrt(Mathf.Cos(latlong.x) * Mathf.Cos(latlong.x) + (1 - GLOBAL.EARTH_FLATTENING) * (1 - GLOBAL.EARTH_FLATTENING) * Mathf.Sin(latlong.x) * Mathf.Sin(latlong.x));
-        float s = (1 - GLOBAL.EARTH_FLATTENING) * (1 - GLOBAL.EARTH_FLATTENING) * c;
-        float X = (GLOBAL.EARTH_PREFAB_RADIUS * c + 0) * Mathf.Cos(latlong.x) * Mathf.Cos(latlong.y);
-        float Y = (GLOBAL.EARTH_PREFAB_RADIUS * c + 0) * Mathf.Cos(latlong.x) * Mathf.Sin(latlong.y);
-        float Z = (GLOBAL.EARTH_PREFAB_RADIUS * s + 0) * Mathf.Sin(latlong.x);
-        Vector3 coordConverted = new Vector3(-Y, Z, X);
-
-        Debug.Log("COORDINATE CONVERTED:" + coordConverted);
-
-        // Instantiate the pin
-        GameObject pin = Instantiate(pinPrefab, new Vector3(0,0,0), Quaternion.identity, earthObject.gameObject.transform);
-
-        // Shift the pin to the center of the earth
-        pin.transform.localPosition += earthCenter;
-
-        // Map the pin to the correct 3D coordinate
-        pin.transform.localPosition += coordConverted;
-
-        // Set color for important pins
-        if (isImportant) {
-            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
-        }
-
-        // Keep track of pins
-        GLOBAL.PIN_LIST.Add(pin);
-        //pinList.Add(pin);
-
-        Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
     }
 
     private void ComputeRotation() {
@@ -150,7 +140,6 @@ public class GetLocation : MonoBehaviour
         Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
 
         //earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
-
     }
 
 }
