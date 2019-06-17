@@ -149,7 +149,7 @@ public class GetLocation : MonoBehaviour
         Debug.Log("target" + targetPinPosition);
         Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
 
-        earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
+        //earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
 
     }
 

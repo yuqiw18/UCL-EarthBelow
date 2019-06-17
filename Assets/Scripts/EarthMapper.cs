@@ -12,6 +12,7 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
+    public GameObject earthPlanePrefab;
     public Material earthMaterial;
 
     private ARSessionOrigin arOrigin;
@@ -24,6 +25,7 @@ public class EarthMapper : MonoBehaviour
     private GameObject highlightedIndicator;
 
     private GameObject mappedEarth;
+    private GameObject mappedPlane;
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +54,8 @@ public class EarthMapper : MonoBehaviour
 
     private void OnEnable()
     {
-        arSessionOrigin.GetComponent<ARPlaneManager>().enabled = true;
-        arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = true;
+        //arSessionOrigin.GetComponent<ARPlaneManager>().enabled = true;
+        //arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = true;
 
         mapButton.SetActive(true);
         highlightedIndicator.SetActive(true);
@@ -61,8 +63,8 @@ public class EarthMapper : MonoBehaviour
 
     private void OnDisable()
     {
-        arSessionOrigin.GetComponent<ARPlaneManager>().enabled = false;
-        arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = false;
+        //arSessionOrigin.GetComponent<ARPlaneManager>().enabled = false;
+        //arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = false;
 
         mapButton.SetActive(false);
         highlightedIndicator.SetActive(false);
@@ -106,23 +108,54 @@ public class EarthMapper : MonoBehaviour
     public void MapEarth() {
         Debug.Log("Mapping Triggered");
         Destroy(mappedEarth);
-        Debug.Log("PLACEMENT-Y" + placementPose.position.y);
+        Destroy(mappedPlane);
+
+        //Debug.Log("PLACEMENT-Y" + placementPose.position.y);
+
+        mappedPlane = Instantiate(earthPlanePrefab, placementPose.position, placementPose.rotation);
+
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, placementPose.rotation);
-        mappedEarth.transform.localScale = new Vector3(200, 200, 200);
-        mappedEarth.transform.Translate(new Vector3(0, -200*GLOBAL.EARTH_PREFAB_RADIUS, 0));
+
+        float scale = 20;
+
+        mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
+
+        mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
 
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
 
-        //mappedEarth.gameObject.GetComponent<Renderer>().sharedMaterial = earthMaterial;
+        Vector3 referencePinPosition = mappedEarth.transform.GetChild(0).gameObject.transform.position;
 
         mappedEarth.SetActive(true);
-        //mappedEarth = Instantiate(largeEarth, new Vector3(placementPose.position.x, placementPose.position.y - GLOBAL.EARTH_PREFAB_RADIUS, placementPose.position.z), placementPose.rotation);
 
-        //mappedEarth.transform.Translate(new Vector3(0, (placementPose.position.y - GLOBAL.EARTH_PREFAB_RADIUS)/2.0f, 0));
+        foreach (Transform pin in mappedEarth.transform)
+        {
+            //if (pin.position != referencePinPosition)
+            //{
+                //pin.position = 10 * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                Debug.Log("CalculatedPosition:" + pin.position);
+            //}
+        }
 
+        //int i = 0;
 
-        //mappedEarth.transform.localScale = new Vector3(2000, 2000, 2000);
-        //mappedEarth.transform.Translate(new Vector3(0, -2000* GLOBAL.EARTH_PREFAB_RADIUS, 0));
+        //List<Transform> pins = new List<Transform>();
+
+        //foreach (Transform pin in mappedEarth.transform)
+        //{
+        //    pins.Add(pin);
+        //}
+
+        //foreach (Transform pin in pins) { 
+        //    pin.SetParent(mappedPlane.transform, true);
+        //    pin.transform.localScale = new Vector3(20, 20, 20);
+        //    i++;
+        //    Debug.Log("SetParent:" + i);
+
+        //}
+
+        //Destroy(mappedEarth);
+
     }
 
 

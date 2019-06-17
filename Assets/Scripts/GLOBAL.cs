@@ -8,6 +8,9 @@ public class GLOBAL: MonoBehaviour
     public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
     public static Quaternion ROTATE_TO_TOP;
     public static Quaternion ROTATE_TO_DIRECTION;
+
+    public static Dictionary<string, Vector2> CITY_LATLONG_LIST = new Dictionary<string, Vector2>();
+
     public static List<GameObject> PIN_LIST = new List<GameObject>();
     public static List<Vector2> LATLONG_LIST = new List<Vector2>();
     #endregion
@@ -15,6 +18,7 @@ public class GLOBAL: MonoBehaviour
     #region EARTH_MATH_PARAMETERS
     public static readonly float EARTH_PREFAB_RADIUS = 0.5f;
     public static readonly float EARTH_FLATTENING = 1.0f / 298.257224f;
+    public static readonly float EARTH_PREFAB_SCALE_TO_REAL = 2.0f * EARTH_CRUST_RADIUS;
     #endregion
 
     #region EARTH_GEOLOGY_PARAMETERS
