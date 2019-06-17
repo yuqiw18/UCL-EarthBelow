@@ -107,11 +107,17 @@ public class EarthMapper : MonoBehaviour
         GameObject largeEarth = Instantiate(earthObjectToCopy);
         largeEarth.SetActive(true);
         //largeEarth.gameObject.transform.rotation = GLOBAL.ROTATE_TO_TOP;
-        largeEarth.transform.position = new Vector3(0, 0, 0);
+        //largeEarth.transform.position = new Vector3(0, 0, 0);
         //largeEarth.transform.localScale = new Vector3(20, 20, 20);
         Destroy(mappedEarth);
         mappedEarth = Instantiate(largeEarth, placementPose.position, placementPose.rotation);
+
+        Debug.Log("PLACEMENT-Y" + placementPose.position.y);
+
         Destroy(largeEarth);
+        mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
+        mappedEarth.transform.localScale = new Vector3(1, 1, 1);
+        mappedEarth.transform.Translate(new Vector3(0, 1* placementPose.position.y, 0));
     }
 
 
