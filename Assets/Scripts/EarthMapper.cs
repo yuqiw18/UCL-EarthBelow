@@ -112,29 +112,51 @@ public class EarthMapper : MonoBehaviour
 
         //Debug.Log("PLACEMENT-Y" + placementPose.position.y);
 
-        mappedPlane = Instantiate(earthPlanePrefab, placementPose.position, placementPose.rotation);
+        //mappedPlane = Instantiate(earthPlanePrefab, placementPose.position, placementPose.rotation);
 
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, placementPose.rotation);
 
-        float scale = 20;
+        Debug.Log("PASS1");
+
+        mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
+
+        Debug.Log("PASS2");
+
+        float scale = 12742000;
+        //float scale = 12742000;
+
+        //6371000f
+
+        Debug.Log("PASS3");
 
         mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
 
+        Debug.Log("PASS4");
+
         mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
+
+        Debug.Log("PASS5");
 
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
 
+        Debug.Log("PASS6");
+
         Vector3 referencePinPosition = mappedEarth.transform.GetChild(0).gameObject.transform.position;
+
+        Debug.Log("PASS7");
 
         mappedEarth.SetActive(true);
 
+        float pinScale = 60;
+
         foreach (Transform pin in mappedEarth.transform)
         {
-            //if (pin.position != referencePinPosition)
-            //{
-                //pin.position = 10 * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
-                Debug.Log("CalculatedPosition:" + pin.position);
-            //}
+            if (pin.position != referencePinPosition)
+            {
+                pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                Debug.Log("CalculatedPosition:" + pin.localPosition);
+            }
         }
 
         //int i = 0;

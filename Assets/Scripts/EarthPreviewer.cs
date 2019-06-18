@@ -21,8 +21,6 @@ public class EarthPreviewer : MonoBehaviour
     private readonly float transitionSpeed = 0.1f;
     private bool transitionDayNight = false;
 
-    private readonly float earthRadius = 1.0f;
-
     // Start is called before the first frame update
     void Start()
     {
