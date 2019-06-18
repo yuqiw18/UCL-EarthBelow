@@ -29,6 +29,7 @@ public class GetLocation : MonoBehaviour
                 pinPosition.Clear();
             }
             pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            GLOBAL.USER_POSITION_REAL_SCALE = GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
             GeneratePredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
@@ -61,7 +62,9 @@ public class GetLocation : MonoBehaviour
         {
 
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
-            northRotation = Input.compass.trueHeading;
+            GLOBAL.USER_POSITION_REAL_SCALE = GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
+
+            GLOBAL.ROTATE_TO_NORTH = Input.compass.trueHeading;
 
             latitudeDebugText.text = Input.location.lastData.latitude.ToString();
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
@@ -97,6 +100,7 @@ public class GetLocation : MonoBehaviour
 
         foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
             pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
+            GLOBAL.POSITION_REAL_SCALE_LIST.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_CRUST_RADIUS));
         }
     }
 
