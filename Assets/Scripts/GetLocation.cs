@@ -86,18 +86,6 @@ public class GetLocation : MonoBehaviour
 
 
     private void GeneratePredefinedPinLocation() {
-
-        // Source: https://www.latlong.net/
-        //GLOBAL.LATLONG_LIST.Add(new Vector2(51.509865f, -0.118092f)); // London, UK
-        GLOBAL.LATLONG_LIST.Add(new Vector2(48.864716f, 2.349014f)); // Paris, FR
-        GLOBAL.LATLONG_LIST.Add(new Vector2(40.730610f, -73.935242f)); // New York, US
-        GLOBAL.LATLONG_LIST.Add(new Vector2(-37.840935f, 144.946457f)); // Melbourne, AU
-        GLOBAL.LATLONG_LIST.Add(new Vector2(35.652832f, 139.839478f)); // Tokyo, JP
-        GLOBAL.LATLONG_LIST.Add(new Vector2(-36.848461f, 174.763336f)); // Auckland, NZ
-        GLOBAL.LATLONG_LIST.Add(new Vector2(31.224361f, 121.469170f)); // Shanghai, CN
-        GLOBAL.LATLONG_LIST.Add(new Vector2(49.246292f, -123.116226f)); // Vancouver, CA
-        GLOBAL.LATLONG_LIST.Add(new Vector2(55.751244f, 37.618423f)); // Moscow, RU
-
         foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
             pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
             GLOBAL.POSITION_REAL_SCALE_LIST.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_CRUST_RADIUS));
@@ -119,8 +107,28 @@ public class GetLocation : MonoBehaviour
             // Set color for important pins
             if (i == 0)
             {
+                pin.name = "London, UK";
                 pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
                 pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+            }
+            else {
+                // Add name
+                string cityName = GLOBAL.CITY_LIST[i-1];
+                pin.gameObject.name = cityName;
+                switch (cityName) {
+                    case "Melbourne, AU":
+                        pin.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                        pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.green);
+                        break;
+
+                    case "Paris, FR":
+                        pin.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                        pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.blue);
+                        break;
+                    default:
+                        break;
+
+                }
             }
 
             // Keep track of pins
@@ -139,9 +147,9 @@ public class GetLocation : MonoBehaviour
         Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
 
-        Debug.Log("current:" + currentPinPosition);
-        Debug.Log("target" + targetPinPosition);
-        Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
+        //Debug.Log("current:" + currentPinPosition);
+        //Debug.Log("target" + targetPinPosition);
+        //Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
 
         //earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
     }
