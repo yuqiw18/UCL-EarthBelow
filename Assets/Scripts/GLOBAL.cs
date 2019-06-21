@@ -8,8 +8,6 @@ public class GLOBAL: MonoBehaviour
     public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
     public static Vector3 USER_POSITION_REAL_SCALE = new Vector3(0, 0, 0);
     public static Quaternion ROTATE_TO_TOP;
-    public static Vector3 NORTH_DIRECTION;
-    public static float ROTATE_TO_NORTH;
 
     // Pending test
     public static Dictionary<string, Vector2> CITY_LATLONG_LIST = new Dictionary<string, Vector2>();

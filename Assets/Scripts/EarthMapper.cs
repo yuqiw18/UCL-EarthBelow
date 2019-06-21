@@ -13,8 +13,6 @@ public class EarthMapper : MonoBehaviour
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthPlanePrefab;
-
-    public GameObject parentToAttach;
     public Material earthMaterial;
 
     private ARSessionOrigin arOrigin;
@@ -112,22 +110,38 @@ public class EarthMapper : MonoBehaviour
         Destroy(mappedEarth);
         Destroy(mappedPlane);
 
-        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity, parentToAttach.transform);
+        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.GetChild(0);
+        Transform refTop = mappedEarth.transform.GetChild(2);
 
         mappedEarth.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial = earthMaterial;
 
-        Transform top = mappedEarth.transform.GetChild(2);
-        Transform north = mappedEarth.transform.parent.GetChild(0);
-
         //mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
 
+        // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
-
         mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
         mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
+
+        // Rotate the Earth so that the current position is facing up
+        // Use the pre-calculated value
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
+
+        // Rotate the Earth sp that the current north direction is aligned geographically
+        // First, find the current device facing direction (projection on z axis)
+        Vector3 facingDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
+        Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - mappedEarth.transform.position, Vector3.up).normalized;
+        Quaternion rotateToFacingDirection = Quaternion.FromToRotation(prefabNorthDirection, facingDirection);
+
+        // Compute the degree required to rotate the north direction to match the facing direction
+        float degree;
+        Vector3 axis;
+        rotateToFacingDirection.ToAngleAxis(out degree, out axis);
+        mappedEarth.transform.RotateAround(transform.position, Vector3.up, degree);
+
+        // Then rotate the Earth again according to the heading direction from the GPS so that the north direction is matched both virtually and physically
+        mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
 
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
