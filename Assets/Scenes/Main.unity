@@ -385,11 +385,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113248677}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.200002, z: 1.200002}
+  m_LocalPosition: {x: 0, y: 0.5, z: 1.8}
+  m_LocalScale: {x: 1.2, y: 1.2000024, z: 1.2000024}
   m_Children: []
-  m_Father: {fileID: 316080951}
-  m_RootOrder: 4
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!64 &113248679
 MeshCollider:
@@ -713,11 +713,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225398834}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.8}
   m_LocalScale: {x: 0.005, y: 1, z: 0.005}
   m_Children: []
-  m_Father: {fileID: 316080951}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &225398836
 CapsuleCollider:
@@ -2863,36 +2863,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793089056}
   m_CullTransparentMesh: 0
---- !u!1 &1833444740
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1833444741}
-  m_Layer: 0
-  m_Name: EarthMappingParent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1833444741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833444740}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1852027427
 GameObject:
   m_ObjectHideFlags: 0
@@ -2920,11 +2890,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852027427}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.200002, z: 1.200002}
+  m_LocalPosition: {x: 0, y: 0, z: 1.8}
+  m_LocalScale: {x: 1.2, y: 1.2000024, z: 1.2000024}
   m_Children: []
-  m_Father: {fileID: 316080951}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!64 &1852027429
 MeshCollider:
@@ -3035,7 +3005,6 @@ MonoBehaviour:
   earthObjectToCopy: {fileID: 316080947}
   earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,
     type: 3}
-  parentToAttach: {fileID: 1833444740}
   earthMaterial: {fileID: 2100000, guid: 4b98e1ed707d54fc5aba2860f8dc9a13, type: 2}
 --- !u!1001 &1941651938468788288
 PrefabInstance:
@@ -3052,7 +3021,7 @@ PrefabInstance:
     - target: {fileID: 1941651938222701427, guid: ea266439440004ffb8436fc02e573b1f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1941651938222701431, guid: ea266439440004ffb8436fc02e573b1f,
         type: 3}
