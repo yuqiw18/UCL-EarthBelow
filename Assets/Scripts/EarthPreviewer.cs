@@ -13,6 +13,7 @@ public class EarthPreviewer : MonoBehaviour
     public Material nightMaterial;
 
     private readonly float rotationSpeed = 0.25f;
+    private readonly float zoomSpeed = 0.005f;
 
     private Renderer earthMaterialRenderer;
     private Material targetMaterial;
@@ -20,6 +21,7 @@ public class EarthPreviewer : MonoBehaviour
     private readonly float transitionDuration = 5.0f;
     private readonly float transitionSpeed = 0.1f;
     private bool transitionDayNight = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -43,10 +45,21 @@ public class EarthPreviewer : MonoBehaviour
         }
 
         // Scale the Earth
-        if ((Input.touchCount == 2) && (Input.GetTouch(0).phase == TouchPhase.Moved)) { 
-        
-        
-        
+        if (Input.touchCount == 2) {
+
+            // Get the touch
+            Touch firstTouch = Input.GetTouch(0);
+            Touch secondTouch = Input.GetTouch(1);
+
+            Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+            Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+
+            float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+            float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+
+            float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
+
+            earthObject.transform.parent.gameObject.transform.localPosition += new Vector3(0, 0, zoomSpeed * touchMagnitudeDifference);
         }
 
         // Transition between day and night (smoothing the material change)
