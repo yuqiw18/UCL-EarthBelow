@@ -150,12 +150,13 @@ public class GetLocation : MonoBehaviour
         Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
         Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
+        GLOBAL.NORTH_DIRECTION = (Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - new Vector3(GLOBAL.PIN_LIST[0].gameObject.transform.localPosition.x, GLOBAL.EARTH_PREFAB_RADIUS, GLOBAL.PIN_LIST[0].gameObject.transform.localPosition.z)).normalized;
 
         //Debug.Log("current:" + currentPinPosition);
         //Debug.Log("target" + targetPinPosition);
         //Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
 
-        //earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
+        earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
     }
 
 }

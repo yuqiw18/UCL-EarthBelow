@@ -13,6 +13,8 @@ public class EarthMapper : MonoBehaviour
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthPlanePrefab;
+
+    public GameObject parentToAttach;
     public Material earthMaterial;
 
     private ARSessionOrigin arOrigin;
@@ -110,11 +112,14 @@ public class EarthMapper : MonoBehaviour
         Destroy(mappedEarth);
         Destroy(mappedPlane);
 
-        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
+        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity, parentToAttach.transform);
 
         Transform pinGroup = mappedEarth.transform.GetChild(0);
 
         mappedEarth.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial = earthMaterial;
+
+        Transform top = mappedEarth.transform.GetChild(2);
+        Transform north = mappedEarth.transform.parent.GetChild(0);
 
         //mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
 
@@ -123,9 +128,6 @@ public class EarthMapper : MonoBehaviour
         mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
         mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
-
-
-        //mappedEarth.transform.Rotate(0, -GLOBAL.ROTATE_TO_NORTH, 0);
 
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
