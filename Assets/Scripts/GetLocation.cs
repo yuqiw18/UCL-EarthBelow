@@ -93,10 +93,14 @@ public class GetLocation : MonoBehaviour
     }
 
 
-    private void GeneratePins() { 
+    private void GeneratePins() {
+
+        Transform pinGroup = earthObject.transform.GetChild(0);
+
         for (int i = 0; i < pinPosition.Count; i++) {
-            // Instantiate the pin
-            GameObject pin = Instantiate(pinPrefab, new Vector3(0, 0, 0), Quaternion.identity, earthObject.gameObject.transform);
+
+            // Instantiate the pin and place it under pin group
+            GameObject pin = Instantiate(pinPrefab, new Vector3(0, 0, 0), Quaternion.identity, pinGroup);
 
             // Shift the pin to the center of the earth
             pin.transform.localPosition += earthCenter;

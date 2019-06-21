@@ -112,7 +112,11 @@ public class EarthMapper : MonoBehaviour
 
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
 
-        mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
+        Transform pinGroup = mappedEarth.transform.GetChild(0);
+
+        mappedEarth.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial = earthMaterial;
+
+        //mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
 
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
 
@@ -124,10 +128,10 @@ public class EarthMapper : MonoBehaviour
         //mappedEarth.transform.Rotate(0, -GLOBAL.ROTATE_TO_NORTH, 0);
 
         // Scale and display each pin
-        Vector3 referencePinPosition = mappedEarth.transform.GetChild(0).gameObject.transform.position;
+        Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
         mappedEarth.SetActive(true);
         float pinScale = 60;
-        foreach (Transform pin in mappedEarth.transform)
+        foreach (Transform pin in pinGroup)
         {
             if (pin.position != referencePinPosition)
             {
