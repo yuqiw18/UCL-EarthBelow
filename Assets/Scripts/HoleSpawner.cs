@@ -13,7 +13,6 @@ public class HoleSpawner : MonoBehaviour
     #endregion
 
 
-
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
@@ -33,11 +32,23 @@ public class HoleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (arRaycastManager == null) {
+
+            Debug.Log("NOPE");
+        
+        }
+
+        if (arRaycastManager == null) {
+
+            Debug.Log("CRAP");
+        }
+
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-        if (Input.compass.enabled) {
-            Debug.Log("TONORTH:" + Input.compass.trueHeading);
-        }
+        //if (Input.compass.enabled) {
+        //    Debug.Log("TONORTH:" + Input.compass.trueHeading);
+        //}
 
     }
 
@@ -62,7 +73,7 @@ public class HoleSpawner : MonoBehaviour
 
     private void UpdatePlacementPose()
     {
-        Vector3 screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         List<ARRaycastHit> hits = new List<ARRaycastHit>();
         arRaycastManager.Raycast(screenCenter, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
 
@@ -72,7 +83,7 @@ public class HoleSpawner : MonoBehaviour
         {
             placementPose = hits[0].pose;
 
-            Vector3 cameraForward = Camera.current.transform.forward;
+            Vector3 cameraForward = Camera.main.transform.forward;
             Vector3 cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
@@ -93,6 +104,7 @@ public class HoleSpawner : MonoBehaviour
     public void SpawnHole() {
         if (placementPoseIsValid)
         {
+            Debug.Log("Spawn!!!!!");
             // Only spawn one hole
             Destroy(spawnedHole);
             spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);

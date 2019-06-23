@@ -1424,6 +1424,7 @@ GameObject:
   - component: {fileID: 780006875}
   - component: {fileID: 780006874}
   - component: {fileID: 780006873}
+  - component: {fileID: 780006877}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: MainCamera
@@ -1488,8 +1489,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseCustomMaterial: 0
   m_CustomMaterial: {fileID: 0}
-  m_UseCustomRendererAsset: 0
-  m_CustomRendererAsset: {fileID: 0}
+  m_UseCustomRendererAsset: 1
+  m_CustomRendererAsset: {fileID: 11400000, guid: 2310b94e2d8f5463ab592fa99eefbe6f,
+    type: 2}
 --- !u!114 &780006874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1537,6 +1539,24 @@ Transform:
   m_Father: {fileID: 575768797}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &780006877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780006871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &854905462
 GameObject:
   m_ObjectHideFlags: 0

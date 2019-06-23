@@ -74,7 +74,7 @@ public class EarthMapper : MonoBehaviour
 
     private void UpdatePlacementPose()
     {
-        Vector3 screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         List<ARRaycastHit> hits = new List<ARRaycastHit>();
         arRaycastManager.Raycast(screenCenter, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
 
@@ -84,7 +84,7 @@ public class EarthMapper : MonoBehaviour
         {
             placementPose = hits[0].pose;
 
-            Vector3 cameraForward = Camera.current.transform.forward;
+            Vector3 cameraForward = Camera.main.transform.forward;
             Vector3 cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
