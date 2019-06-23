@@ -9,8 +9,6 @@ public class GetLocation : MonoBehaviour
     public Text latitudeDebugText;
     public Text longitudeDebugText;
 
-    public static float northRotation;
-
     public GameObject earthObject;
     public GameObject pinPrefab;
 
@@ -28,8 +26,8 @@ public class GetLocation : MonoBehaviour
             if (pinPosition.Count != 0) {
                 pinPosition.Clear();
             }
-            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
-            GLOBAL.USER_POSITION_REAL_SCALE = GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
+            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            GLOBAL.USER_POSITION_REAL_SCALE = UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
             GeneratePredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
@@ -62,7 +60,7 @@ public class GetLocation : MonoBehaviour
         {
 
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
-            GLOBAL.USER_POSITION_REAL_SCALE = GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
+            GLOBAL.USER_POSITION_REAL_SCALE = UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
 
             latitudeDebugText.text = Input.location.lastData.latitude.ToString();
             longitudeDebugText.text = Input.location.lastData.longitude.ToString();
@@ -72,7 +70,7 @@ public class GetLocation : MonoBehaviour
                 pinPosition.Clear();
             }
 
-            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
 
             GeneratePredefinedPinLocation();
             GeneratePins();
@@ -85,8 +83,8 @@ public class GetLocation : MonoBehaviour
 
     private void GeneratePredefinedPinLocation() {
         foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
-            pinPosition.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
-            GLOBAL.POSITION_REAL_SCALE_LIST.Add(GLOBAL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_CRUST_RADIUS));
+            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
+            GLOBAL.POSITION_REAL_SCALE_LIST.Add(UTIL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_CRUST_RADIUS));
         }
     }
 

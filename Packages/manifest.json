@@ -5,6 +5,7 @@
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.purchasing": "2.0.6",
+    "com.unity.render-pipelines.core": "5.6.1",
     "com.unity.render-pipelines.lightweight": "5.6.1",
     "com.unity.shadergraph": "5.6.1",
     "com.unity.textmeshpro": "2.0.1",

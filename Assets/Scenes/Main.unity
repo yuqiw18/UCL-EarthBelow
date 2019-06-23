@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -997,7 +997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &463930439
 Transform:
   m_ObjectHideFlags: 0
@@ -1026,8 +1026,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switchButton: {fileID: 63068014}
   earthObject: {fileID: 316080947}
-  dayMaterial: {fileID: 2100000, guid: 87b5b759bddf04e2684c7aef2d365148, type: 2}
-  nightMaterial: {fileID: 2100000, guid: e38b7cc6fe32a47d489bc278525d7796, type: 2}
 --- !u!1 &575768794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1571,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &854905463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3041,7 +3039,7 @@ PrefabInstance:
     - target: {fileID: 1941651938222701427, guid: ea266439440004ffb8436fc02e573b1f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1941651938222701431, guid: ea266439440004ffb8436fc02e573b1f,
         type: 3}

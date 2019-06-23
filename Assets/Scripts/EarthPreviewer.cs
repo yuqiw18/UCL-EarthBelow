@@ -6,27 +6,23 @@ public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject switchButton;
-
     public GameObject earthObject;
-
-    public Material dayMaterial;
-    public Material nightMaterial;
 
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;
 
-    private Renderer earthMaterialRenderer;
-    private Material targetMaterial;
-    private Material beginMaterial;
-    private readonly float transitionDuration = 5.0f;
-    private readonly float transitionSpeed = 0.1f;
+    private Material earthMaterial;
+    private float transitionDirection = 1;
+    private readonly float transitionSpeed = 0.5f;
+    private float currentAlpha = 0;
     private bool transitionDayNight = false;
-    
 
     // Start is called before the first frame update
     void Start()
     {
-        earthMaterialRenderer = earthObject.gameObject.GetComponent<Renderer>();
+        earthMaterial = earthObject.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial;
+
+        Debug.Log("MATERIAL NAME:" + earthMaterial.name);
     }
 
     // Update is called once per frame
@@ -63,21 +59,30 @@ public class EarthPreviewer : MonoBehaviour
         }
 
         // Transition between day and night (smoothing the material change)
-        if (transitionDayNight) {
-            float lerp = Mathf.PingPong(Time.time, transitionDuration) / transitionDuration;
-            earthMaterialRenderer.material.Lerp(beginMaterial, targetMaterial, lerp);
+        if (transitionDayNight)
+        {
+            currentAlpha += transitionDirection * transitionSpeed * Time.deltaTime;
 
-            if (earthMaterialRenderer.sharedMaterial = targetMaterial) {
+            if (currentAlpha < 0)
+            {
+                earthMaterial.SetFloat("_AlphaBlending", 0);
                 transitionDayNight = false;
+                currentAlpha = 0;
+                Debug.Log("Transition Complete!!!1");
+
             }
+            else if (currentAlpha > 1)
+            {
+                earthMaterial.SetFloat("_AlphaBlending", 1);
+                transitionDayNight = false;
+                currentAlpha = 1;
+                Debug.Log("Transition Complete!!!2");
+            }
+            else {
+                earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
+            }
+
         }
-
-        // Transition between day and night using shader (smoothing the material change)
-        //if (transitionDayNight)
-        //{
-        //    earthMaterialRenderer.material.SetFloat("BlendAlpha", transitionSpeed * Time.deltaTime);
-        //}
-
     }
 
     private void OnDisable()
@@ -96,14 +101,15 @@ public class EarthPreviewer : MonoBehaviour
 
         // Only begin transition when it is not already in the process of transition
         if (!transitionDayNight) {
-            if (earthMaterialRenderer.sharedMaterial == dayMaterial)
+
+            if (Mathf.RoundToInt(currentAlpha) == 1)
             {
-                beginMaterial = dayMaterial;
-                targetMaterial = nightMaterial;
+                transitionDirection = -1;
+                Debug.Log("Transition Triggered: -1");
             }
             else {
-                beginMaterial = nightMaterial;
-                targetMaterial = dayMaterial;
+                transitionDirection = 1;
+                Debug.Log("Transition Triggered: 1");
             }
             transitionDayNight = true;
         }

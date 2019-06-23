@@ -12,7 +12,6 @@ public class HoleSpawner : MonoBehaviour
     public GameObject holePrefab;
     #endregion
 
-
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
@@ -33,17 +32,6 @@ public class HoleSpawner : MonoBehaviour
     void Update()
     {
 
-        if (arRaycastManager == null) {
-
-            Debug.Log("NOPE");
-        
-        }
-
-        if (arRaycastManager == null) {
-
-            Debug.Log("CRAP");
-        }
-
         UpdatePlacementPose();
         UpdatePlacementIndicator();
         //if (Input.compass.enabled) {
@@ -57,7 +45,9 @@ public class HoleSpawner : MonoBehaviour
         if (spawnedHole != null) {
             spawnedHole.SetActive(false);
         }
-        highlightedIndicator.SetActive(false);
+        if (highlightedIndicator != null) {
+            highlightedIndicator.SetActive(false);
+        }
         spawnButton.SetActive(false);
     }
 
@@ -66,7 +56,9 @@ public class HoleSpawner : MonoBehaviour
         if (spawnedHole !=null) {
             spawnedHole.SetActive(true);
         }
-        highlightedIndicator.SetActive(true);
+        if (highlightedIndicator != null) {
+            highlightedIndicator.SetActive(true);
+        }
         spawnButton.SetActive(true);
     }
 
@@ -104,7 +96,6 @@ public class HoleSpawner : MonoBehaviour
     public void SpawnHole() {
         if (placementPoseIsValid)
         {
-            Debug.Log("Spawn!!!!!");
             // Only spawn one hole
             Destroy(spawnedHole);
             spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
