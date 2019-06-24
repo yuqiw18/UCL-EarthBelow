@@ -9,17 +9,13 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject mapButton;
 
-    public GameObject arSessionOrigin;
-
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthPlanePrefab;
 
     public GameObject canvasWorld;
-    public GameObject labelPrefab;
-    public Text labelPrefab2;
+    public Text labelPrefab;
 
-    private ARSessionOrigin arOrigin;
     private ARRaycastManager arRaycastManager;
 
     private Pose placementPose;
@@ -36,7 +32,6 @@ public class EarthMapper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        arOrigin = FindObjectOfType<ARSessionOrigin>();
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
 
@@ -75,8 +70,6 @@ public class EarthMapper : MonoBehaviour
             mappedEarth.SetActive(false);
         }
     }
-
-
 
     private void UpdatePlacementPose()
     {
@@ -161,11 +154,12 @@ public class EarthMapper : MonoBehaviour
         {
             if (pin.position != referencePinPosition)
             {
+                // Scale pins
                 pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
-                Debug.Log("CalculatedPosition:" + pin.localPosition);
 
-                Text label = Instantiate(labelPrefab2, pin.position, Quaternion.identity, canvasWorld.transform);
+                // Place hovering labels
+                Text label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.text = pin.gameObject.name;
                 label.transform.localScale = new Vector3(1 / labelScale, 1 / labelScale, 1 / labelScale);
                 labelList.Add(label);
@@ -175,10 +169,5 @@ public class EarthMapper : MonoBehaviour
         foreach (Transform t in layerGroup) {
             t.gameObject.SetActive(false);
         }
-
     }
-
-
-
-
 }

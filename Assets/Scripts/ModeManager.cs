@@ -4,45 +4,18 @@ using UnityEngine;
 
 public class ModeManager : MonoBehaviour
 {
+    public GameObject[] modes;
 
-    public GameObject earthPreviewer;
-    public GameObject holeSpawner;
-    public GameObject earthMapper;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    public void SwitchMode(int mode) {
-        ResetMode();
-        switch (mode) {
-            case 0:
-                earthPreviewer.SetActive(true);
-                break;
-            case 1:
-                holeSpawner.SetActive(true);
-                break;
-            case 2:
-                earthMapper.SetActive(true);
-                break;
-            default:
-                break;
-        
+    public void SwitchMode(int modeIndex) {
+        if (modeIndex >= 0 && modeIndex < modes.Length) {
+            ResetMode();
+            modes[modeIndex].SetActive(true);
         }
     }
 
     private void ResetMode() {
-        earthPreviewer.SetActive(false);
-        holeSpawner.SetActive(false);
-        earthMapper.SetActive(false);
+        foreach (GameObject mode in modes) {
+            mode.SetActive(false);
+        }
     }
 }

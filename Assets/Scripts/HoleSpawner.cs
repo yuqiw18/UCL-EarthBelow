@@ -12,7 +12,7 @@ public class HoleSpawner : MonoBehaviour
     public GameObject holePrefab;
     #endregion
 
-    private ARSessionOrigin arOrigin;
+    //private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
     private bool placementPoseIsValid = false;
@@ -23,7 +23,7 @@ public class HoleSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        arOrigin = FindObjectOfType<ARSessionOrigin>();
+        //arOrigin = FindObjectOfType<ARSessionOrigin>();
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
     }
