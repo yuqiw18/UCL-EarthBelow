@@ -6,6 +6,7 @@ public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject switchButton;
+    public GameObject previewOption;
     public GameObject earthObject;
 
     private readonly float rotationSpeed = 0.25f;
@@ -89,12 +90,14 @@ public class EarthPreviewer : MonoBehaviour
     {
         earthObject.SetActive(false);
         switchButton.SetActive(false);
+        previewOption.SetActive(false);
     }
 
     private void OnEnable()
     {
         earthObject.SetActive(true);
         switchButton.SetActive(true);
+        previewOption.SetActive(true);
     }
 
     public void SwitchDayNight() { 
@@ -114,5 +117,14 @@ public class EarthPreviewer : MonoBehaviour
             transitionDayNight = true;
         }
     
+    }
+
+
+    public void OnDropDownListIndexChange(int i) {
+        Transform layers = earthObject.transform.GetChild(1);
+        foreach (Transform l in layers) {
+            l.gameObject.SetActive(false);
+        }
+        layers.GetChild(i).gameObject.SetActive(true);
     }
 }
