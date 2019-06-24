@@ -10,7 +10,7 @@ public class SpawnVFX : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<Renderer>().sharedMaterial.SetFloat("_Dissolve", currentValue);
     }
 
     // Update is called once per frame

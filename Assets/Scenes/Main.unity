@@ -1086,7 +1086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   switchButton: {fileID: 63068014}
-  previewOption: {fileID: 0}
+  previewOption: {fileID: 357854333}
   earthObject: {fileID: 316080947}
 --- !u!1 &466080694
 GameObject:
@@ -1598,7 +1598,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 7.190131e+28, y: 2.403321e+20, z: 2.4837723e+27, w: 7.2697893e+22}
+  m_BoundingSphereOverride: {x: 4.5839e-41, y: 7.470475e-24, z: 4.5839e-41, w: 8.479308e-26}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0

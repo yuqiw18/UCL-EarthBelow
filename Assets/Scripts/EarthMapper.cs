@@ -59,6 +59,9 @@ public class EarthMapper : MonoBehaviour
 
         mapButton.SetActive(true);
         highlightedIndicator.SetActive(true);
+        if (mappedEarth != null) {
+            mappedEarth.SetActive(true);
+        }
     }
 
     private void OnDisable()
@@ -68,6 +71,9 @@ public class EarthMapper : MonoBehaviour
 
         mapButton.SetActive(false);
         highlightedIndicator.SetActive(false);
+        if (mappedEarth != null) {
+            mappedEarth.SetActive(false);
+        }
     }
 
 
