@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -13,12 +14,13 @@ public class EarthMapper : MonoBehaviour
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthPlanePrefab;
-    public Material earthMaterial;
+
+    public GameObject canvasWorld;
+    public GameObject labelPrefab;
+    public Text labelPrefab2;
 
     private ARSessionOrigin arOrigin;
     private ARRaycastManager arRaycastManager;
-    //private ARPlaneManager arPlaneManager;
-    //private ARPointCloudManager arPointCloudManager;
 
     private Pose placementPose;
     private bool placementPoseIsValid = false;
@@ -26,21 +28,16 @@ public class EarthMapper : MonoBehaviour
 
     private GameObject mappedEarth;
     private GameObject mappedPlane;
+    private List<Text> labelList = new List<Text>();
+
+    private float pinScale = 60f;
+    private float labelScale = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
-        //arPlaneManager = FindObjectOfType<ARPlaneManager>();
-        //arPointCloudManager = FindObjectOfType<ARPointCloudManager>();
-
-        //Vector3 currentPinPosition = (GetLocation.pinList[0].transform.position.normalized - earthObject.transform.position.normalized).normalized;
-        //Vector3 targetPinPosition = (earthObject.transform.parent.transform.up - earthObject.transform.position.normalized).normalized;
-
-        //Quaternion rotateToTop = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
-        //earthObject.transform.rotation = rotateToTop;
-
         highlightedIndicator = Instantiate(indicatorPrefab);
 
     }
@@ -50,15 +47,20 @@ public class EarthMapper : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
+        if (labelList.Count != 0) {
+            foreach (Text t in labelList) {
+                t.transform.LookAt(Camera.main.transform);
+                t.transform.Rotate(new Vector3(0, 180, 0));
+            }
+        }
+
     }
 
     private void OnEnable()
     {
-        //arSessionOrigin.GetComponent<ARPlaneManager>().enabled = true;
-        //arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = true;
-
         mapButton.SetActive(true);
         highlightedIndicator.SetActive(true);
+        canvasWorld.SetActive(true);
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
         }
@@ -66,11 +68,9 @@ public class EarthMapper : MonoBehaviour
 
     private void OnDisable()
     {
-        //arSessionOrigin.GetComponent<ARPlaneManager>().enabled = false;
-        //arSessionOrigin.GetComponent<ARPointCloudManager>().enabled = false;
-
         mapButton.SetActive(false);
         highlightedIndicator.SetActive(false);
+        canvasWorld.SetActive(false);
         if (mappedEarth != null) {
             mappedEarth.SetActive(false);
         }
@@ -113,17 +113,22 @@ public class EarthMapper : MonoBehaviour
 
     public void MapEarth() {
 
+        // Clear old variables
         Destroy(mappedEarth);
         Destroy(mappedPlane);
+        foreach (Text t in labelList) {
+            Destroy(t.gameObject);
 
+        }
+        labelList.Clear();
+
+        // Initialise
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
+        mappedPlane = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.GetChild(0);
+        Transform layerGroup = mappedEarth.transform.GetChild(1);
         Transform refTop = mappedEarth.transform.GetChild(2);
-
-        mappedEarth.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial = earthMaterial;
-
-        //mappedEarth.GetComponent<Renderer>().sharedMaterial = earthMaterial;
 
         // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
@@ -152,7 +157,6 @@ public class EarthMapper : MonoBehaviour
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
         mappedEarth.SetActive(true);
-        float pinScale = 60;
         foreach (Transform pin in pinGroup)
         {
             if (pin.position != referencePinPosition)
@@ -160,27 +164,17 @@ public class EarthMapper : MonoBehaviour
                 pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
                 Debug.Log("CalculatedPosition:" + pin.localPosition);
+
+                Text label = Instantiate(labelPrefab2, pin.position, Quaternion.identity, canvasWorld.transform);
+                label.text = pin.gameObject.name;
+                label.transform.localScale = new Vector3(1 / labelScale, 1 / labelScale, 1 / labelScale);
+                labelList.Add(label);
             }
         }
 
-        //int i = 0;
-
-        //List<Transform> pins = new List<Transform>();
-
-        //foreach (Transform pin in mappedEarth.transform)
-        //{
-        //    pins.Add(pin);
-        //}
-
-        //foreach (Transform pin in pins) { 
-        //    pin.SetParent(mappedPlane.transform, true);
-        //    pin.transform.localScale = new Vector3(20, 20, 20);
-        //    i++;
-        //    Debug.Log("SetParent:" + i);
-
-        //}
-
-        //Destroy(mappedEarth);
+        foreach (Transform t in layerGroup) {
+            t.gameObject.SetActive(false);
+        }
 
     }
 
