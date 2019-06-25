@@ -34,9 +34,10 @@ public class HoleSpawner : MonoBehaviour
 
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-        //if (Input.compass.enabled) {
-        //    Debug.Log("TONORTH:" + Input.compass.trueHeading);
-        //}
+        if (Input.compass.enabled)
+        {
+            Debug.Log("TONORTH:" + Input.compass.trueHeading);
+        }
 
     }
 

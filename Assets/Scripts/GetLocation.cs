@@ -131,27 +131,23 @@ public class GetLocation : MonoBehaviour
                 }
             }
 
+            //pin.AddComponent<DrawDebugLine>();
+            //pin.GetComponent<DrawDebugLine>().targetTransform = earthObject.transform;
+            //pin.GetComponent<LineRenderer>().enabled = true;
+
             // Keep track of pins
             GLOBAL.PIN_LIST.Add(pin);
-            //pinList.Add(pin);
 
-            Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
+            //Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
         }
     }
 
     private void ComputeRotation() {
 
-        Debug.Log("LocalPos:" + GLOBAL.PIN_LIST[0].gameObject.transform.localPosition);
-
+        //
         Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
         Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
-
-        //Debug.Log("current:" + currentPinPosition);
-        //Debug.Log("target" + targetPinPosition);
-        //Debug.Log("Qauternion:" + GLOBAL.ROTATE_TO_TOP);
-
-        //earthObject.gameObject.transform.localRotation = GLOBAL.ROTATE_TO_TOP;
     }
 
 }

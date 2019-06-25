@@ -58,6 +58,7 @@ public class EarthMapper : MonoBehaviour
         canvasWorld.SetActive(true);
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
+            mappedPlane.SetActive(true);
         }
     }
 
@@ -68,6 +69,7 @@ public class EarthMapper : MonoBehaviour
         canvasWorld.SetActive(false);
         if (mappedEarth != null) {
             mappedEarth.SetActive(false);
+            mappedPlane.SetActive(false);
         }
     }
 

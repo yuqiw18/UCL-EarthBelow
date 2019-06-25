@@ -1208,9 +1208,6 @@ GameObject:
   - component: {fileID: 575768797}
   - component: {fileID: 575768796}
   - component: {fileID: 575768795}
-  - component: {fileID: 575768799}
-  - component: {fileID: 575768798}
-  - component: {fileID: 575768800}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -1258,48 +1255,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &575768798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575768794}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ab0e80cee9cc1d44928bfe488dd1e2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PointCloudPrefab: {fileID: 7971487336844232554, guid: 9944673335186493bb3537953f49d3eb,
-    type: 3}
---- !u!114 &575768799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575768794}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 6117655528721888063, guid: f9bd2af62ae8145da8e8810241c9d533,
-    type: 3}
-  m_DetectionMode: -1
---- !u!114 &575768800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575768794}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ReferencePointPrefab: {fileID: 0}
 --- !u!1 &589121822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,9 +2481,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da02bc0b289894dd4b8cb820f87d33b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  earthPreviewer: {fileID: 463930438}
-  holeSpawner: {fileID: 854905462}
-  earthMapper: {fileID: 1985308836}
+  modes:
+  - {fileID: 463930438}
+  - {fileID: 854905462}
+  - {fileID: 1985308836}
 --- !u!114 &1262687732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3615,17 +3571,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapButton: {fileID: 1793089056}
-  arSessionOrigin: {fileID: 575768794}
   indicatorPrefab: {fileID: 5552406040995942088, guid: d41b63579a2e14b97bd1e78dc5842d71,
     type: 3}
   earthObjectToCopy: {fileID: 316080947}
   earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,
     type: 3}
   canvasWorld: {fileID: 1035347318}
-  labelPrefab: {fileID: 0}
-  labelPrefab2: {fileID: 6465123463630161231, guid: e871127925d114e168a4e32ec45844d5,
+  labelPrefab: {fileID: 6465123463630161231, guid: e871127925d114e168a4e32ec45844d5,
     type: 3}
-  earthMaterial: {fileID: 2100000, guid: 4b98e1ed707d54fc5aba2860f8dc9a13, type: 2}
 --- !u!1 &2033501214
 GameObject:
   m_ObjectHideFlags: 0
