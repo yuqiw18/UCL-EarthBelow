@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b98e1ed707d54fc5aba2860f8dc9a13, type: 2}
+  - {fileID: 2100000, guid: c3ed08d1e100d4a8ca5f6f711692cd45, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1673079648057894439}
   m_Layer: 0
-  m_Name: Earth_Fake_Surface
+  m_Name: Earth_Horizon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
