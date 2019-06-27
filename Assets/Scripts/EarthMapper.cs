@@ -25,6 +25,7 @@ public class EarthMapper : MonoBehaviour
     private GameObject mappedEarth;
     private GameObject mappedPlane;
     private List<Text> labelList = new List<Text>();
+    private List<GameObject> pinList = new List<GameObject>();
 
     private float pinScale = 60f;
     private float labelScale = 10f;
@@ -40,12 +41,29 @@ public class EarthMapper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update the indicator location
         UpdatePlacementPose();
         UpdatePlacementIndicator();
+
+        // Context is always facing to the camera
         if (labelList.Count != 0) {
             foreach (Text t in labelList) {
                 t.transform.LookAt(Camera.main.transform);
                 t.transform.Rotate(new Vector3(0, 180, 0));
+            }
+        }
+
+        // Detect tapping
+        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            RaycastHit raycastHit;
+            if (Physics.Raycast(raycast, out raycastHit))
+            {
+                if (raycastHit.collider.CompareTag("Pin"))
+                {
+                    raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
+                }
             }
         }
 
@@ -111,6 +129,12 @@ public class EarthMapper : MonoBehaviour
         // Clear old variables
         Destroy(mappedEarth);
         Destroy(mappedPlane);
+
+        foreach (GameObject g in pinList) {
+            Destroy(g);
+        }
+        pinList.Clear();
+
         foreach (Text t in labelList) {
             Destroy(t.gameObject);
 
@@ -166,10 +190,16 @@ public class EarthMapper : MonoBehaviour
                 label.transform.localScale = new Vector3(1 / labelScale, 1 / labelScale, 1 / labelScale);
                 labelList.Add(label);
             }
+            else {
+                pin.gameObject.SetActive(false);
+            }
+
+            pinList.Add(pin.gameObject);
+
         }
 
-        foreach (Transform t in layerGroup) {
-            t.gameObject.SetActive(false);
-        }
+        // 
+        pinGroup.DetachChildren();
+        Destroy(mappedEarth);
     }
 }

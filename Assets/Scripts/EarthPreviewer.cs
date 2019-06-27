@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject switchButton;
+    public Slider slider;
+
     public GameObject previewOption;
     public GameObject earthObject;
 
@@ -22,6 +25,11 @@ public class EarthPreviewer : MonoBehaviour
     void Start()
     {
         earthMaterial = earthObject.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial;
+
+        slider.onValueChanged.AddListener(delegate
+        {
+            SwitchLayer((int)slider.value);
+        });
 
         Debug.Log("MATERIAL NAME:" + earthMaterial.name);
     }
@@ -123,6 +131,15 @@ public class EarthPreviewer : MonoBehaviour
     public void OnDropDownListIndexChange(int i) {
         Transform layers = earthObject.transform.GetChild(1);
         foreach (Transform l in layers) {
+            l.gameObject.SetActive(false);
+        }
+        layers.GetChild(i).gameObject.SetActive(true);
+    }
+
+    private void SwitchLayer(int i) {
+        Transform layers = earthObject.transform.GetChild(1);
+        foreach (Transform l in layers)
+        {
             l.gameObject.SetActive(false);
         }
         layers.GetChild(i).gameObject.SetActive(true);
