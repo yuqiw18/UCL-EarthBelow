@@ -174,7 +174,7 @@ public class EarthMapper : MonoBehaviour
         mappedEarth.transform.RotateAround(transform.position, Vector3.up, degree);
 
         //Quaternion degreeToNorth = Quaternion.Euler(0, degree, 0);
-        //mappedEarth.transform.rotation = degreeToNorth;
+        //mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP * degreeToNorth;
 
         Debug.Log("Mapped Earth ROTATE Deivce Facing Direction: " + mappedEarth.transform.rotation);
 
