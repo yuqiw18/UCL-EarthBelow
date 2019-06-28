@@ -159,27 +159,26 @@ public class EarthMapper : MonoBehaviour
         // Use the pre-calculated value
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
 
-        Debug.Log("Mapped Earth ROTATE TO TOP: " + mappedEarth.transform.rotation);
-
         // Rotate the Earth so that the current north direction is aligned geographically
         // First, find the current device facing direction (projection on z axis)
         Vector3 facingDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
         Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - mappedEarth.transform.position, Vector3.up).normalized;
         Quaternion rotateToFacingDirection = Quaternion.FromToRotation(prefabNorthDirection, facingDirection);
+        Quaternion rotateToGeographicalNorth = Quaternion.Euler(0, -Input.compass.trueHeading, 0);
 
+        // 1. Use Rotation
         // Compute the degree required to rotate the north direction to match the facing direction
-        float degree;
-        Vector3 axis;
-        rotateToFacingDirection.ToAngleAxis(out degree, out axis);
-        mappedEarth.transform.RotateAround(transform.position, Vector3.up, degree);
-
-        //Quaternion degreeToNorth = Quaternion.Euler(0, degree, 0);
-        //mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP * degreeToNorth;
-
-        Debug.Log("Mapped Earth ROTATE Deivce Facing Direction: " + mappedEarth.transform.rotation);
+        //float degree;
+        //Vector3 axis;
+        //rotateToFacingDirection.ToAngleAxis(out degree, out axis);
+        //mappedEarth.transform.RotateAround(transform.position, Vector3.up, degree);
 
         // Then rotate the Earth again according to the heading direction from the GPS so that the north direction is matched both virtually and physically
-        mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
+        //mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
+
+        // OR 2. Use Quaternion
+        //Quaternion rotateToFacingDirection = Quaternion.Euler(0, degree, 0);
+        mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
