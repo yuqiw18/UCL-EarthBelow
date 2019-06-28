@@ -62,6 +62,7 @@ public class EarthMapper : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
+                    Debug.Log("Yess");
                     raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                 }
             }
@@ -158,7 +159,9 @@ public class EarthMapper : MonoBehaviour
         // Use the pre-calculated value
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
 
-        // Rotate the Earth sp that the current north direction is aligned geographically
+        Debug.Log("Mapped Earth ROTATE TO TOP: " + mappedEarth.transform.rotation);
+
+        // Rotate the Earth so that the current north direction is aligned geographically
         // First, find the current device facing direction (projection on z axis)
         Vector3 facingDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
         Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - mappedEarth.transform.position, Vector3.up).normalized;
@@ -169,6 +172,11 @@ public class EarthMapper : MonoBehaviour
         Vector3 axis;
         rotateToFacingDirection.ToAngleAxis(out degree, out axis);
         mappedEarth.transform.RotateAround(transform.position, Vector3.up, degree);
+
+        //Quaternion degreeToNorth = Quaternion.Euler(0, degree, 0);
+        //mappedEarth.transform.rotation = degreeToNorth;
+
+        Debug.Log("Mapped Earth ROTATE Deivce Facing Direction: " + mappedEarth.transform.rotation);
 
         // Then rotate the Earth again according to the heading direction from the GPS so that the north direction is matched both virtually and physically
         mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
@@ -198,8 +206,12 @@ public class EarthMapper : MonoBehaviour
 
         }
 
-        // 
-        pinGroup.DetachChildren();
-        Destroy(mappedEarth);
+        // Method A: Keep child pin and remove layer and reftop
+        Destroy(refTop.gameObject);
+        Destroy(layerGroup.gameObject);
+
+        // Method B: Detach children and destory the object (buggy)
+        //pinGroup.DetachChildren();
+        //Destroy(mappedEarth);
     }
 }

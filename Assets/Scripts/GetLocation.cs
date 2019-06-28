@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class GetLocation : MonoBehaviour
 {
-
-    public Text latitudeDebugText;
-    public Text longitudeDebugText;
-
     public GameObject earthObject;
     public GameObject pinPrefab;
 
@@ -61,9 +57,6 @@ public class GetLocation : MonoBehaviour
 
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
             GLOBAL.USER_POSITION_REAL_SCALE = UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
-
-            latitudeDebugText.text = Input.location.lastData.latitude.ToString();
-            longitudeDebugText.text = Input.location.lastData.longitude.ToString();
 
             if (pinPosition.Count != 0)
             {

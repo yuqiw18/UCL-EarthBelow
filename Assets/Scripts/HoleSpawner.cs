@@ -31,14 +31,8 @@ public class HoleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-        if (Input.compass.enabled)
-        {
-            Debug.Log("TONORTH:" + Input.compass.trueHeading);
-        }
-
     }
 
     private void OnDisable()
