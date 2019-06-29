@@ -6,10 +6,7 @@ using UnityEngine.UI;
 public class EarthPreviewer : MonoBehaviour
 {
 
-    public GameObject switchButton;
-    public Slider slider;
-
-    public GameObject previewOption;
+    public GameObject previewerOptions;
     public GameObject earthObject;
 
     private readonly float rotationSpeed = 0.25f;
@@ -25,13 +22,6 @@ public class EarthPreviewer : MonoBehaviour
     void Start()
     {
         earthMaterial = earthObject.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial;
-
-        slider.onValueChanged.AddListener(delegate
-        {
-            SwitchLayer((int)slider.value);
-        });
-
-        Debug.Log("MATERIAL NAME:" + earthMaterial.name);
     }
 
     // Update is called once per frame
@@ -97,15 +87,13 @@ public class EarthPreviewer : MonoBehaviour
     private void OnDisable()
     {
         earthObject.SetActive(false);
-        switchButton.SetActive(false);
-        previewOption.SetActive(false);
+        previewerOptions.SetActive(false);
     }
 
     private void OnEnable()
     {
         earthObject.SetActive(true);
-        switchButton.SetActive(true);
-        previewOption.SetActive(true);
+        previewerOptions.SetActive(true);
     }
 
     public void SwitchDayNight() { 

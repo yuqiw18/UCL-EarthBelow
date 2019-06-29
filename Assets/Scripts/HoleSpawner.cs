@@ -5,7 +5,8 @@ using UnityEngine.XR.ARFoundation;
 
 public class HoleSpawner : MonoBehaviour
 {
-    public GameObject spawnButton;
+
+    public GameObject spawnerOptions;
 
     #region Prefab
     public GameObject indicatorPrefab;
@@ -43,7 +44,7 @@ public class HoleSpawner : MonoBehaviour
         if (highlightedIndicator != null) {
             highlightedIndicator.SetActive(false);
         }
-        spawnButton.SetActive(false);
+        spawnerOptions.SetActive(false);
     }
 
     private void OnEnable()
@@ -54,7 +55,7 @@ public class HoleSpawner : MonoBehaviour
         if (highlightedIndicator != null) {
             highlightedIndicator.SetActive(true);
         }
-        spawnButton.SetActive(true);
+        spawnerOptions.SetActive(true);
     }
 
 

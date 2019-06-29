@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EarthMapper : MonoBehaviour
 {
 
-    public GameObject mapButton;
+    public GameObject mapperOptions;
 
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
@@ -72,7 +72,7 @@ public class EarthMapper : MonoBehaviour
 
     private void OnEnable()
     {
-        mapButton.SetActive(true);
+        mapperOptions.SetActive(true);
         highlightedIndicator.SetActive(true);
         canvasWorld.SetActive(true);
         if (mappedEarth != null) {
@@ -83,7 +83,7 @@ public class EarthMapper : MonoBehaviour
 
     private void OnDisable()
     {
-        mapButton.SetActive(false);
+        mapperOptions.SetActive(false);
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
         if (mappedEarth != null) {
