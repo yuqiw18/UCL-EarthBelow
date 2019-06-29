@@ -23,7 +23,7 @@ public class EarthMapper : MonoBehaviour
     private GameObject highlightedIndicator;
 
     private GameObject mappedEarth;
-    private GameObject mappedPlane;
+    private GameObject horizonPrefab;
     private List<Text> labelList = new List<Text>();
     private List<GameObject> pinList = new List<GameObject>();
 
@@ -77,7 +77,7 @@ public class EarthMapper : MonoBehaviour
         canvasWorld.SetActive(true);
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
-            mappedPlane.SetActive(true);
+            horizonPrefab.SetActive(true);
         }
     }
 
@@ -88,7 +88,7 @@ public class EarthMapper : MonoBehaviour
         canvasWorld.SetActive(false);
         if (mappedEarth != null) {
             mappedEarth.SetActive(false);
-            mappedPlane.SetActive(false);
+            horizonPrefab.SetActive(false);
         }
     }
 
@@ -129,7 +129,7 @@ public class EarthMapper : MonoBehaviour
 
         // Clear old variables
         Destroy(mappedEarth);
-        Destroy(mappedPlane);
+        Destroy(horizonPrefab);
 
         foreach (GameObject g in pinList) {
             Destroy(g);
@@ -142,9 +142,10 @@ public class EarthMapper : MonoBehaviour
         }
         labelList.Clear();
 
-        // Initialise
+        // Initialise the earth object and the horizon
+        // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
-        mappedPlane = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
+        horizonPrefab = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.GetChild(0);
         Transform layerGroup = mappedEarth.transform.GetChild(1);
@@ -166,7 +167,7 @@ public class EarthMapper : MonoBehaviour
         Quaternion rotateToFacingDirection = Quaternion.FromToRotation(prefabNorthDirection, facingDirection);
         Quaternion rotateToGeographicalNorth = Quaternion.Euler(0, -Input.compass.trueHeading, 0);
 
-        // 1. Use Rotation
+        // 1. Use ROTATION
         // Compute the degree required to rotate the north direction to match the facing direction
         //float degree;
         //Vector3 axis;
@@ -176,8 +177,8 @@ public class EarthMapper : MonoBehaviour
         // Then rotate the Earth again according to the heading direction from the GPS so that the north direction is matched both virtually and physically
         //mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
 
-        // OR 2. Use Quaternion
-        //Quaternion rotateToFacingDirection = Quaternion.Euler(0, degree, 0);
+        // OR 2. Use QUATERNION
+        //The steps need to be reversed to get the correct result
         mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
         // Scale and display each pin
