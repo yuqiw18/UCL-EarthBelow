@@ -6,12 +6,21 @@ using UnityEngine.UI;
 // Global Variables
 public class GLOBAL: MonoBehaviour
 {
-
     public struct PinData {
-        public string pinName;
-        public string pinDescription;
-        public Image pinThumbnail;
+        public string cityName;
+        public string cityCoord;
+        public string cityDesc;
     }
+
+    public struct LocationInfo {
+        public string name;
+        public string country;
+        public Vector2 locLatLon;
+        public string description;
+    }
+
+    public static List<LocationInfo> LOCATION_DATABASE = new List<LocationInfo>();
+
 
     #region DATA_LIST
     public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
@@ -22,7 +31,6 @@ public class GLOBAL: MonoBehaviour
     public static Dictionary<string, Vector2> CITY_LATLONG_LIST = new Dictionary<string, Vector2>();
 
     //
-
     public static List<GameObject> PIN_LIST = new List<GameObject>();
 
     public static List<string> CITY_LIST = new List<string>();
@@ -47,7 +55,7 @@ public class GLOBAL: MonoBehaviour
     // Only called once during the application lifetime
     private void Awake()
     {
-        Debug.Log("GLOBAL VAR LOADED");
+        Debug.Log("Global Variable Loaded");
         InitialiseLatlongList();
     }
 
@@ -66,14 +74,14 @@ public class GLOBAL: MonoBehaviour
 
 
         //CITY_LIST.Add("London, UK");
-        CITY_LIST.Add("Paris, FR");
-        CITY_LIST.Add("New York, US");
-        CITY_LIST.Add("Melbourne, AU");
-        CITY_LIST.Add("Tokyo, JP");
-        CITY_LIST.Add("Auckland, NZ");
-        CITY_LIST.Add("Shanghai, CN");
-        CITY_LIST.Add("Vancouver, CA");
-        CITY_LIST.Add("Moscow, RU");
+        CITY_LIST.Add("Paris, France");
+        CITY_LIST.Add("New York, United States");
+        CITY_LIST.Add("Melbourne, Australia");
+        CITY_LIST.Add("Tokyo, Japan");
+        CITY_LIST.Add("Auckland, New Zealand");
+        CITY_LIST.Add("Shanghai, China");
+        CITY_LIST.Add("Vancouver, Canada");
+        CITY_LIST.Add("Moscow, Russia");
     }
 }
  

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
+using static GLOBAL;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -29,7 +30,8 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> pinList = new List<GameObject>();
 
     private float pinScale = 60f;
-    private float labelScale = 10f;
+    private float labelScale = 1/10f;
+    private float panelDistanceScale = 6f;
 
     // Start is called before the first frame update
     void Start()
@@ -72,8 +74,21 @@ public class EarthMapper : MonoBehaviour
                 {
                     Debug.Log("Yess");
                     //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
+                    panelPrefab.transform.position = raycastHit.collider.transform.position * panelDistanceScale;
 
-                    panelPrefab.transform.position = raycastHit.collider.transform.position;
+                    // Get pin data
+                    PinData pinData = raycastHit.collider.GetComponent<Pin>().GetPinData();
+
+                    Debug.Log("DEBUGGY" + pinData.cityName);
+
+
+                    // Assign data to the panel
+                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = pinData.cityName;
+                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = pinData.cityCoord;
+                    panelPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = pinData.cityDesc;
+
+                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = raycastHit.collider.name;
+
                     panelPrefab.SetActive(true);
                 }
             }
@@ -207,7 +222,7 @@ public class EarthMapper : MonoBehaviour
                 // Place hovering labels
                 Text label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.text = pin.gameObject.name;
-                label.transform.localScale = new Vector3(1 / labelScale, 1 / labelScale, 1 / labelScale);
+                label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
             else {

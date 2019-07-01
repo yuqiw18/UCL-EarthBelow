@@ -100,7 +100,7 @@ public class GetLocation : MonoBehaviour
             // Set color for important pins
             if (i == 0)
             {
-                pin.name = "London, UK";
+                pin.name = "London, United Kingdom";
                 pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
                 pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
             }
@@ -109,12 +109,12 @@ public class GetLocation : MonoBehaviour
                 string cityName = GLOBAL.CITY_LIST[i-1];
                 pin.gameObject.name = cityName;
                 switch (cityName) {
-                    case "Melbourne, AU":
+                    case "Melbourne, Australia":
                         pin.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
                         pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.green);
                         break;
 
-                    case "Paris, FR":
+                    case "Paris, France":
                         pin.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
                         pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.blue);
                         break;
@@ -123,6 +123,12 @@ public class GetLocation : MonoBehaviour
 
                 }
             }
+
+            string[] pinData = new string[3];
+            pinData[0] = pin.name;
+            pinData[1] = "WIP";
+            pinData[2] = pin.name + " Description Placeholder";
+            pin.GetComponent<Pin>().InitialiseData(pinData);
 
             //pin.AddComponent<DrawDebugLine>();
             //pin.GetComponent<DrawDebugLine>().targetTransform = earthObject.transform;
