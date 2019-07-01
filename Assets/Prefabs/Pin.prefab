@@ -200,3 +200,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2beb4e4c7044dfca8497f840cb23a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 599536275909614940, guid: 9ebaaf072885046aa8a4c3fe540cccff, type: 3}

@@ -1,10 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Global Variables
 public class GLOBAL: MonoBehaviour
 {
+
+    public struct PinData {
+        public string pinName;
+        public string pinDescription;
+        public Image pinThumbnail;
+    }
+
     #region DATA_LIST
     public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
     public static Vector3 USER_POSITION_REAL_SCALE = new Vector3(0, 0, 0);

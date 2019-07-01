@@ -15,6 +15,7 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject canvasWorld;
     public Text labelPrefab;
+    public GameObject panelPrefab;
 
     private ARRaycastManager arRaycastManager;
 
@@ -53,6 +54,13 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
+        //Panel is always facing to the camera
+        if (panelPrefab.activeSelf)
+        {
+            panelPrefab.transform.LookAt(Camera.main.transform);
+            panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+        }
+
         // Detect tapping
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
         {
@@ -63,7 +71,10 @@ public class EarthMapper : MonoBehaviour
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
                     Debug.Log("Yess");
-                    raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
+                    //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
+
+                    panelPrefab.transform.position = raycastHit.collider.transform.position;
+                    panelPrefab.SetActive(true);
                 }
             }
         }
@@ -86,6 +97,7 @@ public class EarthMapper : MonoBehaviour
         mapperOptions.SetActive(false);
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
+        panelPrefab.SetActive(false);
         if (mappedEarth != null) {
             mappedEarth.SetActive(false);
             horizonPrefab.SetActive(false);
