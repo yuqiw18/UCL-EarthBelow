@@ -14,7 +14,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject earthPlanePrefab;
 
     public GameObject canvasWorld;
-    public Text labelPrefab;
+    public GameObject labelPrefab;
     public GameObject panelPrefab;
 
     public Texture2D[] thumbnail;
@@ -27,7 +27,7 @@ public class EarthMapper : MonoBehaviour
 
     private GameObject mappedEarth;
     private GameObject horizonPrefab;
-    private List<Text> labelList = new List<Text>();
+    private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> pinList = new List<GameObject>();
 
     private float pinScale = 60f;
@@ -51,7 +51,7 @@ public class EarthMapper : MonoBehaviour
 
         // Context is always facing to the camera
         if (labelList.Count != 0) {
-            foreach (Text t in labelList) {
+            foreach (GameObject t in labelList) {
                 t.transform.LookAt(Camera.main.transform);
                 t.transform.Rotate(new Vector3(0, 180, 0));
             }
@@ -162,8 +162,8 @@ public class EarthMapper : MonoBehaviour
         }
         pinList.Clear();
 
-        foreach (Text t in labelList) {
-            Destroy(t.gameObject);
+        foreach (GameObject t in labelList) {
+            Destroy(t);
 
         }
         labelList.Clear();
@@ -226,8 +226,9 @@ public class EarthMapper : MonoBehaviour
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
 
                 // Place hovering labels
-                Text label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
-                label.text = currentPinLocation.name + ", " + currentPinLocation.country + " (" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
+                GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
+                label.transform.GetChild(0).GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
+                label.transform.GetChild(1).GetComponent<Text>().text = "(" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }

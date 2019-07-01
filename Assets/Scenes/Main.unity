@@ -3750,7 +3750,7 @@ MonoBehaviour:
   earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,
     type: 3}
   canvasWorld: {fileID: 1035347318}
-  labelPrefab: {fileID: 6465123463630161231, guid: e871127925d114e168a4e32ec45844d5,
+  labelPrefab: {fileID: 6182984350610274001, guid: db22f06db61424a3da06a525136e6a5f,
     type: 3}
   panelPrefab: {fileID: 456503942}
   thumbnail:
