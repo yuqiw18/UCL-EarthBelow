@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
-using static GLOBAL;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -72,23 +71,18 @@ public class EarthMapper : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
-                    Debug.Log("Yess");
                     //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                     panelPrefab.transform.position = raycastHit.collider.transform.position * panelDistanceScale;
 
-                    // Get pin data
-                    PinData pinData = raycastHit.collider.GetComponent<Pin>().GetPinData();
+                    // Fetch selected pin information
+                    GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
-                    Debug.Log("DEBUGGY" + pinData.cityName);
+                    // Assign information to the panel
+                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = selectedLocation.name;
+                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.coord.ToString();
+                    panelPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = selectedLocation.description;
 
-
-                    // Assign data to the panel
-                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = pinData.cityName;
-                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = pinData.cityCoord;
-                    panelPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = pinData.cityDesc;
-
-                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = raycastHit.collider.name;
-
+                    // Show the panel
                     panelPrefab.SetActive(true);
                 }
             }
@@ -191,7 +185,11 @@ public class EarthMapper : MonoBehaviour
         // First, find the current device facing direction (projection on z axis)
         Vector3 facingDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
         Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - mappedEarth.transform.position, Vector3.up).normalized;
+
+        // Then, compute the degree required to rotate the earth to the facing direction
         Quaternion rotateToFacingDirection = Quaternion.FromToRotation(prefabNorthDirection, facingDirection);
+
+        // Lastly, compute the degree required to rotate the earth to the geographical north
         Quaternion rotateToGeographicalNorth = Quaternion.Euler(0, -Input.compass.trueHeading, 0);
 
         // 1. Use ROTATION
@@ -221,7 +219,7 @@ public class EarthMapper : MonoBehaviour
 
                 // Place hovering labels
                 Text label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
-                label.text = pin.gameObject.name;
+                label.text = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)].name;
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }

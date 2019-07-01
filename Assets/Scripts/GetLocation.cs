@@ -22,8 +22,8 @@ public class GetLocation : MonoBehaviour
             if (pinPosition.Count != 0) {
                 pinPosition.Clear();
             }
-            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
-            GLOBAL.USER_POSITION_REAL_SCALE = UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
+            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+           
             GeneratePredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
@@ -56,14 +56,13 @@ public class GetLocation : MonoBehaviour
         {
 
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
-            GLOBAL.USER_POSITION_REAL_SCALE = UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_CRUST_RADIUS);
 
             if (pinPosition.Count != 0)
             {
                 pinPosition.Clear();
             }
 
-            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
 
             GeneratePredefinedPinLocation();
             GeneratePins();
@@ -75,10 +74,10 @@ public class GetLocation : MonoBehaviour
 
 
     private void GeneratePredefinedPinLocation() {
-        foreach (Vector2 v in GLOBAL.LATLONG_LIST) {
-            pinPosition.Add(UTIL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_PREFAB_RADIUS));
-            GLOBAL.POSITION_REAL_SCALE_LIST.Add(UTIL.ECEFCoordinateFromLonLat(v, GLOBAL.EARTH_CRUST_RADIUS));
-        }
+        foreach (GLOBAL.LocationInfo L in GLOBAL.LOCATION_DATABASE) {
+            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(L.coord, GLOBAL.EARTH_PREFAB_RADIUS));
+            //GLOBAL.POSITION_REAL_SCALE_LIST.Add(UTIL.ECEFCoordinateFromLonLat(L.coord, GLOBAL.EARTH_CRUST_RADIUS));
+        }   
     }
 
 
@@ -97,38 +96,34 @@ public class GetLocation : MonoBehaviour
             // Map the pin to the correct 3D coordinate
             pin.transform.localPosition += pinPosition[i];
 
-            // Set color for important pins
-            if (i == 0)
-            {
-                pin.name = "London, United Kingdom";
-                pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
-            }
-            else {
-                // Add name
-                string cityName = GLOBAL.CITY_LIST[i-1];
-                pin.gameObject.name = cityName;
-                switch (cityName) {
-                    case "Melbourne, Australia":
-                        pin.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-                        pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.green);
-                        break;
+            pin.name = (i-1).ToString();
 
-                    case "Paris, France":
-                        pin.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-                        pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.blue);
-                        break;
-                    default:
-                        break;
+            //// Set color for important pins
+            //if (i == 0)
+            //{
+            //    pin.name = "London, United Kingdom";
+            //    pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            //    pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+            //}
+            //else {
+            //    // Add name
+            //    string cityName = GLOBAL.LOCATION_DATABASE[i - 1].name + ", "+ GLOBAL.LOCATION_DATABASE[i - 1].country;
+            //    pin.gameObject.name = cityName;
+            //    switch (cityName) {
+            //        case "Melbourne, Australia":
+            //            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+            //            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.green);
+            //            break;
 
-                }
-            }
+            //        case "Paris, France":
+            //            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            //            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.blue);
+            //            break;
+            //        default:
+            //            break;
 
-            string[] pinData = new string[3];
-            pinData[0] = pin.name;
-            pinData[1] = "WIP";
-            pinData[2] = pin.name + " Description Placeholder";
-            pin.GetComponent<Pin>().InitialiseData(pinData);
+            //    }
+            //}
 
             //pin.AddComponent<DrawDebugLine>();
             //pin.GetComponent<DrawDebugLine>().targetTransform = earthObject.transform;
