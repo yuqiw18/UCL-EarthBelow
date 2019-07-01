@@ -17,6 +17,8 @@ public class EarthMapper : MonoBehaviour
     public Text labelPrefab;
     public GameObject panelPrefab;
 
+    public Texture2D[] thumbnail;
+
     private ARRaycastManager arRaycastManager;
 
     private Pose placementPose;
@@ -78,9 +80,12 @@ public class EarthMapper : MonoBehaviour
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
-                    panelPrefab.transform.GetChild(0).gameObject.GetComponent<Text>().text = selectedLocation.name;
-                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.coord.ToString();
+                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.name + ", " + selectedLocation.country;
+                    //panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.coord.ToString();
                     panelPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = selectedLocation.description;
+
+                    //Texture2D thumbnail = Resources.Load("Textures/Thumbnail/"+ raycastHit.collider.name) as Texture2D;
+                    panelPrefab.transform.GetChild(3).gameObject.GetComponent<RawImage>().texture = thumbnail[int.Parse(raycastHit.collider.name)];
 
                     // Show the panel
                     panelPrefab.SetActive(true);
@@ -213,13 +218,16 @@ public class EarthMapper : MonoBehaviour
         {
             if (pin.position != referencePinPosition)
             {
+
+                GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
+
                 // Scale pins
                 pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
 
                 // Place hovering labels
                 Text label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
-                label.text = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)].name;
+                label.text = currentPinLocation.name + ", " + currentPinLocation.country + " (" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }

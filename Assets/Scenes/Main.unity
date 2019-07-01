@@ -1696,7 +1696,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: NaN, z: 4.5747e-41, w: 3.1007996e-27}
+  m_BoundingSphereOverride: {x: 0, y: 9.677389e-32, z: 4.5846e-41, w: 6.0089014e-32}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3753,6 +3753,18 @@ MonoBehaviour:
   labelPrefab: {fileID: 6465123463630161231, guid: e871127925d114e168a4e32ec45844d5,
     type: 3}
   panelPrefab: {fileID: 456503942}
+  thumbnail:
+  - {fileID: 2800000, guid: 1609c8b8f76f1466b9bfd7a2d3ac3042, type: 3}
+  - {fileID: 2800000, guid: 251ff2fb9946d4ed192a81458c5f7f49, type: 3}
+  - {fileID: 2800000, guid: e29c9835c344d4e7790d2a61377875d2, type: 3}
+  - {fileID: 2800000, guid: 4dac6f28de59b48b8a5ea196cddcc88e, type: 3}
+  - {fileID: 2800000, guid: 05637b59971924c60a4d8acbef1db1f4, type: 3}
+  - {fileID: 2800000, guid: 619cbc22cb0724afb961429f5f3ad2fd, type: 3}
+  - {fileID: 2800000, guid: 462d0c24d5ea844e280b05dd4a8be870, type: 3}
+  - {fileID: 2800000, guid: 4286596a9f7724c96bea7a7b68f9780b, type: 3}
+  - {fileID: 2800000, guid: fd10a6b75754f403c8ab032fa75778bb, type: 3}
+  - {fileID: 2800000, guid: 6fe03f2774de9428284c8d35bd2f82ee, type: 3}
+  - {fileID: 2800000, guid: 538eb4bf6021f4a7e9229f4d38098393, type: 3}
 --- !u!1 &2027868404
 GameObject:
   m_ObjectHideFlags: 0
@@ -4103,6 +4115,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 599536275909614930, guid: 9ebaaf072885046aa8a4c3fe540cccff,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.47058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 599536275909614930, guid: 9ebaaf072885046aa8a4c3fe540cccff,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 599536275909614930, guid: 9ebaaf072885046aa8a4c3fe540cccff,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871514200544682452, guid: 9ebaaf072885046aa8a4c3fe540cccff,
+        type: 3}
+      propertyPath: m_Texture
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ebaaf072885046aa8a4c3fe540cccff, type: 3}
