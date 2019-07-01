@@ -1773,7 +1773,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 9.677389e-32, z: 4.5846e-41, w: 6.0089014e-32}
+  m_BoundingSphereOverride: {x: 4.5814e-41, y: 3.85e-43, z: 0, w: 6.73e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3784,7 +3784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapperOptions: {fileID: 153887107}
-  indicatorPrefab: {fileID: 5552406040995942088, guid: d41b63579a2e14b97bd1e78dc5842d71,
+  indicatorPrefab: {fileID: 5552406040995942088, guid: 2eec7faaf10d44d49888d220b8ade55e,
     type: 3}
   earthObjectToCopy: {fileID: 316080947}
   earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,

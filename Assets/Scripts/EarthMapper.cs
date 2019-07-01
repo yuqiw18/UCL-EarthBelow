@@ -87,6 +87,10 @@ public class EarthMapper : MonoBehaviour
                     //Texture2D thumbnail = Resources.Load("Textures/Thumbnail/"+ raycastHit.collider.name) as Texture2D;
                     panelPrefab.transform.GetChild(3).gameObject.GetComponent<RawImage>().texture = thumbnail[int.Parse(raycastHit.collider.name)];
 
+                    // Rotate the panel to face the user
+                    panelPrefab.transform.LookAt(Camera.main.transform);
+                    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+
                     // Show the panel
                     panelPrefab.SetActive(true);
                 }
