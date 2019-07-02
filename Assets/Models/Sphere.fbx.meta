@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 62e51348fa7024d438f9ace771f33a98
+guid: ae6f33c3a0792495dbeca969ac42ccb9
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
   externalObjects: {}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -40,8 +40,8 @@ ModelImporter:
     useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -67,7 +67,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 3
