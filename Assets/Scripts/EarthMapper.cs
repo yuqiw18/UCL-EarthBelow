@@ -102,8 +102,10 @@ public class EarthMapper : MonoBehaviour
     private void OnEnable()
     {
         mapperOptions.SetActive(true);
-        highlightedIndicator.SetActive(true);
         canvasWorld.SetActive(true);
+        if (highlightedIndicator != null) {
+            highlightedIndicator.SetActive(true);
+        }
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
             horizonPrefab.SetActive(true);

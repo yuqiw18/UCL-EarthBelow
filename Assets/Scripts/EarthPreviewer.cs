@@ -115,21 +115,27 @@ public class EarthPreviewer : MonoBehaviour
     
     }
 
+    public void SwitchLayer(int i) {
 
-    public void OnDropDownListIndexChange(int i) {
-        Transform layers = earthObject.transform.GetChild(1);
-        foreach (Transform l in layers) {
-            l.gameObject.SetActive(false);
-        }
-        layers.GetChild(i).gameObject.SetActive(true);
-    }
-
-    private void SwitchLayer(int i) {
         Transform layers = earthObject.transform.GetChild(1);
         foreach (Transform l in layers)
         {
             l.gameObject.SetActive(false);
         }
+
+
+        if (i == 0)
+        {
+            layers.GetChild(i).gameObject.GetComponent<Renderer>().material = layers.GetChild(i).gameObject.GetComponent<AlternativeMaterial>().materialList[0];
+            Debug.Log("MAT_TRIGGER_0");
+        }
+        else
+        {
+            layers.GetChild(0).gameObject.GetComponent<Renderer>().material = layers.GetChild(0).gameObject.GetComponent<AlternativeMaterial>().materialList[1];
+            layers.GetChild(0).gameObject.SetActive(true);
+            Debug.Log("MAT_TRIGGER_N0");
+        }
+
         layers.GetChild(i).gameObject.SetActive(true);
     }
 }
