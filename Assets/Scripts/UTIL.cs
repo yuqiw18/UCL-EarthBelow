@@ -7,20 +7,6 @@ public class UTIL : MonoBehaviour
 {
     public static Vector3 ECEFCoordinateFromLatLong(Vector2 latlong, float radius)
     {
-        // Determine the sign for latitude conversion
-        float sign = 1.0f;
-        if (latlong.x >= 0)
-        {
-            sign = -1.0f;
-        }
-        else
-        {
-            sign = 1.0f;
-        }
-
-        // Preprocess the latitude
-        latlong.x = latlong.x + ((latlong.x + 30f * sign) / 2f);
-
         // Convert the latitude-longitude to radian
         latlong = latlong * (Mathf.PI) / 180.0f;
 
