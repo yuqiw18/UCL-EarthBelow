@@ -32,7 +32,8 @@ public class EarthMapper : MonoBehaviour
 
     private float pinScale = 60f;
     private float labelScale = 1/10f;
-    private float panelDistanceScale = 6f;
+    private float panelDistanceScale = 0.1f;
+    private float panelScale = 1 / 6f;
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +75,7 @@ public class EarthMapper : MonoBehaviour
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
                     //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
-                    panelPrefab.transform.position = raycastHit.collider.transform.position * panelDistanceScale;
+                    panelPrefab.transform.position = raycastHit.collider.transform.position - raycastHit.collider.transform.position * panelDistanceScale;
 
                     // Fetch selected pin information
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
@@ -86,6 +87,9 @@ public class EarthMapper : MonoBehaviour
 
                     //Texture2D thumbnail = Resources.Load("Textures/Thumbnail/"+ raycastHit.collider.name) as Texture2D;
                     panelPrefab.transform.GetChild(3).gameObject.GetComponent<RawImage>().texture = thumbnail[int.Parse(raycastHit.collider.name)];
+
+                    // Scale the panel
+                    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
 
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);

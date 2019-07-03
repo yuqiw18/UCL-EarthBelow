@@ -7,6 +7,7 @@ public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject previewerOptions;
+
     public GameObject earthObject;
 
     private readonly float rotationSpeed = 0.25f;

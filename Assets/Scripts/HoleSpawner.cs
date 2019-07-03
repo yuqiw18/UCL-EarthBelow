@@ -8,12 +8,13 @@ public class HoleSpawner : MonoBehaviour
 
     public GameObject spawnerOptions;
 
-    #region Prefab
     public GameObject indicatorPrefab;
     public GameObject holePrefab;
-    #endregion
 
-    //private ARSessionOrigin arOrigin;
+    public GameObject canvasWorld;
+    public GameObject labelPrefab;
+    public GameObject panelPrefab;
+
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
     private bool placementPoseIsValid = false;

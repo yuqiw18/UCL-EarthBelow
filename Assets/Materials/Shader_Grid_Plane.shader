@@ -1,4 +1,4 @@
-﻿Shader "Custom/Grid2" {
+﻿Shader "Custom/Grid_Plane" {
      
     Properties {
       _GridThickness ("Grid Thickness", Float) = 0.01
