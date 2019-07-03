@@ -250,6 +250,8 @@ public class EarthMapper : MonoBehaviour
 
         }
 
+        panelPrefab.transform.SetAsLastSibling();
+
         // Method A: Keep child pin and remove layer and reftop
         Destroy(refTop.gameObject);
         Destroy(layerGroup.gameObject);
