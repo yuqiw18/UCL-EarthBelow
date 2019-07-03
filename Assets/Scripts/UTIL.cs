@@ -5,6 +5,9 @@ using UnityEngine;
 // Public Access Functions
 public class UTIL : MonoBehaviour
 {
+    // Convert latitude and longitude to ECEF coordniate
+    // *MUST USE HIGH-POLY SPHERE MESH*
+    // *LOW-POLY SPHERE WILL RESULT IN INCORRECT TEXTURE MAPPING*
     public static Vector3 ECEFCoordinateFromLatLong(Vector2 latlong, float radius)
     {
         // Convert the latitude-longitude to radian
@@ -22,7 +25,8 @@ public class UTIL : MonoBehaviour
     // Use Haversine Formula
     public static int DistanceBetweenLatLong(Vector2 latlong1, Vector2 latlong2) {
 
-        float r = GLOBAL.EARTH_CRUST_RADIUS;
+        // Use kilometer
+        float r = GLOBAL.EARTH_CRUST_RADIUS/1000;
 
         float phi1 = latlong1.x * Mathf.Deg2Rad;
         float phi2 = latlong2.x * Mathf.Deg2Rad;
@@ -32,7 +36,7 @@ public class UTIL : MonoBehaviour
         float a = Mathf.Sin(deltaPhi / 2.0f) * Mathf.Sin(deltaPhi / 2.0f) + Mathf.Cos(phi1) * Mathf.Cos(phi2) * Mathf.Sin(deltaLambda / 2.0f) * Mathf.Sin(deltaLambda / 2.0f);
         float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1.0f - a));
 
-        return Mathf.RoundToInt((r * c)/1000);
+        return Mathf.RoundToInt(r * c);
 
     }
 }

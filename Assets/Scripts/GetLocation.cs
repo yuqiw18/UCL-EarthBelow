@@ -98,32 +98,12 @@ public class GetLocation : MonoBehaviour
 
             pin.name = (i-1).ToString();
 
-            //// Set color for important pins
-            //if (i == 0)
-            //{
-            //    pin.name = "London, United Kingdom";
-            //    pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-            //    pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
-            //}
-            //else {
-            //    // Add name
-            //    string cityName = GLOBAL.LOCATION_DATABASE[i - 1].name + ", "+ GLOBAL.LOCATION_DATABASE[i - 1].country;
-            //    pin.gameObject.name = cityName;
-            //    switch (cityName) {
-            //        case "Melbourne, Australia":
-            //            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-            //            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.green);
-            //            break;
-
-            //        case "Paris, France":
-            //            pin.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-            //            pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.blue);
-            //            break;
-            //        default:
-            //            break;
-
-            //    }
-            //}
+            // Set color for the current location pin
+            if (i == 0)
+            {
+                pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+            }
 
             //pin.AddComponent<DrawDebugLine>();
             //pin.GetComponent<DrawDebugLine>().targetTransform = earthObject.transform;
