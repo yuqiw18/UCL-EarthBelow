@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Earth_No_Ocean
+  m_Name: Mat_Earth_Deforest
   m_Shader: {fileID: -6465566751694194690, guid: 0903e6324e44448b2b79a9793573ba84,
     type: 3}
   m_ShaderKeywords: 

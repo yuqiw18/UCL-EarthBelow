@@ -132,7 +132,7 @@ public class EarthPreviewer : MonoBehaviour
         }
         else
         {
-            layers.GetChild(0).gameObject.GetComponent<Renderer>().material = layers.GetChild(0).gameObject.GetComponent<AlternativeMaterial>().materialList[1];
+            layers.GetChild(0).gameObject.GetComponent<Renderer>().material = layers.GetChild(0).gameObject.GetComponent<AlternativeMaterial>().materialList[2];
             layers.GetChild(0).gameObject.SetActive(true);
             Debug.Log("MAT_TRIGGER_N0");
         }

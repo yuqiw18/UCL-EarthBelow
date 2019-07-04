@@ -6,6 +6,12 @@ public class ModeManager : MonoBehaviour
 {
     public GameObject[] modes;
 
+    void Start()
+    {
+        SwitchMode(0);
+    }
+
+
     public void SwitchMode(int modeIndex) {
         if (modeIndex >= 0 && modeIndex < modes.Length) {
             ResetMode();
