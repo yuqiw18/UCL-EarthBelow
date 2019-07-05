@@ -22,7 +22,7 @@ public class EarthPreviewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        earthMaterial = earthObject.transform.GetChild(1).GetChild(0).GetComponent<Renderer>().sharedMaterial;
+        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().sharedMaterial;
     }
 
     // Update is called once per frame
@@ -118,8 +118,7 @@ public class EarthPreviewer : MonoBehaviour
 
     public void SwitchLayer(int i) {
 
-        Transform layers = earthObject.transform.GetChild(1);
-        int lastChild = layers.childCount - 1;
+        Transform layers = earthObject.transform.Find("Group_Layers");
 
         foreach (Transform l in layers)
         {
@@ -127,8 +126,8 @@ public class EarthPreviewer : MonoBehaviour
         }
         layers.GetChild(i).gameObject.SetActive(true);
 
-        if (layers.GetChild(i).gameObject.transform.localScale != layers.GetChild(lastChild).gameObject.transform.localScale) {
-            layers.GetChild(lastChild).gameObject.SetActive(true);
+        if (layers.GetChild(i).localScale != layers.Find("Earth_Grid").localScale) {
+            layers.Find("Earth_Grid").gameObject.SetActive(true);
         }
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8242788152570400487}
   - component: {fileID: 3636708418313730136}
   m_Layer: 5
-  m_Name: Label_Name
+  m_Name: Label_PinName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 8208396330784326664}
   - component: {fileID: 1048254879280139652}
   m_Layer: 5
-  m_Name: Label_Distances
+  m_Name: Label_PinDistance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

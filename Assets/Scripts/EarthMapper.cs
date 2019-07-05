@@ -81,12 +81,12 @@ public class EarthMapper : MonoBehaviour
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
-                    panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.name + ", " + selectedLocation.country;
-                    //panelPrefab.transform.GetChild(1).gameObject.GetComponent<Text>().text = selectedLocation.coord.ToString();
-                    panelPrefab.transform.GetChild(2).gameObject.GetComponent<Text>().text = selectedLocation.description;
+                    panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name + ", " + selectedLocation.country;
+                    panelPrefab.transform.Find("Label_CityCoord").GetComponent<Text>().text = "(" + selectedLocation.coord.x.ToString() + "° N, " + selectedLocation.coord.y.ToString() + "° E)";
+                    panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
                     //Texture2D thumbnail = Resources.Load("Textures/Thumbnail/"+ raycastHit.collider.name) as Texture2D;
-                    panelPrefab.transform.GetChild(3).gameObject.GetComponent<RawImage>().texture = thumbnail[int.Parse(raycastHit.collider.name)];
+                    panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<RawImage>().texture = thumbnail[int.Parse(raycastHit.collider.name)];
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
@@ -183,9 +183,9 @@ public class EarthMapper : MonoBehaviour
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
         horizonPrefab = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
 
-        Transform pinGroup = mappedEarth.transform.GetChild(0);
-        Transform layerGroup = mappedEarth.transform.GetChild(1);
-        Transform refTop = mappedEarth.transform.GetChild(2);
+        Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
+        Transform layerGroup = mappedEarth.transform.Find("Group_Layers");
+        Transform refTop = mappedEarth.transform.Find("Ref_Top");
 
         // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
@@ -237,8 +237,8 @@ public class EarthMapper : MonoBehaviour
 
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
-                label.transform.GetChild(0).GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
-                label.transform.GetChild(1).GetComponent<Text>().text = "(" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
+                label.transform.Find("Label_PinName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
+                label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "(" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
