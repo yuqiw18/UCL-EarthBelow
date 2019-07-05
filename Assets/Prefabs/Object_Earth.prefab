@@ -70,7 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1941651938222701431}
   m_Layer: 0
-  m_Name: EarthObject
+  m_Name: Object_Earth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,11 +214,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4609472338540322107}
     m_Modifications:
-    - target: {fileID: 3323124861889077793, guid: 5325238b74abd4d3a92cb75e2630e44e,
-        type: 3}
-      propertyPath: m_Name
-      value: Earth_Crust
-      objectReference: {fileID: 0}
     - target: {fileID: 3323124861889077797, guid: 5325238b74abd4d3a92cb75e2630e44e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -273,6 +268,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3323124861889077793, guid: 5325238b74abd4d3a92cb75e2630e44e,
+        type: 3}
+      propertyPath: m_Name
+      value: Earth_Surface
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5325238b74abd4d3a92cb75e2630e44e, type: 3}
@@ -289,11 +289,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4609472338540322107}
     m_Modifications:
-    - target: {fileID: 3764150172005658898, guid: 2c1c336ff9bc641ccadf660a76e6665b,
-        type: 3}
-      propertyPath: m_Name
-      value: Earth_Mantle
-      objectReference: {fileID: 0}
     - target: {fileID: 3764150172005659118, guid: 2c1c336ff9bc641ccadf660a76e6665b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -347,6 +342,16 @@ PrefabInstance:
     - target: {fileID: 3764150172005659118, guid: 2c1c336ff9bc641ccadf660a76e6665b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3764150172005658898, guid: 2c1c336ff9bc641ccadf660a76e6665b,
+        type: 3}
+      propertyPath: m_Name
+      value: Earth_Mantle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3764150172005658898, guid: 2c1c336ff9bc641ccadf660a76e6665b,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
