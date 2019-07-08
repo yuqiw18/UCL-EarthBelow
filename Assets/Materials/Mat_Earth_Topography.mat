@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Earth_Deforest
+  m_Name: Mat_Earth_Topography
   m_Shader: {fileID: -6465566751694194690, guid: 0903e6324e44448b2b79a9793573ba84,
     type: 3}
   m_ShaderKeywords: 
@@ -62,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_2C374FCB_Out:
-        m_Texture: {fileID: 2800000, guid: bfb11da7593724f87b5bf06573b634bf, type: 3}
+        m_Texture: {fileID: 2800000, guid: f540f68d81fa74a98ad3c0ced0011360, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_6F878243_Out:

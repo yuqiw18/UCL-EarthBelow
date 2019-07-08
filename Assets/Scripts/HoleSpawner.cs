@@ -13,7 +13,7 @@ public class HoleSpawner : MonoBehaviour
     public GameObject holePrefab;
 
     public GameObject canvasWorld;
-    public GameObject labelPrefab;
+    public LineRenderer lineRenderer;
     public GameObject panelPrefab;
 
     public Text debugOutput;
@@ -25,6 +25,10 @@ public class HoleSpawner : MonoBehaviour
 
     private GameObject spawnedHole;
     private GameObject highlightedIndicator;
+
+    private float panelDistanceScale = 40f;
+    private float panelScale = 1 / 10f;
+    private Vector3 yAxisOffset = new Vector3(0, 0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +46,12 @@ public class HoleSpawner : MonoBehaviour
             UpdatePlacementIndicator();
         }
 
+        //Panel is always facing to the camera
+        if (panelPrefab.activeSelf)
+        {
+            panelPrefab.transform.LookAt(Camera.main.transform);
+            panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+        }
 
         // Detect tapping
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
@@ -50,7 +60,35 @@ public class HoleSpawner : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
-                debugOutput.text = raycastHit.collider.transform.parent.name;
+                if (raycastHit.collider.CompareTag("Layer"))
+                {
+                    debugOutput.text = "Hit";
+                    //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
+                    panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
+                    //panelPrefab.transform.position = raycastHit.collider.transform.position + yAxisOffset;
+
+                    GLOBAL.StructureInfo selectedLayer = GLOBAL.STRUCTURE_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
+
+                    // Assign information to the panel
+                    panelPrefab.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.term;
+                    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.info;
+                    panelPrefab.transform.Find("Label_StructureDescription").GetComponent<Text>().text = selectedLayer.detail;
+
+                    // Scale the panel
+                    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
+
+                    // Rotate the panel to face the user
+                    panelPrefab.transform.LookAt(Camera.main.transform);
+                    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+
+                    // Show the panel
+                    panelPrefab.SetActive(true);
+
+                    //
+                    lineRenderer.SetPosition(0, raycastHit.collider.transform.position);
+                    lineRenderer.SetPosition(1, panelPrefab.transform.position);
+                    lineRenderer.gameObject.SetActive(true);
+                }
             }
         }
 
@@ -65,6 +103,9 @@ public class HoleSpawner : MonoBehaviour
             highlightedIndicator.SetActive(false);
         }
         spawnerOptions.SetActive(false);
+        canvasWorld.SetActive(false);
+        panelPrefab.SetActive(false);
+        lineRenderer.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -78,6 +119,7 @@ public class HoleSpawner : MonoBehaviour
             }
         }
         spawnerOptions.SetActive(true);
+        canvasWorld.SetActive(true);
     }
 
 
@@ -114,6 +156,9 @@ public class HoleSpawner : MonoBehaviour
     public void SpawnHole() {
         if (placementPoseIsValid)
         {
+            lineRenderer.gameObject.SetActive(false);
+            panelPrefab.SetActive(false);
+
             // Only spawn one hole
             Destroy(spawnedHole);
             spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);

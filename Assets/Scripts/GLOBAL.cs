@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GLOBAL: MonoBehaviour
 {
     #region PSEUDO_DATABASE
+    // Geographical info
     public struct LocationInfo {
         public string name;
         public string country;
@@ -24,7 +25,27 @@ public class GLOBAL: MonoBehaviour
     }
 
     public static List<LocationInfo> LOCATION_DATABASE = new List<LocationInfo>();
+
+    // Geological info
+    public struct StructureInfo {
+        public string term;
+        public string info;
+        public string detail;
+    }
+
+    public StructureInfo InitialiseStructureInfo(string term, string info, string detail) {
+        StructureInfo structureInfo;
+        structureInfo.term = term;
+        structureInfo.info = info;
+        structureInfo.detail = detail;
+        return structureInfo;
+    }
+
+    public static List<StructureInfo> STRUCTURE_INFO = new List<StructureInfo>();
     #endregion
+
+
+
 
 
     #region DATA_LIST
@@ -51,6 +72,7 @@ public class GLOBAL: MonoBehaviour
     {
         Debug.Log("Global Variable Loaded");
         InitialiseLatlongList();
+        InitialiseEarthStructureInfo();
     }
 
     private void InitialiseLatlongList()
@@ -65,6 +87,13 @@ public class GLOBAL: MonoBehaviour
         LOCATION_DATABASE.Add(InitialiseLocationInfo("Vancouver", "Canada", new Vector2(49.246292f, -123.116226f), "Vancouver, a bustling west coast seaport in British Columbia, is among Canada’s densest, most ethnically diverse cities. A popular filming location, it’s surrounded by mountains, and also has thriving art, theatre and music scenes."));
         LOCATION_DATABASE.Add(InitialiseLocationInfo("Moscow", "Russia", new Vector2(55.751244f, 37.618423f), "Moscow, on the Moskva River in western Russia, is the nation’s cosmopolitan capital. In its historic core is the Kremlin, a complex that’s home to the president and tsarist treasures in the Armoury. Outside its walls is Red Square, Russia's symbolic center."));
 
+    }
+
+    private void InitialiseEarthStructureInfo() {
+        STRUCTURE_INFO.Add(InitialiseStructureInfo("Curst", "", "At the very top of the crust is where we live on but deeper down it is all dense rock and metal ores. The Crust is composed of mainly granite, basalt, and diorite rocks. Its thickness can vary from wherever you are. From a continent to the edge of the crust is about 60 km.  From the bottom of the ocean to the edge of the crust is about 10 km. The Crust's temperature is different throughout the entire crust, it starts at about 200°C and can rise up to 400°C. The crust is constantly moving due to the energy exchange in its lower layers. These movements will cause earthquakes and volcanoes to erupt; such a phenomenon is also known as the Theory of Plate Tectonics."));
+        STRUCTURE_INFO.Add(InitialiseStructureInfo("Mantle", "", "The Mantle is the second layer of the Earth. It is about 2900 km thick and is the biggest which takes up 84% of the Earth. The Mantle is divided into two sections. The Asthenosphere, the bottom layer of the mantle made of plastic like fluid and The Lithosphere the top part of the mantle made of a cold dense rock. The average temperature of the mantle is 3000°C and it is composed of silicates of iron and magnesium, sulphides and oxides of silicon and magnesium. Convection currents happen inside the mantle and are caused by the continuous circular motion of rocks in the lithosphere being pushed down by hot molasses liquid from the Asthenosphere.  The rocks then melt and float up as molasses liquid because it is less dense and the rocks float down because it is denser."));
+        STRUCTURE_INFO.Add(InitialiseStructureInfo("Outer Core", "", "The Outer Core is the second to last layer of the Earth.  It is a magma like liquid layer that surrounds the Inner Core and creates Earth's magnetic field. The Outer Core is about 2200 km thick and is the second largest layer and made entirely out of liquid magma. Its temperature is about 4000 - 5000°C. The Outer Core is composed of iron and some nickel while there is very few rocks and iron and nickel ore left because of the Inner Core melting all the metal into liquid magma. Since the outer core moves around the inner core, Earth's magnetism is created."));
+        STRUCTURE_INFO.Add(InitialiseStructureInfo("Inner Core", "", "The Inner Core is the final layer of the Earth which is a solid ball made of metal. It is about 1250 km thick and is the second smallest layer of the Earth. Although it is one of the smallest, the Inner Core is also the hottest layer. The Inner Core is composed of an element named NiFe (Ni for Nickel and Fe for Ferrum also known as Iron). The Inner Core is about 5000-6000°C and it melts all metal ores in the Outer Core causing it to turn into liquid magma."));
     }
 }
  

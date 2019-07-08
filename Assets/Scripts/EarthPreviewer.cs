@@ -17,7 +17,7 @@ public class EarthPreviewer : MonoBehaviour
     private float transitionDirection = 1;
     private readonly float transitionSpeed = 0.5f;
     private float currentAlpha = 0;
-    private bool transitionDayNight = false;
+    private bool inTransition = false;
 
     // Start is called before the first frame update
     void Start()
@@ -59,30 +59,29 @@ public class EarthPreviewer : MonoBehaviour
         }
 
         // Transition between day and night (smoothing the material change)
-        if (transitionDayNight)
+        if (inTransition)
         {
             currentAlpha += transitionDirection * transitionSpeed * Time.deltaTime;
 
             if (currentAlpha < 0)
             {
                 earthMaterial.SetFloat("_AlphaBlending", 0);
-                transitionDayNight = false;
+                inTransition = false;
                 currentAlpha = 0;
-                Debug.Log("Transition Complete!!!1");
 
             }
             else if (currentAlpha > 1)
             {
                 earthMaterial.SetFloat("_AlphaBlending", 1);
-                transitionDayNight = false;
+                inTransition = false;
                 currentAlpha = 1;
-                Debug.Log("Transition Complete!!!2");
             }
             else {
                 earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
             }
-
         }
+
+        //
     }
 
     private void OnDisable()
@@ -97,23 +96,30 @@ public class EarthPreviewer : MonoBehaviour
         previewerOptions.SetActive(true);
     }
 
-    public void SwitchDayNight() { 
+    public void ChangeMaterial(int index) {
+        earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<AlternativeMaterial>().materialList[index];
+        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().sharedMaterial;
+        earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
+    }
+
+    public void TransitionMaterial()
+    {
 
         // Only begin transition when it is not already in the process of transition
-        if (!transitionDayNight) {
+        if (!inTransition)
+        {
 
             if (Mathf.RoundToInt(currentAlpha) == 1)
             {
                 transitionDirection = -1;
-                Debug.Log("Transition Triggered: -1");
             }
-            else {
+            else
+            {
                 transitionDirection = 1;
-                Debug.Log("Transition Triggered: 1");
             }
-            transitionDayNight = true;
+            inTransition = true;
         }
-    
+
     }
 
     public void SwitchLayer(int i) {
