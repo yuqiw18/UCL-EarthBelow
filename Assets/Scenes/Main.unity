@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -638,7 +638,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Mapping
+  m_Text: Map
 --- !u!222 &165585586
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2107,7 +2107,7 @@ GameObject:
   - component: {fileID: 565593666}
   - component: {fileID: 565593665}
   m_Layer: 5
-  m_Name: Button_Structure
+  m_Name: Button_Layer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3580,7 +3580,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Remapping
+  m_Text: Remap
 --- !u!222 &896215345
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3659,7 +3659,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Earth Structure
+  m_Text: Earth Layer
 --- !u!222 &899272722
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5944,7 +5944,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2112563142}
   m_Layer: 5
-  m_Name: Option_Structure
+  m_Name: Option_Layer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

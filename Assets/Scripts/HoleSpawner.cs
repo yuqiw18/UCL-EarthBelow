@@ -62,16 +62,16 @@ public class HoleSpawner : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Layer"))
                 {
-                    debugOutput.text = "Hit";
+                    debugOutput.text = "Hit " + raycastHit.collider.transform.parent.name;
                     //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                     panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
                     //panelPrefab.transform.position = raycastHit.collider.transform.position + yAxisOffset;
 
-                    GLOBAL.StructureInfo selectedLayer = GLOBAL.STRUCTURE_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
+                    GLOBAL.LayerInfo selectedLayer = GLOBAL.LAYER_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
 
                     // Assign information to the panel
                     panelPrefab.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.term;
-                    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.info;
+                    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.extra;
                     panelPrefab.transform.Find("Label_StructureDescription").GetComponent<Text>().text = selectedLayer.detail;
 
                     // Scale the panel
