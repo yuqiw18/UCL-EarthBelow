@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 public class HoleSpawner : MonoBehaviour
 {
@@ -15,9 +16,12 @@ public class HoleSpawner : MonoBehaviour
     public GameObject labelPrefab;
     public GameObject panelPrefab;
 
+    public Text debugOutput;
+
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
     private bool placementPoseIsValid = false;
+    private bool placementIndicatorEnabled = true;
 
     private GameObject spawnedHole;
     private GameObject highlightedIndicator;
@@ -33,8 +37,23 @@ public class HoleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdatePlacementPose();
-        UpdatePlacementIndicator();
+        if (placementIndicatorEnabled) {
+            UpdatePlacementPose();
+            UpdatePlacementIndicator();
+        }
+
+
+        // Detect tapping
+        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            RaycastHit raycastHit;
+            if (Physics.Raycast(raycast, out raycastHit))
+            {
+                debugOutput.text = raycastHit.collider.transform.parent.name;
+            }
+        }
+
     }
 
     private void OnDisable()
@@ -54,7 +73,9 @@ public class HoleSpawner : MonoBehaviour
             spawnedHole.SetActive(true);
         }
         if (highlightedIndicator != null) {
-            highlightedIndicator.SetActive(true);
+            if (placementIndicatorEnabled) {
+                highlightedIndicator.SetActive(true);
+            }
         }
         spawnerOptions.SetActive(true);
     }
@@ -99,5 +120,8 @@ public class HoleSpawner : MonoBehaviour
         }
     }
 
-
+    public void TogglePlacementIndicator(bool active) {
+        placementIndicatorEnabled = active;
+        highlightedIndicator.SetActive(active);
+    }
 }

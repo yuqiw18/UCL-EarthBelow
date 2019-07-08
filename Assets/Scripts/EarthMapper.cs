@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -24,6 +24,7 @@ public class EarthMapper : MonoBehaviour
     private Pose placementPose;
     private bool placementPoseIsValid = false;
     private GameObject highlightedIndicator;
+    private bool placementIndicatorEnabled = true;
 
     private GameObject mappedEarth;
     private GameObject horizonPrefab;
@@ -47,9 +48,11 @@ public class EarthMapper : MonoBehaviour
     void Update()
     {
         // Update the indicator location
-        UpdatePlacementPose();
-        UpdatePlacementIndicator();
-
+        if (placementIndicatorEnabled) {
+            UpdatePlacementPose();
+            UpdatePlacementIndicator();
+        }
+        
         // Context is always facing to the camera
         if (labelList.Count != 0) {
             foreach (GameObject t in labelList) {
@@ -108,7 +111,9 @@ public class EarthMapper : MonoBehaviour
         mapperOptions.SetActive(true);
         canvasWorld.SetActive(true);
         if (highlightedIndicator != null) {
-            highlightedIndicator.SetActive(true);
+            if (placementIndicatorEnabled) {
+                highlightedIndicator.SetActive(true);
+            }
         }
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
@@ -259,5 +264,10 @@ public class EarthMapper : MonoBehaviour
         // Method B: Detach children and destory the object (buggy)
         //pinGroup.DetachChildren();
         //Destroy(mappedEarth);
+    }
+
+    public void TogglePlacementIndicator(bool toggle) {
+        placementIndicatorEnabled = toggle;
+        highlightedIndicator.SetActive(toggle);
     }
 }
