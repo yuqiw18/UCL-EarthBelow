@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5880,6 +5880,8 @@ MonoBehaviour:
     type: 3}
   earthObjectToCopy: {fileID: 316080947}
   earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,
+    type: 3}
+  fakeEarthPrefab: {fileID: 4419297878434567063, guid: 47314fb10f04a45d9b24fd2047c0a735,
     type: 3}
   canvasWorld: {fileID: 1035347318}
   labelPrefab: {fileID: 6182984350610274001, guid: db22f06db61424a3da06a525136e6a5f,

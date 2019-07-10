@@ -64,7 +64,7 @@ Material:
     - _GridSpacingX: 1
     - _GridSpacingY: 1
     - _GridStep: 10
-    - _GridThickness: 0.005
+    - _GridThickness: 0.025
     - _GridWidth: 1
     - _Metallic: 0
     - _OcclusionStrength: 1

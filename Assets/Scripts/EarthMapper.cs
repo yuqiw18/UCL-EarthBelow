@@ -12,6 +12,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthPlanePrefab;
+    public GameObject fakeEarthPrefab;
 
     public GameObject canvasWorld;
     public GameObject labelPrefab;
@@ -28,6 +29,7 @@ public class EarthMapper : MonoBehaviour
 
     private GameObject mappedEarth;
     private GameObject horizonPrefab;
+    private GameObject fakeEarthHorizonPrefab;
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> pinList = new List<GameObject>();
 
@@ -118,6 +120,7 @@ public class EarthMapper : MonoBehaviour
         if (mappedEarth != null) {
             mappedEarth.SetActive(true);
             horizonPrefab.SetActive(true);
+            fakeEarthHorizonPrefab.SetActive(true);
         }
     }
 
@@ -130,6 +133,7 @@ public class EarthMapper : MonoBehaviour
         if (mappedEarth != null) {
             mappedEarth.SetActive(false);
             horizonPrefab.SetActive(false);
+            fakeEarthHorizonPrefab.SetActive(false);
         }
     }
 
@@ -171,6 +175,7 @@ public class EarthMapper : MonoBehaviour
         // Clear old variables
         Destroy(mappedEarth);
         Destroy(horizonPrefab);
+        Destroy(fakeEarthHorizonPrefab);
 
         foreach (GameObject g in pinList) {
             Destroy(g);
@@ -187,6 +192,7 @@ public class EarthMapper : MonoBehaviour
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
         horizonPrefab = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
+        fakeEarthHorizonPrefab = Instantiate(fakeEarthPrefab, placementPose.position, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
         Transform layerGroup = mappedEarth.transform.Find("Group_Layers");
