@@ -23,8 +23,9 @@ public class HoleSpawner : MonoBehaviour
     private bool placementPoseIsValid = false;
     private bool placementIndicatorEnabled = true;
 
-    private GameObject spawnedHole;
+    private GameObject spawnedPit;
     private GameObject highlightedIndicator;
+    private float pitScale = 1.0f;
 
     private float panelDistanceScale = 40f;
     private float panelScale = 1 / 10f;
@@ -54,7 +55,7 @@ public class HoleSpawner : MonoBehaviour
         }
 
         // Detect tapping
-        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Began))
         {
             Ray raycast = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
             RaycastHit raycastHit;
@@ -92,12 +93,41 @@ public class HoleSpawner : MonoBehaviour
             }
         }
 
+        if (Input.touchCount == 2)
+        {
+
+            // Get the touch
+            Touch firstTouch = Input.GetTouch(0);
+            Touch secondTouch = Input.GetTouch(1);
+
+            Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+            Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+
+            float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+            float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+
+            float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
+
+            Vector3 tempPosition = spawnedPit.transform.position;
+
+            pitScale += -0.005f * touchMagnitudeDifference;
+            if (pitScale < 1) {
+                pitScale = 1;
+            }
+
+            spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+            spawnedPit.transform.position = tempPosition;
+
+        }
+
+
+
     }
 
     private void OnDisable()
     {
-        if (spawnedHole != null) {
-            spawnedHole.SetActive(false);
+        if (spawnedPit != null) {
+            spawnedPit.SetActive(false);
         }
         if (highlightedIndicator != null) {
             highlightedIndicator.SetActive(false);
@@ -110,8 +140,8 @@ public class HoleSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (spawnedHole !=null) {
-            spawnedHole.SetActive(true);
+        if (spawnedPit != null) {
+            spawnedPit.SetActive(true);
         }
         if (highlightedIndicator != null) {
             if (placementIndicatorEnabled) {
@@ -160,13 +190,23 @@ public class HoleSpawner : MonoBehaviour
             panelPrefab.SetActive(false);
 
             // Only spawn one hole
-            Destroy(spawnedHole);
-            spawnedHole = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
+            Destroy(spawnedPit);
+            spawnedPit = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
+            RescalePit();
         }
     }
 
     public void TogglePlacementIndicator(bool active) {
         placementIndicatorEnabled = active;
-        highlightedIndicator.SetActive(active);
+        highlightedIndicator.SetActive(active); 
     }
+
+    private void RescalePit() {
+        if (spawnedPit != null) {
+            Vector3 tempPosition = spawnedPit.transform.position;
+            spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+            spawnedPit.transform.position = tempPosition;
+        }
+    }
+
 }
