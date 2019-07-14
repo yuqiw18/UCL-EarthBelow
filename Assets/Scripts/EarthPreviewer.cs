@@ -134,6 +134,7 @@ public class EarthPreviewer : MonoBehaviour
 
         if (layers.GetChild(i).localScale != layers.Find("Earth_Grid").localScale) {
             layers.Find("Earth_Grid").gameObject.SetActive(true);
+            layers.Find("Earth_Border").gameObject.SetActive(true);
         }
     }
 }
