@@ -39,16 +39,13 @@ public class EarthMapper : MonoBehaviour
     private float panelScale = 1 / 6f;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
-
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update(){
         // Update the indicator location
         if (placementIndicatorEnabled) {
             UpdatePlacementPose();
@@ -105,7 +102,6 @@ public class EarthMapper : MonoBehaviour
                 }
             }
         }
-
     }
 
     private void OnEnable()
