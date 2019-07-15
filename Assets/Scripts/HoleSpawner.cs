@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class HoleSpawner : MonoBehaviour
 {
-
     public GameObject spawnerOptions;
 
     public GameObject indicatorPrefab;
@@ -15,8 +14,6 @@ public class HoleSpawner : MonoBehaviour
     public GameObject canvasWorld;
     public LineRenderer lineRenderer;
     public GameObject panelPrefab;
-
-    public Text debugOutput;
 
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
@@ -42,7 +39,8 @@ public class HoleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (placementIndicatorEnabled) {
+        if (placementIndicatorEnabled)
+        {
             UpdatePlacementPose();
             UpdatePlacementIndicator();
         }
@@ -63,11 +61,8 @@ public class HoleSpawner : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Layer"))
                 {
-                    //debugOutput.text = "Hit " + raycastHit.collider.transform.parent.name;
-                    //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                     panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
-                    //panelPrefab.transform.position = raycastHit.collider.transform.position + yAxisOffset;
-
+  
                     GLOBAL.LayerInfo selectedLayer = GLOBAL.LAYER_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
 
                     // Assign information to the panel
@@ -116,11 +111,9 @@ public class HoleSpawner : MonoBehaviour
                     pitScale = 1;
                 }
 
-                //debugOutput.text = spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[2].name;
                 spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[4].SetFloat("_Tiling", 3 + pitScale);
                 spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[2].SetFloat("_Tiling", 3 + pitScale);
                 spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
-                //spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[5].SetFloat("_Tiling", 4);
                 spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
                 spawnedPit.transform.position = tempPosition;
             }
@@ -129,10 +122,12 @@ public class HoleSpawner : MonoBehaviour
 
     private void OnDisable()
     {
-        if (spawnedPit != null) {
+        if (spawnedPit != null)
+        {
             spawnedPit.SetActive(false);
         }
-        if (highlightedIndicator != null) {
+        if (highlightedIndicator != null)
+        {
             highlightedIndicator.SetActive(false);
         }
         spawnerOptions.SetActive(false);
@@ -143,11 +138,14 @@ public class HoleSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (spawnedPit != null) {
+        if (spawnedPit != null)
+        {
             spawnedPit.SetActive(true);
         }
-        if (highlightedIndicator != null) {
-            if (placementIndicatorEnabled) {
+        if (highlightedIndicator != null)
+        {
+            if (placementIndicatorEnabled)
+            {
                 highlightedIndicator.SetActive(true);
             }
         }
@@ -174,8 +172,10 @@ public class HoleSpawner : MonoBehaviour
         }
     }
 
-    private void UpdatePlacementIndicator() { 
-        if (placementPoseIsValid) {
+    private void UpdatePlacementIndicator()
+    { 
+        if (placementPoseIsValid)
+        {
             // Show the indicator if the pose is valid and rotate it to match the view
             highlightedIndicator.SetActive(true);
             highlightedIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
@@ -186,7 +186,8 @@ public class HoleSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnHole() {
+    public void SpawnHole()
+    {
         if (placementPoseIsValid)
         {
             lineRenderer.gameObject.SetActive(false);
@@ -199,13 +200,16 @@ public class HoleSpawner : MonoBehaviour
         }
     }
 
-    public void TogglePlacementIndicator(bool active) {
+    public void TogglePlacementIndicator(bool active)
+    {
         placementIndicatorEnabled = active;
         highlightedIndicator.SetActive(active); 
     }
 
-    private void RescalePit() {
-        if (spawnedPit != null) {
+    private void RescalePit()
+    {
+        if (spawnedPit != null)
+        {
             Vector3 tempPosition = spawnedPit.transform.position;
             spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
             spawnedPit.transform.position = tempPosition;

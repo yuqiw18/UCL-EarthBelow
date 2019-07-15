@@ -7,7 +7,6 @@ public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject previewerOptions;
-
     public GameObject earthObject;
 
     private readonly float rotationSpeed = 0.25f;
@@ -29,20 +28,19 @@ public class EarthPreviewer : MonoBehaviour
     void Update()
     {
         // Rotate the Earth
-        if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved)){
-        
+        if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
+        {
             // Get the displacement delta
             Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
 
             // Use the parent's local axis direction as reference without messing up its own transform
             earthObject.transform.Rotate(earthObject.transform.parent.transform.up, -deltaPosition.x * rotationSpeed, Space.World);
             earthObject.transform.Rotate(earthObject.transform.parent.transform.right, deltaPosition.y * rotationSpeed, Space.World);
-
         }
 
         // Scale the Earth
-        if (Input.touchCount == 2) {
-
+        if (Input.touchCount == 2)
+        {
             // Get the touch
             Touch firstTouch = Input.GetTouch(0);
             Touch secondTouch = Input.GetTouch(1);
@@ -68,7 +66,6 @@ public class EarthPreviewer : MonoBehaviour
                 earthMaterial.SetFloat("_AlphaBlending", 0);
                 inTransition = false;
                 currentAlpha = 0;
-
             }
             else if (currentAlpha > 1)
             {
@@ -76,12 +73,11 @@ public class EarthPreviewer : MonoBehaviour
                 inTransition = false;
                 currentAlpha = 1;
             }
-            else {
+            else
+            {
                 earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
             }
         }
-
-        //
     }
 
     private void OnDisable()
@@ -96,7 +92,8 @@ public class EarthPreviewer : MonoBehaviour
         previewerOptions.SetActive(true);
     }
 
-    public void ChangeMaterial(int index) {
+    public void ChangeMaterial(int index)
+    {
         earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<AlternativeMaterial>().materialList[index];
         earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
         earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
@@ -104,11 +101,9 @@ public class EarthPreviewer : MonoBehaviour
 
     public void TransitionMaterial()
     {
-
         // Only begin transition when it is not already in the process of transition
         if (!inTransition)
         {
-
             if (Mathf.RoundToInt(currentAlpha) == 1)
             {
                 transitionDirection = -1;
@@ -119,11 +114,10 @@ public class EarthPreviewer : MonoBehaviour
             }
             inTransition = true;
         }
-
     }
 
-    public void SwitchLayer(int i) {
-
+    public void SwitchLayer(int i)
+    {
         Transform layers = earthObject.transform.Find("Group_Layers");
 
         foreach (Transform l in layers)
@@ -132,7 +126,8 @@ public class EarthPreviewer : MonoBehaviour
         }
         layers.GetChild(i).gameObject.SetActive(true);
 
-        if (layers.GetChild(i).localScale != layers.Find("Earth_Grid").localScale) {
+        if (layers.GetChild(i).localScale != layers.Find("Earth_Grid").localScale)
+        {
             layers.Find("Earth_Grid").gameObject.SetActive(true);
             layers.Find("Earth_Border").gameObject.SetActive(true);
         }

@@ -14,7 +14,6 @@ public class GetLocation : MonoBehaviour
     // Use this for initialization
     IEnumerator Start()
     {
-
         earthCenter = earthObject.gameObject.transform.position;
 
         if (!Input.location.isEnabledByUser)
@@ -29,7 +28,6 @@ public class GetLocation : MonoBehaviour
             ComputeRotation();
             Debug.Log("Location service is not enabled.");
             yield break;
-
         }
 
         // Initialise location service
@@ -54,7 +52,6 @@ public class GetLocation : MonoBehaviour
         }
         else
         {
-
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
 
             if (pinPosition.Count != 0)
@@ -68,25 +65,24 @@ public class GetLocation : MonoBehaviour
             GeneratePins();
             ComputeRotation();
         }
-
         Input.location.Stop();
     }
 
-
-    private void GeneratePredefinedPinLocation() {
-        foreach (GLOBAL.LocationInfo L in GLOBAL.LOCATION_DATABASE) {
+    private void GeneratePredefinedPinLocation()
+    {
+        foreach (GLOBAL.LocationInfo L in GLOBAL.LOCATION_DATABASE)
+        {
             pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(L.coord, GLOBAL.EARTH_PREFAB_RADIUS));
-            //GLOBAL.POSITION_REAL_SCALE_LIST.Add(UTIL.ECEFCoordinateFromLonLat(L.coord, GLOBAL.EARTH_CRUST_RADIUS));
         }   
     }
 
 
-    private void GeneratePins() {
-
+    private void GeneratePins()
+    {
         Transform pinGroup = earthObject.transform.GetChild(0);
 
-        for (int i = 0; i < pinPosition.Count; i++) {
-
+        for (int i = 0; i < pinPosition.Count; i++)
+        {
             // Instantiate the pin and place it under pin group
             GameObject pin = Instantiate(pinPrefab, new Vector3(0, 0, 0), Quaternion.identity, pinGroup);
 
@@ -105,20 +101,13 @@ public class GetLocation : MonoBehaviour
                 pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
             }
 
-            //pin.AddComponent<DrawDebugLine>();
-            //pin.GetComponent<DrawDebugLine>().targetTransform = earthObject.transform;
-            //pin.GetComponent<LineRenderer>().enabled = true;
-
             // Keep track of pins
             GLOBAL.PIN_LIST.Add(pin);
-
-            //Debug.Log("COORDINATE ADJUSTED:" + pin.transform.localPosition);
         }
     }
 
-    private void ComputeRotation() {
-
-        //
+    private void ComputeRotation()
+    {
         Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
         Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);

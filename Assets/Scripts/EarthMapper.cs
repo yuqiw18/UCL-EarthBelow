@@ -19,6 +19,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject panelPrefab;
 
     public Texture2D[] thumbnail;
+    public GameObject[] landmark;
 
     private ARRaycastManager arRaycastManager;
 
@@ -45,16 +46,20 @@ public class EarthMapper : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){
+    void Update()
+    {
         // Update the indicator location
-        if (placementIndicatorEnabled) {
+        if (placementIndicatorEnabled)
+        {
             UpdatePlacementPose();
             UpdatePlacementIndicator();
         }
         
         // Context is always facing to the camera
-        if (labelList.Count != 0) {
-            foreach (GameObject t in labelList) {
+        if (labelList.Count != 0)
+        {
+            foreach (GameObject t in labelList)
+            {
                 t.transform.LookAt(Camera.main.transform);
                 t.transform.Rotate(new Vector3(0, 180, 0));
             }
@@ -108,12 +113,15 @@ public class EarthMapper : MonoBehaviour
     {
         mapperOptions.SetActive(true);
         canvasWorld.SetActive(true);
-        if (highlightedIndicator != null) {
-            if (placementIndicatorEnabled) {
+        if (highlightedIndicator != null)
+        {
+            if (placementIndicatorEnabled)
+            {
                 highlightedIndicator.SetActive(true);
             }
         }
-        if (mappedEarth != null) {
+        if (mappedEarth != null)
+        {
             mappedEarth.SetActive(true);
             horizonPrefab.SetActive(true);
             fakeEarthHorizonPrefab.SetActive(true);
@@ -126,7 +134,8 @@ public class EarthMapper : MonoBehaviour
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
         panelPrefab.SetActive(false);
-        if (mappedEarth != null) {
+        if (mappedEarth != null)
+        {
             mappedEarth.SetActive(false);
             horizonPrefab.SetActive(false);
             fakeEarthHorizonPrefab.SetActive(false);
@@ -173,14 +182,15 @@ public class EarthMapper : MonoBehaviour
         Destroy(horizonPrefab);
         Destroy(fakeEarthHorizonPrefab);
 
-        foreach (GameObject g in pinList) {
+        foreach (GameObject g in pinList)
+        {
             Destroy(g);
         }
         pinList.Clear();
 
-        foreach (GameObject t in labelList) {
+        foreach (GameObject t in labelList)
+        {
             Destroy(t);
-
         }
         labelList.Clear();
 
@@ -242,6 +252,8 @@ public class EarthMapper : MonoBehaviour
                 pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
 
+                //Instantiate(landmark[int.Parse(pin.name)],)
+
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.transform.Find("Label_PinName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
@@ -249,12 +261,11 @@ public class EarthMapper : MonoBehaviour
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
-            else {
+            else
+            {
                 pin.gameObject.SetActive(false);
             }
-
             pinList.Add(pin.gameObject);
-
         }
 
         panelPrefab.transform.SetAsLastSibling();
@@ -268,7 +279,8 @@ public class EarthMapper : MonoBehaviour
         //Destroy(mappedEarth);
     }
 
-    public void TogglePlacementIndicator(bool toggle) {
+    public void TogglePlacementIndicator(bool toggle)
+    {
         placementIndicatorEnabled = toggle;
         highlightedIndicator.SetActive(toggle);
     }

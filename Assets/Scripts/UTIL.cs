@@ -23,8 +23,8 @@ public class UTIL : MonoBehaviour
     }
 
     // Use Haversine Formula
-    public static int DistanceBetweenLatLong(Vector2 latlong1, Vector2 latlong2) {
-        
+    public static int DistanceBetweenLatLong(Vector2 latlong1, Vector2 latlong2)
+    {
         // Use kilometer
         float r = GLOBAL.EARTH_CRUST_RADIUS/1000;
 
