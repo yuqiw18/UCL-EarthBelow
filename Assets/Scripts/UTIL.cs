@@ -24,7 +24,7 @@ public class UTIL : MonoBehaviour
 
     // Use Haversine Formula
     public static int DistanceBetweenLatLong(Vector2 latlong1, Vector2 latlong2) {
-
+        
         // Use kilometer
         float r = GLOBAL.EARTH_CRUST_RADIUS/1000;
 
@@ -37,6 +37,5 @@ public class UTIL : MonoBehaviour
         float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1.0f - a));
 
         return Mathf.RoundToInt(r * c);
-
     }
 }
