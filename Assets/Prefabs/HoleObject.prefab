@@ -4763,7 +4763,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 10742de6ab2db47d88f078c4462aca5f,
         type: 3}
       propertyPath: m_Name
-      value: Pit_Model
+      value: Pit
       objectReference: {fileID: 0}
     - target: {fileID: 946267219367376782, guid: 10742de6ab2db47d88f078c4462aca5f,
         type: 3}

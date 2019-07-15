@@ -22,7 +22,7 @@ public class EarthPreviewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().sharedMaterial;
+        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
@@ -98,7 +98,7 @@ public class EarthPreviewer : MonoBehaviour
 
     public void ChangeMaterial(int index) {
         earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<AlternativeMaterial>().materialList[index];
-        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().sharedMaterial;
+        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
         earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
     }
 

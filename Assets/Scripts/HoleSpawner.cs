@@ -63,7 +63,7 @@ public class HoleSpawner : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Layer"))
                 {
-                    debugOutput.text = "Hit " + raycastHit.collider.transform.parent.name;
+                    //debugOutput.text = "Hit " + raycastHit.collider.transform.parent.name;
                     //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                     panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
                     //panelPrefab.transform.position = raycastHit.collider.transform.position + yAxisOffset;
@@ -95,33 +95,36 @@ public class HoleSpawner : MonoBehaviour
 
         if (Input.touchCount == 2)
         {
+            if (spawnedPit != null) {
+                // Get the touch
+                Touch firstTouch = Input.GetTouch(0);
+                Touch secondTouch = Input.GetTouch(1);
 
-            // Get the touch
-            Touch firstTouch = Input.GetTouch(0);
-            Touch secondTouch = Input.GetTouch(1);
+                Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+                Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
 
-            Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
-            Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+                float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+                float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
 
-            float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
-            float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+                float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
 
-            float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
+                Vector3 tempPosition = spawnedPit.transform.position;
 
-            Vector3 tempPosition = spawnedPit.transform.position;
+                pitScale += -0.005f * touchMagnitudeDifference;
+                if (pitScale < 1)
+                {
+                    pitScale = 1;
+                }
 
-            pitScale += -0.005f * touchMagnitudeDifference;
-            if (pitScale < 1) {
-                pitScale = 1;
+                //debugOutput.text = spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[2].name;
+                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[4].SetFloat("_Tiling", 3 + pitScale);
+                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[2].SetFloat("_Tiling", 3 + pitScale);
+                spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
+                //spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[5].SetFloat("_Tiling", 4);
+                spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+                spawnedPit.transform.position = tempPosition;
             }
-
-            spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
-            spawnedPit.transform.position = tempPosition;
-
         }
-
-
-
     }
 
     private void OnDisable()
