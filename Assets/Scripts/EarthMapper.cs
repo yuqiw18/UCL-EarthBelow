@@ -33,6 +33,7 @@ public class EarthMapper : MonoBehaviour
     private GameObject fakeEarthHorizonPrefab;
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> pinList = new List<GameObject>();
+    private List<GameObject> landmarkList = new List<GameObject>();
 
     private float pinScale = 60f;
     private float labelScale = 1/10f;
@@ -182,11 +183,17 @@ public class EarthMapper : MonoBehaviour
         Destroy(horizonPrefab);
         Destroy(fakeEarthHorizonPrefab);
 
-        foreach (GameObject g in pinList)
+        //foreach (GameObject g in pinList)
+        //{
+        //    Destroy(g);
+        //}
+        //pinList.Clear();
+
+        foreach (GameObject l in landmarkList)
         {
-            Destroy(g);
+            Destroy(l);
         }
-        pinList.Clear();
+        landmarkList.Clear();
 
         foreach (GameObject t in labelList)
         {
@@ -203,6 +210,7 @@ public class EarthMapper : MonoBehaviour
         Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
         Transform layerGroup = mappedEarth.transform.Find("Group_Layers");
         Transform refTop = mappedEarth.transform.Find("Ref_Top");
+        Transform landmarkGroup = mappedEarth.transform.Find("Group_Landmarks");
 
         // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
@@ -252,7 +260,12 @@ public class EarthMapper : MonoBehaviour
                 pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
                 pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
 
-                //Instantiate(landmark[int.Parse(pin.name)],)
+                GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, Quaternion.identity, landmarkGroup);
+                l.transform.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                l.name = pin.gameObject.name;
+                landmarkList.Add(l);
+
+                Debug.Log("PinName:" + pin.gameObject.name + "   landmarkName:" + l.name);
 
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
@@ -265,12 +278,13 @@ public class EarthMapper : MonoBehaviour
             {
                 pin.gameObject.SetActive(false);
             }
-            pinList.Add(pin.gameObject);
+            //pinList.Add(pin.gameObject);
         }
 
         panelPrefab.transform.SetAsLastSibling();
 
         // Method A: Keep child pin and remove layer and reftop
+        Destroy(pinGroup.gameObject);
         Destroy(refTop.gameObject);
         Destroy(layerGroup.gameObject);
 

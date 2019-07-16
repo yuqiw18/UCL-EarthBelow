@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5704,7 +5704,18 @@ MonoBehaviour:
   - {fileID: 2800000, guid: fd10a6b75754f403c8ab032fa75778bb, type: 3}
   - {fileID: 2800000, guid: 6fe03f2774de9428284c8d35bd2f82ee, type: 3}
   - {fileID: 2800000, guid: 538eb4bf6021f4a7e9229f4d38098393, type: 3}
-  landmark: []
+  landmark:
+  - {fileID: 7843994568409581260, guid: 3fef38a564a6142539d98b1d15377134, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
 --- !u!1 &2027868404
 GameObject:
   m_ObjectHideFlags: 0
