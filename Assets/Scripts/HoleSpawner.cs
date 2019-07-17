@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class HoleSpawner : MonoBehaviour
@@ -14,6 +15,8 @@ public class HoleSpawner : MonoBehaviour
     public GameObject canvasWorld;
     public LineRenderer lineRenderer;
     public GameObject panelPrefab;
+
+    public UnityEvent eventBroadcaster;
 
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;

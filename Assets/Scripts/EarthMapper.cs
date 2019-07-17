@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class EarthMapper : MonoBehaviour
 {
-
     public GameObject mapperOptions;
 
     public GameObject indicatorPrefab;
@@ -17,6 +17,8 @@ public class EarthMapper : MonoBehaviour
     public GameObject canvasWorld;
     public GameObject labelPrefab;
     public GameObject panelPrefab;
+
+    public UnityEvent eventBroadcaster;
 
     public Texture2D[] thumbnail;
     public GameObject[] landmark;
@@ -183,12 +185,6 @@ public class EarthMapper : MonoBehaviour
         Destroy(horizonPrefab);
         Destroy(fakeEarthHorizonPrefab);
 
-        //foreach (GameObject g in pinList)
-        //{
-        //    Destroy(g);
-        //}
-        //pinList.Clear();
-
         foreach (GameObject l in landmarkList)
         {
             Destroy(l);
@@ -265,8 +261,6 @@ public class EarthMapper : MonoBehaviour
                 l.name = pin.gameObject.name;
                 landmarkList.Add(l);
 
-                Debug.Log("PinName:" + pin.gameObject.name + "   landmarkName:" + l.name);
-
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.transform.Find("Label_PinName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
@@ -278,7 +272,6 @@ public class EarthMapper : MonoBehaviour
             {
                 pin.gameObject.SetActive(false);
             }
-            //pinList.Add(pin.gameObject);
         }
 
         panelPrefab.transform.SetAsLastSibling();
@@ -287,6 +280,16 @@ public class EarthMapper : MonoBehaviour
         Destroy(pinGroup.gameObject);
         Destroy(refTop.gameObject);
         Destroy(layerGroup.gameObject);
+       
+        //foreach (Transform t in layerGroup) {
+        //    if (t.gameObject.name.Equals("Earth_Grid"))
+        //    {
+        //        t.gameObject.SetActive(true);
+        //    }
+        //    else {
+        //        t.gameObject.SetActive(false);
+        //    }
+        //}
 
         // Method B: Detach children and destory the object (buggy)
         //pinGroup.DetachChildren();

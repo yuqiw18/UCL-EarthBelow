@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class EarthPreviewer : MonoBehaviour
 {
 
     public GameObject previewerOptions;
     public GameObject earthObject;
+
+    public UnityEvent eventBroadcaster;
 
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;
