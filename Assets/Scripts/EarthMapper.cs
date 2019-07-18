@@ -18,7 +18,9 @@ public class EarthMapper : MonoBehaviour
     public GameObject labelPrefab;
     public GameObject panelPrefab;
 
-    public UnityEvent eventBroadcaster;
+    public LineRenderer lineRenderer;
+
+    public UnityEvent onClick;
 
     public Texture2D[] thumbnail;
     public GameObject[] landmark;
@@ -34,10 +36,9 @@ public class EarthMapper : MonoBehaviour
     private GameObject horizonPrefab;
     private GameObject fakeEarthHorizonPrefab;
     private List<GameObject> labelList = new List<GameObject>();
-    private List<GameObject> pinList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
 
-    private float pinScale = 60f;
+    private float pinScale = 64f;
     private float labelScale = 1/10f;
     private float panelDistanceScale = 0.1f;
     private float panelScale = 1 / 6f;
@@ -242,6 +243,8 @@ public class EarthMapper : MonoBehaviour
         //The steps need to be reversed to get the correct result
         mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
+        Debug.Log("Transformed Earth Position" + mappedEarth.transform.position);
+
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
         mappedEarth.SetActive(true);
@@ -251,11 +254,32 @@ public class EarthMapper : MonoBehaviour
             {
 
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
+                int geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
 
-                // Scale pins
-                pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
-                pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                // Only scale pins that are below the horizon
+                if (geoDistance >= 5)
+                {
+                    pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                    pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                }
+                else
+                {
+                    Debug.Log("PIN position" + pin.position);
+                    Debug.Log("MY Position" + referencePinPosition);
+                    lineRenderer.SetPosition(0, pin.position);
+                    lineRenderer.SetPosition(1, referencePinPosition);
+                    lineRenderer.gameObject.SetActive(true);
 
+
+                    //Vector3.ProjectOnPlane()
+
+
+                    //pin.position = (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                    //pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+
+                    //pin.localScale = new Vector3(10, 10, 10);
+                }
+  
                 GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, Quaternion.identity, landmarkGroup);
                 l.transform.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
                 l.name = pin.gameObject.name;
@@ -264,7 +288,7 @@ public class EarthMapper : MonoBehaviour
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.transform.Find("Label_PinName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
-                label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "(" + UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG) + "km)";
+                label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "(" + geoDistance.ToString() + "km)";
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
@@ -280,16 +304,6 @@ public class EarthMapper : MonoBehaviour
         Destroy(pinGroup.gameObject);
         Destroy(refTop.gameObject);
         Destroy(layerGroup.gameObject);
-       
-        //foreach (Transform t in layerGroup) {
-        //    if (t.gameObject.name.Equals("Earth_Grid"))
-        //    {
-        //        t.gameObject.SetActive(true);
-        //    }
-        //    else {
-        //        t.gameObject.SetActive(false);
-        //    }
-        //}
 
         // Method B: Detach children and destory the object (buggy)
         //pinGroup.DetachChildren();

@@ -9,7 +9,7 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject previewerOptions;
     public GameObject earthObject;
 
-    public UnityEvent eventBroadcaster;
+    public UnityEvent onClick;
 
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;

@@ -16,7 +16,7 @@ public class HoleSpawner : MonoBehaviour
     public LineRenderer lineRenderer;
     public GameObject panelPrefab;
 
-    public UnityEvent eventBroadcaster;
+    public UnityEvent onClick;
 
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
