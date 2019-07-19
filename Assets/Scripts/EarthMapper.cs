@@ -38,7 +38,7 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
 
-    private float pinScale = 64f;
+    private float pinScale = 128f;
     private float labelScale = 1/10f;
     private float panelDistanceScale = 0.1f;
     private float panelScale = 1 / 6f;
@@ -198,11 +198,13 @@ public class EarthMapper : MonoBehaviour
         }
         labelList.Clear();
 
+        Vector3 relativeOrigin = placementPose.position;
+
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
-        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
-        horizonPrefab = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
-        fakeEarthHorizonPrefab = Instantiate(fakeEarthPrefab, placementPose.position, Quaternion.identity);
+        mappedEarth = Instantiate(earthObjectToCopy, relativeOrigin, Quaternion.identity);
+        horizonPrefab = Instantiate(earthPlanePrefab, relativeOrigin, Quaternion.identity);
+        fakeEarthHorizonPrefab = Instantiate(fakeEarthPrefab, relativeOrigin, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
         Transform layerGroup = mappedEarth.transform.Find("Group_Layers");
@@ -247,6 +249,7 @@ public class EarthMapper : MonoBehaviour
 
         // Scale and display each pin
         Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
+
         mappedEarth.SetActive(true);
         foreach (Transform pin in pinGroup)
         {
@@ -256,28 +259,33 @@ public class EarthMapper : MonoBehaviour
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
                 int geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
 
+                // Fix the position by offsetting
+                pin.position /= 1330;
+
+                // The real start point should be (0,0,0) (relatively)
+                pin.position = (pin.position - relativeOrigin).normalized;
+
                 // Only scale pins that are below the horizon
-                if (geoDistance >= 5)
+                if (geoDistance > 5)
                 {
-                    pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                    // Then rescale distance and size
+                    pin.position *= pinScale;
                     pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
                 }
                 else
                 {
-                    Debug.Log("PIN position" + pin.position);
-                    Debug.Log("MY Position" + referencePinPosition);
+
+                    pin.position *= (geoDistance * 100);
+                    pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+
+
+                    Debug.Log("PIN position " + pin.position);
+                    Debug.Log("MY Position " + referencePinPosition);
+
                     lineRenderer.SetPosition(0, pin.position);
-                    lineRenderer.SetPosition(1, referencePinPosition);
+                    lineRenderer.SetPosition(1, relativeOrigin);
                     lineRenderer.gameObject.SetActive(true);
 
-
-                    //Vector3.ProjectOnPlane()
-
-
-                    //pin.position = (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
-                    //pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
-
-                    //pin.localScale = new Vector3(10, 10, 10);
                 }
   
                 GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, Quaternion.identity, landmarkGroup);
