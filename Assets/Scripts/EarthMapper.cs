@@ -212,8 +212,7 @@ public class EarthMapper : MonoBehaviour
         // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
         mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
-        mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
-
+        
         // Rotate the Earth so that the current position is facing up
         // Use the pre-calculated value
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
@@ -243,14 +242,22 @@ public class EarthMapper : MonoBehaviour
         //The steps need to be reversed to get the correct result
         mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
-        Debug.Log("Transformed Earth Position" + mappedEarth.transform.position);
-
         // Scale and display each pin
-        Vector3 referencePinPosition = pinGroup.GetChild(0).gameObject.transform.position;
+        Vector3 impreciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
+        float preciseScaleFactor = GLOBAL.EARTH_CRUST_RADIUS / impreciseRefPosition.y;
+
+        foreach (Transform pin in pinGroup) {
+            pin.position *= preciseScaleFactor;
+        }
+
+        mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
+
+        Vector3 preciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
+
         mappedEarth.SetActive(true);
         foreach (Transform pin in pinGroup)
         {
-            if (pin.position != referencePinPosition)
+            if (pin.position != preciseRefPosition)
             {
 
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
@@ -259,15 +266,15 @@ public class EarthMapper : MonoBehaviour
                 // Only scale pins that are below the horizon
                 if (geoDistance >= 5)
                 {
-                    pin.position = pinScale * (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
+                    pin.position = pinScale * (pin.position - preciseRefPosition).normalized;
                     pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
                 }
                 else
                 {
                     Debug.Log("PIN position" + pin.position);
-                    Debug.Log("MY Position" + referencePinPosition);
+                    Debug.Log("MY Position" + preciseRefPosition);
                     lineRenderer.SetPosition(0, pin.position);
-                    lineRenderer.SetPosition(1, referencePinPosition);
+                    lineRenderer.SetPosition(1, preciseRefPosition);
                     lineRenderer.gameObject.SetActive(true);
 
 
