@@ -20,6 +20,8 @@ public class EarthMapper : MonoBehaviour
 
     public LineRenderer lineRenderer;
 
+    public Text[] debugOutput;
+
     public UnityEvent onClick;
 
     public Texture2D[] thumbnail;
@@ -38,7 +40,7 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
 
-    private float pinScale = 64f;
+    private float pinDistanceScale = 100f;
     private float labelScale = 1/10f;
     private float panelDistanceScale = 0.1f;
     private float panelScale = 1 / 6f;
@@ -200,9 +202,10 @@ public class EarthMapper : MonoBehaviour
 
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
-        mappedEarth = Instantiate(earthObjectToCopy, placementPose.position, Quaternion.identity);
-        horizonPrefab = Instantiate(earthPlanePrefab, placementPose.position, Quaternion.identity);
-        fakeEarthHorizonPrefab = Instantiate(fakeEarthPrefab, placementPose.position, Quaternion.identity);
+        Vector3 refOrigin = placementPose.position;
+        mappedEarth = Instantiate(earthObjectToCopy, refOrigin, Quaternion.identity);
+        horizonPrefab = Instantiate(earthPlanePrefab, refOrigin, Quaternion.identity);
+        fakeEarthHorizonPrefab = Instantiate(fakeEarthPrefab, refOrigin, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
         Transform layerGroup = mappedEarth.transform.Find("Group_Layers");
@@ -211,6 +214,7 @@ public class EarthMapper : MonoBehaviour
 
         // Scale and reposition the Earth
         float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
+
         mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
         
         // Rotate the Earth so that the current position is facing up
@@ -250,9 +254,14 @@ public class EarthMapper : MonoBehaviour
             pin.position *= preciseScaleFactor;
         }
 
-        mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
+        //mappedEarth.transform.Translate(new Vector3(0, -scale * GLOBAL.EARTH_PREFAB_RADIUS, 0));
+
+        mappedEarth.transform.position -= new Vector3(0, scale * GLOBAL.EARTH_PREFAB_RADIUS, 0);
 
         Vector3 preciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
+
+        debugOutput[0].text = preciseRefPosition.ToString();
+        debugOutput[1].text = refOrigin.ToString();
 
         mappedEarth.SetActive(true);
         foreach (Transform pin in pinGroup)
@@ -263,31 +272,29 @@ public class EarthMapper : MonoBehaviour
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
                 int geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
 
+                //pin.position = (pin.position - preciseRefPosition).normalized;
+
                 // Only scale pins that are below the horizon
                 if (geoDistance >= 5)
                 {
-                    pin.position = pinScale * (pin.position - preciseRefPosition).normalized;
-                    pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                    pin.position = pinDistanceScale * (pin.position - refOrigin).normalized;
+                    pin.localScale = new Vector3(3 / scale, 3 / scale, 3 / scale);
                 }
                 else
                 {
+                    pin.position = geoDistance * 10 * (pin.position - refOrigin).normalized;
+                    pin.localScale = new Vector3(0.5f / scale, 0.5f / scale, 0.5f / scale);
+
+                    debugOutput[2].text = pin.position.ToString();
+
                     Debug.Log("PIN position" + pin.position);
-                    Debug.Log("MY Position" + preciseRefPosition);
+                    Debug.Log("MY Position" + refOrigin);
                     lineRenderer.SetPosition(0, pin.position);
-                    lineRenderer.SetPosition(1, preciseRefPosition);
+                    lineRenderer.SetPosition(1, refOrigin);
                     lineRenderer.gameObject.SetActive(true);
-
-
-                    //Vector3.ProjectOnPlane()
-
-
-                    //pin.position = (pin.position - new Vector3(referencePinPosition.x, 0, referencePinPosition.z)).normalized;
-                    //pin.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
-
-                    //pin.localScale = new Vector3(10, 10, 10);
                 }
-  
-                GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, Quaternion.identity, landmarkGroup);
+
+                GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, placementPose.rotation, landmarkGroup);
                 l.transform.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
                 l.name = pin.gameObject.name;
                 landmarkList.Add(l);
@@ -295,7 +302,17 @@ public class EarthMapper : MonoBehaviour
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.transform.Find("Label_PinName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
-                label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "(" + geoDistance.ToString() + "km)";
+
+                if (geoDistance >= 5)
+                {
+                    label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "▽ ";
+                }
+                else {
+                    label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "▲ ";
+                }
+
+                label.transform.Find("Label_PinDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
+
                 label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
