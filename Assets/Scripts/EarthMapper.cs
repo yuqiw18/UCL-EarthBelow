@@ -41,7 +41,7 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> landmarkList = new List<GameObject>();
 
     private float pinDistanceScale = 100f;
-    private float labelScale = 1/10f;
+    private float labelScale = 2/10f;
     private float panelDistanceScale = 0.1f;
     private float panelScale = 1 / 6f;
 
@@ -260,8 +260,11 @@ public class EarthMapper : MonoBehaviour
 
         Vector3 preciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
 
-        debugOutput[0].text = preciseRefPosition.ToString();
-        debugOutput[1].text = refOrigin.ToString();
+        //debugOutput[0].text = preciseRefPosition.ToString();
+        //debugOutput[1].text = refOrigin.ToString();
+
+        debugOutput[0].text = mappedEarth.transform.position.ToString();
+        debugOutput[1].text = fakeEarthHorizonPrefab.transform.position.ToString();
 
         mappedEarth.SetActive(true);
         foreach (Transform pin in pinGroup)
@@ -278,7 +281,7 @@ public class EarthMapper : MonoBehaviour
                 if (geoDistance >= 5)
                 {
                     pin.position = pinDistanceScale * (pin.position - refOrigin).normalized;
-                    pin.localScale = new Vector3(3 / scale, 3 / scale, 3 / scale);
+                    pin.localScale = new Vector3(2 / scale, 2 / scale, 2 / scale);
                 }
                 else
                 {
@@ -287,16 +290,24 @@ public class EarthMapper : MonoBehaviour
 
                     debugOutput[2].text = pin.position.ToString();
 
-                    Debug.Log("PIN position" + pin.position);
-                    Debug.Log("MY Position" + refOrigin);
                     lineRenderer.SetPosition(0, pin.position);
-                    lineRenderer.SetPosition(1, refOrigin);
+                    lineRenderer.SetPosition(1, mappedEarth.transform.position);
                     lineRenderer.gameObject.SetActive(true);
                 }
 
                 GameObject l = Instantiate(landmark[int.Parse(pin.gameObject.name)], pin.position, placementPose.rotation, landmarkGroup);
-                l.transform.localScale = new Vector3(1 / scale, 1 / scale, 1 / scale);
+                l.transform.localScale = pin.localScale;
                 l.name = pin.gameObject.name;
+
+                if (geoDistance >= 5)
+                {
+                    l.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
+                }
+                else
+                {
+
+                }
+
                 landmarkList.Add(l);
 
                 // Place hovering labels
@@ -306,20 +317,30 @@ public class EarthMapper : MonoBehaviour
                 if (geoDistance >= 5)
                 {
                     label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "▽ ";
+                    label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
+                    
                 }
                 else {
                     label.transform.Find("Label_PinDistance").GetComponent<Text>().text = "▲ ";
+                    label.transform.localScale = new Vector3(labelScale/( 10 / geoDistance), labelScale/ (10 / geoDistance), labelScale/ (10 / geoDistance));
+                    //l.GetComponent<SnapToSurface>().SetGeoDistance(geoDistance);
                 }
 
                 label.transform.Find("Label_PinDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
-                label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
+                //label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
                 labelList.Add(label);
             }
             else
             {
                 pin.gameObject.SetActive(false);
             }
+        }
+
+        foreach (GameObject l in landmarkList)
+        {
+            l.GetComponent<SnapToSurface>().SetSnapDirection((mappedEarth.transform.position - l.transform.position).normalized);
+            l.GetComponent<SnapToSurface>().EnableSnap();
         }
 
         panelPrefab.transform.SetAsLastSibling();

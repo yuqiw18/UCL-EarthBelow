@@ -11,6 +11,8 @@ public class EarthPreviewer : MonoBehaviour
 
     public UnityEvent onClick;
 
+    private bool showMagneticField = false;
+
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;
 
@@ -133,5 +135,20 @@ public class EarthPreviewer : MonoBehaviour
             layers.Find("Earth_Grid").gameObject.SetActive(true);
             layers.Find("Earth_Border").gameObject.SetActive(true);
         }
+
+        if (showMagneticField) {
+            layers.Find("Earth_MagneticField").gameObject.SetActive(true);
+        }
+    }
+
+    public void ToggleMagneticField() {
+        if (showMagneticField)
+        {
+            showMagneticField = false;
+        }
+        else {
+            showMagneticField = true;
+        }
+        earthObject.transform.Find("Group_Layers").Find("Earth_MagneticField").gameObject.SetActive(showMagneticField);
     }
 }
