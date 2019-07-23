@@ -301,7 +301,7 @@ public class EarthMapper : MonoBehaviour
 
                 if (geoDistance >= 5)
                 {
-                    l.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
+                    l.transform.GetChild(0).GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(51,102,0,255));
                 }
                 else
                 {
