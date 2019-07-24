@@ -7890,15 +7890,14 @@ MonoBehaviour:
   indicatorPrefab: {fileID: 5552406040995942088, guid: 2eec7faaf10d44d49888d220b8ade55e,
     type: 3}
   earthObjectToCopy: {fileID: 316080947}
-  earthPlanePrefab: {fileID: 7394874601443826639, guid: f71ca05711b2f4798bef80db76bfbd22,
-    type: 3}
-  fakeEarthPrefab: {fileID: 4419297878434567063, guid: 47314fb10f04a45d9b24fd2047c0a735,
+  earthHorizonPrefab: {fileID: 4419297878434567063, guid: 47314fb10f04a45d9b24fd2047c0a735,
     type: 3}
   canvasWorld: {fileID: 1035347318}
   labelPrefab: {fileID: 6182984350610274001, guid: db22f06db61424a3da06a525136e6a5f,
     type: 3}
   panelPrefab: {fileID: 456503942}
-  lineRenderer: {fileID: 1699875516}
+  landmarkPrefab: {fileID: 6382625161585749035, guid: 1dacc5d4642ed4214a78a9e5b325f0a7,
+    type: 3}
   debugOutput:
   - {fileID: 1240719703}
   - {fileID: 1020108215}
@@ -7908,7 +7907,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  thumbnail:
+  cityThumbnail:
   - {fileID: 2800000, guid: 1609c8b8f76f1466b9bfd7a2d3ac3042, type: 3}
   - {fileID: 2800000, guid: 251ff2fb9946d4ed192a81458c5f7f49, type: 3}
   - {fileID: 2800000, guid: e29c9835c344d4e7790d2a61377875d2, type: 3}
@@ -7920,18 +7919,18 @@ MonoBehaviour:
   - {fileID: 2800000, guid: fd10a6b75754f403c8ab032fa75778bb, type: 3}
   - {fileID: 2800000, guid: 6fe03f2774de9428284c8d35bd2f82ee, type: 3}
   - {fileID: 2800000, guid: 538eb4bf6021f4a7e9229f4d38098393, type: 3}
-  landmark:
-  - {fileID: 7843994568409581260, guid: 3fef38a564a6142539d98b1d15377134, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 7597220913156917490, guid: 848d9e2578f8d4239acd5b0d1e24420b, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
-  - {fileID: 621629459070395488, guid: 36fcd4b9f373a469d93afb11198516de, type: 3}
+  cityLandmark:
+  - {fileID: 21300000, guid: aac883615cea34517879b4f4d5c74d97, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 45810f735bb4e4813975d01792643c20, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
+  - {fileID: 21300000, guid: 47390123ffb1348e29bd8fbeee4a0a87, type: 3}
 --- !u!1 &1993672853
 GameObject:
   m_ObjectHideFlags: 0
