@@ -10,7 +10,7 @@ public class HoleSpawner : MonoBehaviour
     public GameObject spawnerOptions;
 
     public GameObject indicatorPrefab;
-    public GameObject holePrefab;
+    public GameObject pitPrefab;
 
     public GameObject canvasWorld;
     public LineRenderer lineRenderer;
@@ -198,7 +198,7 @@ public class HoleSpawner : MonoBehaviour
 
             // Only spawn one hole
             Destroy(spawnedPit);
-            spawnedPit = Instantiate(holePrefab, placementPose.position, placementPose.rotation);
+            spawnedPit = Instantiate(pitPrefab, placementPose.position, placementPose.rotation);
             RescalePit();
         }
     }

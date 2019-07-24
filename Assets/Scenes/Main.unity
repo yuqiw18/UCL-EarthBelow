@@ -335,17 +335,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 854905463}
-        m_MethodName: SpawnHole
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 854905463}
         m_MethodName: TogglePlacementIndicator
         m_Mode: 6
         m_Arguments:
@@ -2479,17 +2468,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1985308838}
-        m_MethodName: MapEarth
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 387425725}
         m_MethodName: SetActive
         m_Mode: 6
@@ -4661,7 +4639,7 @@ MonoBehaviour:
   spawnerOptions: {fileID: 2027868404}
   indicatorPrefab: {fileID: 5552406040995942088, guid: d41b63579a2e14b97bd1e78dc5842d71,
     type: 3}
-  holePrefab: {fileID: 1870414860458295726, guid: 4d325895b32c24069877863325685f60,
+  pitPrefab: {fileID: 1870414860458295726, guid: 4d325895b32c24069877863325685f60,
     type: 3}
   canvasWorld: {fileID: 679103637}
   lineRenderer: {fileID: 1699875516}
@@ -7853,7 +7831,7 @@ MonoBehaviour:
   labelPrefab: {fileID: 6182984350610274001, guid: db22f06db61424a3da06a525136e6a5f,
     type: 3}
   panelPrefab: {fileID: 456503942}
-  landmarkPrefab: {fileID: 6382625161585749035, guid: 1dacc5d4642ed4214a78a9e5b325f0a7,
+  landmarkPrefab: {fileID: 6182984350610274001, guid: 86731187f46794a248d04039faff45b7,
     type: 3}
   debugOutput:
   - {fileID: 1240719703}

@@ -37,7 +37,7 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
 
-    private float pinDistanceScale = 100f;
+    private float pinDistanceScale = 128f;
     private float labelScale = 2/10f;
     private float panelDistanceScale = 0.1f;
     private float panelScale = 1 / 6f;
@@ -68,7 +68,6 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
-        //
         if (landmarkList.Count != 0)
         {
             foreach (GameObject l in landmarkList)
@@ -78,7 +77,6 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
-        //Panel is always facing to the camera
         if (panelPrefab.activeSelf)
         {
             panelPrefab.transform.LookAt(Camera.main.transform);
@@ -92,12 +90,12 @@ public class EarthMapper : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
+                // Display city profile
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
-                    //raycastHit.collider.transform.gameObject.GetComponent<PinData>().TogglePinInformation();
                     panelPrefab.transform.position = raycastHit.collider.transform.position - raycastHit.collider.transform.position * panelDistanceScale;
 
-                    // Fetch selected pin information
+                    // Fetch selected landmark information
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
@@ -188,7 +186,6 @@ public class EarthMapper : MonoBehaviour
 
         // Clear old variables
         Destroy(earthHorizon);
-
         foreach (GameObject l in landmarkList)
         {
             Destroy(l);
@@ -201,6 +198,7 @@ public class EarthMapper : MonoBehaviour
         }
         labelList.Clear();
 
+        #region EARTH_MAPPING
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         Vector3 refOrigin = placementPose.position;
@@ -244,7 +242,7 @@ public class EarthMapper : MonoBehaviour
         //The steps need to be reversed to get the correct result
         mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
-        // Scale and display each pin
+        // Solve the floating point imprecision issue due to the large scale
         Vector3 impreciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
         float preciseScaleFactor = GLOBAL.EARTH_CRUST_RADIUS / impreciseRefPosition.y;
 
@@ -252,69 +250,73 @@ public class EarthMapper : MonoBehaviour
             pin.position *= preciseScaleFactor;
         }
 
-        // Shift the mapped earth down so that the current location is just above the surface
+        // Shift the mapped earth down so that the current location is just above the selected surface
         mappedEarth.transform.position -= new Vector3(0, scale * GLOBAL.EARTH_PREFAB_RADIUS, 0);
+        #endregion
 
-
+        #region PIN_ASSIGNMENT
         Vector3 preciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
         foreach (Transform pin in pinGroup)
         {
+            // Display landmarks excluding the current position
             if (pin.position != preciseRefPosition)
             {
 
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
-                int geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
+                float geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
 
+                // Compute the relative position
                 //pin.position = (pin.position - preciseRefPosition).normalized;
+                pin.position = pinDistanceScale * (pin.position - refOrigin).normalized;
 
-                // Only scale pins that are below the horizon
-                if (geoDistance >= 5)
+                #region CITY_LANDMARK_IMAGE
+                // Instantiate the landmark prefab
+                GameObject landmark = Instantiate(landmarkPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
+
+                // Set the landmark image
+                Transform landmarkImage = landmark.transform.Find("UI_Landmark_Image");
+                landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
+                landmarkImage.name = pin.name;
+
+                // Change the color based on the geographical distance
+                if (geoDistance > 5)
                 {
-                    pin.position = pinDistanceScale * (pin.position - refOrigin).normalized;
-                    //pin.localScale = new Vector3(2 / scale, 2 / scale, 2 / scale);
+                    landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
                 }
                 else
                 {
-                    pin.position = geoDistance * 10 * (pin.position - refOrigin).normalized;
-                    //pin.localScale = new Vector3(0.5f / scale, 0.5f / scale, 0.5f / scale);
+                    landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
                 }
 
-                GameObject l = Instantiate(landmarkPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
-                l.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
-                l.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                l.name = pin.gameObject.name;
+                // Rescale the landmark
+                landmark.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-                if (geoDistance >= 5)
-                {
-                    l.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
-                }
-                else
-                {
-                    l.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
-                }
+                landmarkList.Add(landmark);
+                #endregion
 
-                landmarkList.Add(l);
-
+                #region CITY_INFO_LABEL
                 // Place hovering labels
                 GameObject label = Instantiate(labelPrefab, pin.position, Quaternion.identity, canvasWorld.transform);
                 label.transform.Find("Label_LandmarkName").GetComponent<Text>().text = currentPinLocation.name + ", " + currentPinLocation.country;
 
-                if (geoDistance >= 5)
+                // Display the indicator based on the geographical distance
+                if (geoDistance > 5)
                 {
                     label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text = "▽ ";
-                    label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
-                    
                 }
-                else {
+                else
+                {
                     label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text = "▲ ";
-                    label.transform.localScale = new Vector3(labelScale/( 10 / geoDistance), labelScale/ (10 / geoDistance), labelScale/ (10 / geoDistance));
-                    //l.GetComponent<SnapToSurface>().SetGeoDistance(geoDistance);
                 }
 
+                // Display the geographical distance
                 label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
-                //label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
+                // Rescale the label
+                label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
+
                 labelList.Add(label);
+                #endregion
             }
             else
             {
@@ -322,13 +324,8 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
-        //foreach (GameObject l in landmarkList)
-        //{
-        //    l.GetComponent<SnapToSurface>().SetSnapDirection((mappedEarth.transform.position - l.transform.position).normalized);
-        //    l.GetComponent<SnapToSurface>().EnableSnap();
-        //}
-
         panelPrefab.transform.SetAsLastSibling();
+        #endregion
 
         // Destroy it
         Destroy(mappedEarth);

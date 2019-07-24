@@ -1011,7 +1011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1870414860458295727}
   m_Layer: 0
-  m_Name: HoleObject
+  m_Name: Object_Pit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
