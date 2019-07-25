@@ -105,8 +105,8 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
-                    StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "CityImages/", UTIL.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
-                    StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
+                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", UTIL.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
+                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector2(panelScale, panelScale);
@@ -114,8 +114,6 @@ public class EarthMapper : MonoBehaviour
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
                     panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
-
-                    
 
                     // Show the panel
                     panelPrefab.SetActive(true);
@@ -277,7 +275,12 @@ public class EarthMapper : MonoBehaviour
 
                 // Set the landmark image
                 Transform landmarkImage = landmark.transform.Find("UI_Landmark_Image");
+
+                //StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "LandmarkIcons/", UTIL.FileNameParser(currentPinLocation.name) + ".png"), "Image_CityLandmark"));
+
                 landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
+
+
                 landmarkImage.name = pin.name;
 
                 // Change the color based on the geographical distance
@@ -344,7 +347,7 @@ public class EarthMapper : MonoBehaviour
     }
 
     // Load a local image and return as a 2D sprite
-    private IEnumerator LoadImageAsSprite(string filePath, string targetSprite)
+    private IEnumerator LoadImageToSprite(string filePath, string targetSprite)
     {
         byte[] imageData;
         Texture2D texture = new Texture2D(2, 2);
@@ -361,8 +364,6 @@ public class EarthMapper : MonoBehaviour
             imageData = File.ReadAllBytes(filePath);
         }
 
-        debugOutput[1].text = imageData.Length.ToString();
-
         // Load raw data into Texture2D 
         texture.LoadImage(imageData);
 
@@ -373,6 +374,4 @@ public class EarthMapper : MonoBehaviour
         panelPrefab.transform.Find(targetSprite).gameObject.GetComponent<Image>().sprite = sprite;
 
     }
-
-
 }
