@@ -4845,11 +4845,41 @@ PrefabInstance:
       propertyPath: m_RenderingLayerMask
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: -1648390776481287070, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 02f7cc09e9a7049f292f43790b2b3d56, type: 2}
+    - target: {fileID: -1648390776481287070, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6690243547c844f3e9d675f14ee74e6c, type: 2}
+    - target: {fileID: -1648390776481287070, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 43f08d010dc2243bf95cdc08c8dfb99d, type: 2}
+    - target: {fileID: -1648390776481287070, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: deb18c030c2904123bcb51926ef97180, type: 2}
+    - target: {fileID: -1648390776481287070, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c1632623cb4b48aa9b49ff88105d243, type: 2}
     - target: {fileID: 5119325562104879881, guid: 10742de6ab2db47d88f078c4462aca5f,
         type: 3}
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5119325562104879881, guid: 10742de6ab2db47d88f078c4462aca5f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b98e1ed707d54fc5aba2860f8dc9a13, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10742de6ab2db47d88f078c4462aca5f, type: 3}
 --- !u!4 &4431563392192353448 stripped
