@@ -49,7 +49,7 @@ public class GLOBAL: MonoBehaviour
     #endregion
 
     #region DATA_LIST
-    public static Vector2 USER_LATLONG = new Vector2(51.509865f, -0.118092f); // Default UK latitude and longitude
+    public static Vector2 USER_LATLONG = new Vector2(51.507351f, -0.127758f); // Default UK latitude and longitude
     public static List<GameObject> PIN_LIST = new List<GameObject>();
     public static Quaternion ROTATE_TO_TOP;
     #endregion

@@ -34,7 +34,6 @@ public class PitSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //arOrigin = FindObjectOfType<ARSessionOrigin>();
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
     }
@@ -83,7 +82,7 @@ public class PitSpawner : MonoBehaviour
                     // Show the panel
                     panelPrefab.SetActive(true);
 
-                    //
+                    // ?
                     lineRenderer.SetPosition(0, raycastHit.collider.transform.position);
                     lineRenderer.SetPosition(1, panelPrefab.transform.position);
                     lineRenderer.gameObject.SetActive(true);
@@ -91,9 +90,11 @@ public class PitSpawner : MonoBehaviour
             }
         }
 
+        // Detect scaling
         if (Input.touchCount == 2)
         {
-            if (spawnedPit != null) {
+            if (spawnedPit != null)
+            {
                 // Get the touch
                 Touch firstTouch = Input.GetTouch(0);
                 Touch secondTouch = Input.GetTouch(1);
@@ -114,9 +115,12 @@ public class PitSpawner : MonoBehaviour
                     pitScale = 1;
                 }
 
-                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[4].SetFloat("_Tiling", 3 + pitScale);
-                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[2].SetFloat("_Tiling", 3 + pitScale);
+                // Adjust the tiling of materials so that they do not appear pixelated/blurry while scaling up
+                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[1].SetFloat("_Tiling", 3 + pitScale);
+                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[3].SetFloat("_Tiling", 3 + pitScale);
                 spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
+
+                // Awayls snap the pit to the surface
                 spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
                 spawnedPit.transform.position = tempPosition;
             }

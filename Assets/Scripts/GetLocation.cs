@@ -17,15 +17,18 @@ public class GetLocation : MonoBehaviour
 
         if (!Input.location.isEnabledByUser)
         {
+
+            Debug.Log("Location service is not enabled: Using default location - UK.");
+
             if (pinPosition.Count != 0) {
                 pinPosition.Clear();
             }
+
             pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
-           
-            GeneratePredefinedPinLocation();
+            LoadPredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
-            Debug.Log("Location service is not enabled.");
+            
             yield break;
         }
 
@@ -64,7 +67,7 @@ public class GetLocation : MonoBehaviour
             pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
 
             // Add featured location values to the list 
-            GeneratePredefinedPinLocation();
+            LoadPredefinedPinLocation();
 
             // Generate pins based on given values
             GeneratePins();
@@ -75,7 +78,8 @@ public class GetLocation : MonoBehaviour
         Input.location.Stop();
     }
 
-    private void GeneratePredefinedPinLocation()
+    // Load predefined locations from the GLOBAL
+    private void LoadPredefinedPinLocation()
     {
         foreach (GLOBAL.LocationInfo L in GLOBAL.LOCATION_DATABASE)
         {
@@ -83,6 +87,7 @@ public class GetLocation : MonoBehaviour
         }   
     }
 
+    // Create pin objects using provided coordinates
     private void GeneratePins()
     {
         Transform pinGroup = earthObject.transform.GetChild(0);

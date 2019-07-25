@@ -52,8 +52,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 05d8b7d216f1e43bb99301788efc6bec, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_27760C00_Out:
+        m_Texture: {fileID: 2800000, guid: 914150566df8245b38a50eb1b0dfe0ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_6ECE8884_Out:
         m_Texture: {fileID: 2800000, guid: 914150566df8245b38a50eb1b0dfe0ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_A50C05C7_Out:
+        m_Texture: {fileID: 2800000, guid: 0f243ce73f58443e7bc79f9807ca8317, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -76,6 +84,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Tiling: 4
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class EarthPreviewer : MonoBehaviour
 {
-
     public GameObject previewerOptions;
     public GameObject earthObject;
 
