@@ -352,7 +352,7 @@ public class EarthMapper : MonoBehaviour
         byte[] imageData;
         Texture2D texture = new Texture2D(2, 2);
 
-        //Check if we should use UnityWebRequest or File.ReadAllBytes
+        // Read bytes using UnityWebRequest or File.ReadAllBytes
         if (filePath.Contains("://") || filePath.Contains(":///"))
         {
             UnityWebRequest www = UnityWebRequest.Get(filePath);

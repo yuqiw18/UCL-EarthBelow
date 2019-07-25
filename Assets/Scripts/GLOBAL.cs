@@ -91,7 +91,7 @@ public class GLOBAL: MonoBehaviour
 
     private void InitialiseLatlongList()
     {
-        // Source: https://www.latlong.net/
+        
         LOCATION_DATABASE.Add(InitialiseLocationInfo("Paris","France", new Vector2(48.864716f, 2.349014f), "Paris, France's capital, is a major European city and a global center for art, fashion, gastronomy and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine."));
         LOCATION_DATABASE.Add(InitialiseLocationInfo("New York","United States of America", new Vector2(40.730610f, -73.935242f), "New York City comprises 5 boroughs sitting where the Hudson River meets the Atlantic Ocean. At its core is Manhattan, a densely populated borough that’s among the world’s major commercial, financial and cultural centers."));
         LOCATION_DATABASE.Add(InitialiseLocationInfo("Canberra", "Australia", new Vector2(-35.280937f, 149.130005f), "Melbourne is the coastal capital of the southeastern Australian state of Victoria. At the city's centre is the modern Federation Square development, with plazas, bars, and restaurants by the Yarra River."));
@@ -113,11 +113,16 @@ public class GLOBAL: MonoBehaviour
         LAYER_INFO.Add(InitialiseStructureInfo("Inner Core", "", "The Inner Core is the final layer of the Earth which is a solid ball made of metal. It is about 1250 km thick and is the second smallest layer of the Earth. Although it is one of the smallest, the Inner Core is also the hottest layer. The Inner Core is composed of an element named NiFe (Ni for Nickel and Fe for Ferrum also known as Iron). The Inner Core is about 5000-6000°C and it melts all metal ores in the Outer Core causing it to turn into liquid magma."));
     }
 
+    // JSON requires a very strict key-value pair formatting together with special characters escaping
+    // This process can be simplified using Visual Studio Code with extensions such as JSON Escaper
+    // location.json data source: https://www.latlong.net/
+    // layer.json data source: Wikipedia
     private IEnumerator InitialiseDataFromJSON() {
         
         string filePath = Path.Combine(Application.streamingAssetsPath, "Database/" ,"location.json");
         string jsonContent;
-        //Check if we should use UnityWebRequest or File.ReadAllBytes
+
+        // Read pure text using UnityWebRequest or File.ReadAllText
         if (filePath.Contains("://") || filePath.Contains(":///"))
         {
             UnityWebRequest www = UnityWebRequest.Get(filePath);
