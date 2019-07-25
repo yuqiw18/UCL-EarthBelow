@@ -5,7 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class HoleSpawner : MonoBehaviour
+public class PitSpawner : MonoBehaviour
 {
     public GameObject spawnerOptions;
 

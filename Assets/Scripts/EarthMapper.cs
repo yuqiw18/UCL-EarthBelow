@@ -38,9 +38,8 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> landmarkList = new List<GameObject>();
 
     private float pinDistanceScale = 128f;
-    private float labelScale = 2/10f;
-    private float panelDistanceScale = 0.1f;
-    private float panelScale = 1 / 6f;
+    private float labelScale = 1/5f;
+    private float panelScale = 1/3f;
 
     // Start is called before the first frame update
     void Start(){
@@ -93,7 +92,8 @@ public class EarthMapper : MonoBehaviour
                 // Display city profile
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
-                    panelPrefab.transform.position = raycastHit.collider.transform.position - raycastHit.collider.transform.position * panelDistanceScale;
+                    // Display the panel before the other sprites by shifting a very small value so that it is not occluded
+                    panelPrefab.transform.position = raycastHit.collider.transform.position * 0.99f;
 
                     // Fetch selected landmark information
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
@@ -107,7 +107,7 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<RawImage>().texture = cityThumbnail[int.Parse(raycastHit.collider.name)];
 
                     // Scale the panel
-                    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
+                    panelPrefab.transform.localScale = new Vector2(panelScale, panelScale);
 
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
@@ -209,11 +209,9 @@ public class EarthMapper : MonoBehaviour
         Transform refTop = mappedEarth.transform.Find("Ref_Top");
 
         // Scale and reposition the Earth
-        float scale = GLOBAL.EARTH_PREFAB_SCALE_TO_REAL;
-
-        mappedEarth.transform.localScale = new Vector3(scale, scale, scale);
+        mappedEarth.transform.localScale = new Vector3(GLOBAL.EARTH_PREFAB_SCALE_TO_REAL, GLOBAL.EARTH_PREFAB_SCALE_TO_REAL, GLOBAL.EARTH_PREFAB_SCALE_TO_REAL);
         
-        // Rotate the Earth so that the current position is facing up
+        // Rotate the Earth so that the current position is facing up so that we can do the following calculations
         // Use the pre-calculated value
         mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
 
@@ -239,10 +237,10 @@ public class EarthMapper : MonoBehaviour
         //mappedEarth.transform.Rotate(Vector3.up, -Input.compass.trueHeading, Space.World);
 
         // OR 2. Use QUATERNION
-        //The steps need to be reversed to get the correct result
+        // Those steps need to be combined backwards to get the correct result
         mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
 
-        // Solve the floating point imprecision issue due to the large scale
+        // Fix the floating point imprecision issue due to the large scale
         Vector3 impreciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
         float preciseScaleFactor = GLOBAL.EARTH_CRUST_RADIUS / impreciseRefPosition.y;
 
@@ -250,8 +248,8 @@ public class EarthMapper : MonoBehaviour
             pin.position *= preciseScaleFactor;
         }
 
-        // Shift the mapped earth down so that the current location is just above the selected surface
-        mappedEarth.transform.position -= new Vector3(0, scale * GLOBAL.EARTH_PREFAB_RADIUS, 0);
+        // Shift the mapped earth down so that the y value of current position is the same as the selected surface for mapping
+        mappedEarth.transform.position -= new Vector3(0, GLOBAL.EARTH_CRUST_RADIUS, 0);
         #endregion
 
         #region PIN_ASSIGNMENT
@@ -282,14 +280,17 @@ public class EarthMapper : MonoBehaviour
                 if (geoDistance > 5)
                 {
                     landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
+                    landmark.transform.localScale = new Vector2(0.1f, 0.1f);
                 }
                 else
                 {
                     landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
+                    float rescale = 0.3f - geoDistance * 0.04f;
+                    landmark.transform.localScale = new Vector2(rescale, rescale);
                 }
 
                 // Rescale the landmark
-                landmark.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                
 
                 landmarkList.Add(landmark);
                 #endregion

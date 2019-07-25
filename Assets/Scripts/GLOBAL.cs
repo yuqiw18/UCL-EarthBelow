@@ -64,7 +64,7 @@ public class GLOBAL: MonoBehaviour
     #region EARTH_MATH_PARAMETERS
     public static readonly float EARTH_PREFAB_RADIUS = 0.5f;
     public static readonly float EARTH_FLATTENING = 1.0f / 298.257224f;
-    public static readonly float EARTH_PREFAB_SCALE_TO_REAL = 2.0f * EARTH_CRUST_RADIUS;
+    public static readonly float EARTH_PREFAB_SCALE_TO_REAL = (1.0f / EARTH_PREFAB_RADIUS) * EARTH_CRUST_RADIUS;
     #endregion
 
     // Only called once during the application lifetime

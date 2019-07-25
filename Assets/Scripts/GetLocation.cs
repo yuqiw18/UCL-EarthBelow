@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GetLocation : MonoBehaviour
 {
@@ -35,6 +34,7 @@ public class GetLocation : MonoBehaviour
         Input.location.Start();
 
         int maxWait = 20;
+        // Use default value if failed
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
         {
             yield return new WaitForSeconds(1);
@@ -42,16 +42,17 @@ public class GetLocation : MonoBehaviour
         }
         if (maxWait < 1)
         {
-            Debug.Log("Timeout");
+            Debug.Log("Timeout: Using default location - UK.");
             yield return false;
         }
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            Debug.Log("Unable to get location information");
+            Debug.Log("Unable to get location information: Using default location - UK.");
             yield return false;
         }
         else
         {
+            // Use values from the GPS
             GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
 
             if (pinPosition.Count != 0)
@@ -59,10 +60,16 @@ public class GetLocation : MonoBehaviour
                 pinPosition.Clear();
             }
 
+            // Add current location to the list for futher computation
             pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
 
+            // Add featured location values to the list 
             GeneratePredefinedPinLocation();
+
+            // Generate pins based on given values
             GeneratePins();
+
+            // Compute the rotation required for rotating the current location to the top
             ComputeRotation();
         }
         Input.location.Stop();
@@ -75,7 +82,6 @@ public class GetLocation : MonoBehaviour
             pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(L.coord, GLOBAL.EARTH_PREFAB_RADIUS));
         }   
     }
-
 
     private void GeneratePins()
     {
