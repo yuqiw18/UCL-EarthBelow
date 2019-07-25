@@ -1,9 +1,11 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -22,7 +24,6 @@ public class EarthMapper : MonoBehaviour
 
     public UnityEvent onClick;
 
-    public Texture2D[] cityThumbnail;
     public Sprite[] cityLandmark;
 
     private ARRaycastManager arRaycastManager;
@@ -45,6 +46,7 @@ public class EarthMapper : MonoBehaviour
     void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
+        //debugOutput[0].text = Application.streamingAssetsPath;
     }
 
     // Update is called once per frame
@@ -99,12 +101,12 @@ public class EarthMapper : MonoBehaviour
                     GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
-                    panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name + ", " + selectedLocation.country;
-                    panelPrefab.transform.Find("Label_CityCoord").GetComponent<Text>().text = "(" + selectedLocation.coord.x.ToString() + "° N, " + selectedLocation.coord.y.ToString() + "° E)";
+                    panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name;
+                    panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
-                    //Texture2D thumbnail = Resources.Load("Textures/Thumbnail/"+ raycastHit.collider.name) as Texture2D;
-                    panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<RawImage>().texture = cityThumbnail[int.Parse(raycastHit.collider.name)];
+                    StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "CityImages/", UTIL.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
+                    StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector2(panelScale, panelScale);
@@ -112,6 +114,8 @@ public class EarthMapper : MonoBehaviour
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
                     panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+
+                    
 
                     // Show the panel
                     panelPrefab.SetActive(true);
@@ -338,4 +342,37 @@ public class EarthMapper : MonoBehaviour
         placementIndicatorEnabled = toggle;
         highlightedIndicator.SetActive(toggle);
     }
+
+    // Load a local image and return as a 2D sprite
+    private IEnumerator LoadImageAsSprite(string filePath, string targetSprite)
+    {
+        byte[] imageData;
+        Texture2D texture = new Texture2D(2, 2);
+
+        //Check if we should use UnityWebRequest or File.ReadAllBytes
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            UnityWebRequest www = UnityWebRequest.Get(filePath);
+            yield return www.SendWebRequest();
+            imageData = www.downloadHandler.data;
+        }
+        else
+        {
+            imageData = File.ReadAllBytes(filePath);
+        }
+
+        debugOutput[1].text = imageData.Length.ToString();
+
+        // Load raw data into Texture2D 
+        texture.LoadImage(imageData);
+
+        // Convert Texture2D to Sprite
+        Vector2 pivot = new Vector2(0.5f, 0.5f);
+        Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), pivot, 100.0f);
+
+        panelPrefab.transform.Find(targetSprite).gameObject.GetComponent<Image>().sprite = sprite;
+
+    }
+
+
 }

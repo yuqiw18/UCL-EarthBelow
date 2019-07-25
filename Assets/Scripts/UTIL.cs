@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 // Public Access Functions
 public class UTIL : MonoBehaviour
 {
@@ -37,5 +38,10 @@ public class UTIL : MonoBehaviour
         float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1.0f - a));
 
         return Mathf.RoundToInt(r * c);
+    }
+
+    // Convert file name for loading files
+    public static string FileNameParser(string fileName) {
+        return (fileName.Replace(" ", "-")).ToLower();
     }
 }

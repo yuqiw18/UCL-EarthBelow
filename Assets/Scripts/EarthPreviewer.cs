@@ -11,6 +11,7 @@ public class EarthPreviewer : MonoBehaviour
     public UnityEvent onClick;
 
     private bool showMagneticField = false;
+    private bool showCountryBorder = false;
 
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;
@@ -132,11 +133,16 @@ public class EarthPreviewer : MonoBehaviour
         if (layers.GetChild(i).localScale != layers.Find("Earth_Grid").localScale)
         {
             layers.Find("Earth_Grid").gameObject.SetActive(true);
-            layers.Find("Earth_Border").gameObject.SetActive(true);
         }
 
-        if (showMagneticField) {
+        if (showMagneticField)
+        {
             layers.Find("Earth_MagneticField").gameObject.SetActive(true);
+        }
+
+        if (showCountryBorder)
+        {
+            layers.Find("Earth_Border").gameObject.SetActive(true);
         }
     }
 
@@ -149,5 +155,18 @@ public class EarthPreviewer : MonoBehaviour
             showMagneticField = true;
         }
         earthObject.transform.Find("Group_Layers").Find("Earth_MagneticField").gameObject.SetActive(showMagneticField);
+    }
+
+    public void ToggleCountryBorder()
+    {
+        if (showCountryBorder)
+        {
+            showCountryBorder = false;
+        }
+        else
+        {
+            showCountryBorder = true;
+        }
+        earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(showCountryBorder);
     }
 }
