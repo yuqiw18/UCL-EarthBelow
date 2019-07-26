@@ -22,16 +22,58 @@ public class EarthPreviewer : MonoBehaviour
     private float currentAlpha = 0;
     private bool inTransition = false;
 
+    private bool initRotation, targetTransformReached = false;
+    private Vector3 startDirection, targetDirection;
+    private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
+
     // Start is called before the first frame update
     void Start()
     {
         earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Rotate the Earth
+        //// Rotate to the current location automatically once
+        //if (!initRotation)
+        //{
+        //    if (earthObject.transform.Find("Group_Pins").childCount != 0)
+        //    {
+        //        earthObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        //        startDirection = (earthObject.transform.Find("Group_Pins").GetChild(0).position - earthObject.transform.position).normalized;
+        //        targetDirection = (Camera.main.transform.position - earthObject.transform.position).normalized;
+        //        targetQuaternion = Quaternion.FromToRotation(startDirection, targetDirection);
+        //        startQuaternion = earthObject.transform.rotation;
+        //        initRotation = true;
+        //    }
+        //}
+
+        //if (initRotation && !targetTransformReached)
+        //{
+        //    earthObject.transform.rotation = Quaternion.Lerp(startQuaternion, targetQuaternion, Time.time * 0.2f);
+        //    currentRotation = earthObject.transform.rotation;
+
+        //    earthObject.transform.localScale += new Vector3(0.025f, 0.025f, 0.025f) * Time.time;
+
+        //    if (earthObject.transform.localScale.x > 1)
+        //    {
+        //        earthObject.transform.localScale = new Vector3(1, 1, 1);
+        //    }
+
+        //    if (currentRotation != lastRotation)
+        //    {
+        //        lastRotation = currentRotation;
+        //    }
+        //    else if (currentRotation == lastRotation && earthObject.transform.localScale == new Vector3(1, 1, 1))
+        //    {
+        //        targetTransformReached = true;
+        //        Debug.Log("Reached");
+        //    }
+        //}
+
+        // Rotate the Earth manually
         if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
         {
             // Get the displacement delta
