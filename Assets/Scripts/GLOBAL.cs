@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
 
 // Global Variables
 public class GLOBAL: MonoBehaviour
 {
-    #region PSEUDO_DATABASE
-
+    #region JSON_DATABASE_SERIALISATION
     // Geographical info
     [Serializable]
     public struct LocationInfo
@@ -27,18 +25,7 @@ public class GLOBAL: MonoBehaviour
         public List<LocationInfo> serializableList;
     }
 
-    public LocationInfo InitialiseLocationInfo(string name, string country, Vector2 coord, string desc)
-    {
-        LocationInfo locationInfo;
-        locationInfo.name = name;
-        locationInfo.country = country;
-        locationInfo.coord = coord;
-        locationInfo.description = desc;
-        return locationInfo;
-    }
-
     public static List<LocationInfo> LOCATION_DATABASE = new List<LocationInfo>();
-    public static List<LocationInfo> LOCATION_DATABASE2 = new List<LocationInfo>();
 
     // Geological info
     [Serializable]
@@ -83,26 +70,8 @@ public class GLOBAL: MonoBehaviour
     // Only called once during the application lifetime
     private void Awake()
     {
-        Debug.Log("Global Variable Loaded");
-        InitialiseLatlongList();
         InitialiseEarthStructureInfo();
-        StartCoroutine(InitialiseDataFromJSON());
-    }
-
-    private void InitialiseLatlongList()
-    {
-        
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Paris","France", new Vector2(48.864716f, 2.349014f), "Paris, France's capital, is a major European city and a global center for art, fashion, gastronomy and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("New York","United States of America", new Vector2(40.730610f, -73.935242f), "New York City comprises 5 boroughs sitting where the Hudson River meets the Atlantic Ocean. At its core is Manhattan, a densely populated borough that’s among the world’s major commercial, financial and cultural centers."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Canberra", "Australia", new Vector2(-35.280937f, 149.130005f), "Melbourne is the coastal capital of the southeastern Australian state of Victoria. At the city's centre is the modern Federation Square development, with plazas, bars, and restaurants by the Yarra River."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Tokyo", "Japan", new Vector2(35.652832f, 139.839478f), "Tokyo, Japan’s busy capital, mixes the ultramodern and the traditional, from neon-lit skyscrapers to historic temples. The opulent Meiji Shinto Shrine is known for its towering gate and surrounding woods. The Imperial Palace sits amid large public gardens."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Auckland", "New Zealand", new Vector2(-36.848461f, 174.763336f), "Auckland, based around 2 large harbours, is a major city in the north of New Zealand’s North Island. In the centre, the iconic Sky Tower has views of Viaduct Harbour, which is full of superyachts and lined with bars and cafes."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Beijing", "China", new Vector2(39.904202f, 116.407394f), "Beijing, China’s sprawling capital, has history stretching back 3 millennia. Yet it’s known as much for modern architecture as its ancient sites such as the grand Forbidden City complex, the imperial palace during the Ming and Qing dynasties."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Vancouver", "Canada", new Vector2(49.246292f, -123.116226f), "Vancouver, a bustling west coast seaport in British Columbia, is among Canada’s densest, most ethnically diverse cities. A popular filming location, it’s surrounded by mountains, and also has thriving art, theatre and music scenes."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Moscow", "Russia", new Vector2(55.751244f, 37.618423f), "Moscow, on the Moskva River in western Russia, is the nation’s cosmopolitan capital. In its historic core is the Kremlin, a complex that’s home to the president and tsarist treasures in the Armoury. Outside its walls is Red Square, Russia's symbolic center."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("London", "United Kingdom", new Vector2(51.507351f, -0.127758f), "London, the capital of England and the United Kingdom, is a 21st-century city with history stretching back to Roman times. At its centre stand the imposing Houses of Parliament, the iconic ‘Big Ben’ clock tower and Westminster Abbey, site of British monarch coronations."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Berlin", "Germany", new Vector2(52.520008f, 13.404954f), "Berlin, Germany’s capital, dates to the 13th century. Reminders of the city's turbulent 20th-century history include its Holocaust memorial and the Berlin Wall's graffitied remains. Divided during the Cold War, its 18th-century Brandenburg Gate has become a symbol of reunification."));
-        LOCATION_DATABASE.Add(InitialiseLocationInfo("Singapore", "Singapore", new Vector2(1.352083f, 103.819839f), "Singapore, an island city-state off southern Malaysia, is a global financial center with a tropical climate and multicultural population. Its colonial core centers on the Padang, a cricket field since the 1830s and now flanked by grand buildings such as City Hall, with its 18 Corinthian columns."));
+        StartCoroutine(InitialiseLocationDataFromJSON());
     }
 
     private void InitialiseEarthStructureInfo()
@@ -117,7 +86,7 @@ public class GLOBAL: MonoBehaviour
     // This process can be simplified using Visual Studio Code with extensions such as JSON Escaper
     // location.json data source: https://www.latlong.net/
     // layer.json data source: Wikipedia
-    private IEnumerator InitialiseDataFromJSON() {
+    private IEnumerator InitialiseLocationDataFromJSON() {
         
         string filePath = Path.Combine(Application.streamingAssetsPath, "Database/" ,"location.json");
         string jsonContent;
@@ -134,11 +103,9 @@ public class GLOBAL: MonoBehaviour
             jsonContent = File.ReadAllText(filePath);
         }
 
-        LocationDatabase locationDatabase = new LocationDatabase();
-        locationDatabase = JsonUtility.FromJson<LocationDatabase>(jsonContent);
-        LOCATION_DATABASE2 = locationDatabase.serializableList;
-
-        Debug.Log("Test Output:" + LOCATION_DATABASE2[0].country);
+        // Load data into the serializable class and transfer it to the non-serialisable list
+        LocationDatabase locationDatabase = JsonUtility.FromJson<LocationDatabase>(jsonContent);
+        LOCATION_DATABASE = locationDatabase.serializableList;
     }
 
     private string TestToJSON() {
