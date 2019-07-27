@@ -1,19 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIFadeInOut : MonoBehaviour
+public class ButtonFadeInOut : MonoBehaviour
 {
+
+    public bool fadeInOnLoad = true;
     private Text text;
-    // Start is called before the first frame update
 
     void Awake(){
         text = this.GetComponent<Text>();
+        if (text == null) {
+            text = this.transform.Find("Text").GetComponent<Text>();
+        }
     }
 
     private void OnEnable(){
-        FadeIn();
+        if (fadeInOnLoad) {
+            FadeIn();
+        }
     }
 
     public void FadeIn(){
@@ -29,7 +36,7 @@ public class UIFadeInOut : MonoBehaviour
         text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
         while (text.color.a < 1.0f)
         {
-            text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a + Time.deltaTime);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a + Time.deltaTime * 2.0f);
             yield return null;
         }
     }
@@ -39,7 +46,7 @@ public class UIFadeInOut : MonoBehaviour
         text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
         while (text.color.a > 0.0f)
         {
-            text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - Time.deltaTime);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - Time.deltaTime * 2.0f);
             yield return null;
         }
     }

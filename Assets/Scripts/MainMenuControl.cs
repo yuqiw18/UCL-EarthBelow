@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class MainMenuControl : MonoBehaviour
 {
-    private GameObject menuBackground;
+    public GameObject aboutPanel;
+    public GameObject hintsPanel;
+    public GameObject backButton;
+    public GameObject options;
 
+    private GameObject menuBackground;
 
     private Vector3 originPostion;
     private Vector3 targetPosition;
     
     private float speed = 100.0f;
-
     private bool canMove = false;
-    //private float targetTransf;
+    private string state = "IDLE";
 
     // Start is called before the first frame update
     void Start()
@@ -31,27 +34,43 @@ public class MainMenuControl : MonoBehaviour
             Vector3 tempPosition = menuBackground.transform.position;
             if (tempPosition == targetPosition){
                 canMove = false;
-                Debug.Log("Reached");
+                switch (state) {
+                    case "ABOUT":
+                        aboutPanel.SetActive(true);
+                        backButton.SetActive(true);
+                        break;
+                    case "HINTS":
+                        hintsPanel.SetActive(true);
+                        backButton.SetActive(true);
+                        break;
+                    case "IDLE":
+                        aboutPanel.SetActive(false);
+                        hintsPanel.SetActive(false);
+                        backButton.SetActive(false);
+                        options.SetActive(false);
+                        options.SetActive(true);
+                        break;
+                }
             }
          }
     }
 
     public void MoveBackground(string operation) {
-
+        state = operation;
         switch (operation) {
-            case "TOP":
+            case "ABOUT":
                 targetPosition = originPostion + new Vector3(0, Screen.height / 2, 0);
                 break;
-            case "BOTTOM":
+            case "HINTS":
                 targetPosition = originPostion + new Vector3(0, -Screen.height / 2, 0);
                 break;
-            case "LEFT":
+            case "PLACEHOLDER1":
                 targetPosition = originPostion + new Vector3(-Screen.width / 2, 0, 0);
                 break;
-            case "RIGHT":
+            case "PLACEHOLDER2":
                 targetPosition = originPostion + new Vector3(Screen.width / 2, 0, 0);
                 break;
-            case "CENTER":
+            case "IDLE":
                 targetPosition = originPostion;
                 break;
             default: 

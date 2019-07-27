@@ -128,7 +128,10 @@ public class EarthPreviewer : MonoBehaviour
 
     private void OnDisable()
     {
-        earthObject.SetActive(false);
+        if (earthObject != null) {
+            earthObject.SetActive(false);
+        }
+        
         previewerOptions.SetActive(false);
     }
 
