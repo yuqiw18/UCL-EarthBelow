@@ -46,12 +46,14 @@ public class EarthMapper : MonoBehaviour
     void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
-        //debugOutput[0].text = Application.streamingAssetsPath;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        debugOutput[0].text = Screen.height.ToString();
+
         // Update the indicator location
         if (placementIndicatorEnabled)
         {
