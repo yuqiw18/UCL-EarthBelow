@@ -10728,9 +10728,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Earth Mapper augments the real-scale earth to the real world using the
-    location-based AR. All featured cities and their geographical distance can be
-    seen in the real world through the screen, it will provide a city profile with
+  m_Text: The Earth Mapper augments the real-scale earth to the physical world using
+    the location-based AR. All featured cities and their geographical distance can
+    be seen in the real world through the screen, it will provide a city profile with
     a breif introducation upon user interaction.
 --- !u!222 &1896162666
 CanvasRenderer:
