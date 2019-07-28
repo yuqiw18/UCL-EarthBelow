@@ -38,7 +38,8 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
 
-    private float pinDistanceScale = 128f;
+    private float globalScale = 8.0f;
+    private float pinDistanceScale = 128;
     private float labelScale = 1/5f;
     private float panelScale = 1/3f;
 
@@ -111,7 +112,7 @@ public class EarthMapper : MonoBehaviour
                     StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
 
                     // Scale the panel
-                    panelPrefab.transform.localScale = new Vector2(panelScale, panelScale);
+                    panelPrefab.transform.localScale = new Vector2(panelScale * globalScale, panelScale * globalScale);
 
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
@@ -269,7 +270,7 @@ public class EarthMapper : MonoBehaviour
 
                 // Compute the relative position
                 //pin.position = (pin.position - preciseRefPosition).normalized;
-                pin.position = pinDistanceScale * (pin.position - refOrigin).normalized;
+                pin.position = globalScale * pinDistanceScale * (pin.position - refOrigin).normalized;
 
                 #region CITY_LANDMARK_IMAGE
                 // Instantiate the landmark prefab
@@ -279,9 +280,7 @@ public class EarthMapper : MonoBehaviour
                 Transform landmarkImage = landmark.transform.Find("UI_Landmark_Image");
 
                 //StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "LandmarkIcons/", UTIL.FileNameParser(currentPinLocation.name) + ".png"), "Image_CityLandmark"));
-
                 landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
-
 
                 landmarkImage.name = pin.name;
 
@@ -299,7 +298,7 @@ public class EarthMapper : MonoBehaviour
                 }
 
                 // Rescale the landmark
-                
+                landmark.transform.localScale *= globalScale;
 
                 landmarkList.Add(landmark);
                 #endregion
@@ -323,7 +322,7 @@ public class EarthMapper : MonoBehaviour
                 label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
                 // Rescale the label
-                label.transform.localScale = new Vector3(labelScale, labelScale, labelScale);
+                label.transform.localScale = new Vector3(labelScale * globalScale, labelScale * globalScale, labelScale * globalScale);
 
                 labelList.Add(label);
                 #endregion
