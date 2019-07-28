@@ -27,7 +27,6 @@ public class EarthMapper : MonoBehaviour
     public Sprite[] cityLandmark;
 
     private ARRaycastManager arRaycastManager;
-
     private Pose placementPose;
     private bool placementPoseIsValid = false;
     private GameObject highlightedIndicator;
@@ -35,13 +34,11 @@ public class EarthMapper : MonoBehaviour
 
     private GameObject mappedEarth;
     private GameObject earthHorizon;
+    private Vector3 referenceOrigin = Vector3.zero;
+
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
-
-    private float globalScale = 8.0f;
-    private float pinDistanceScale = 128;
-    private float labelScale = 1/5f;
-    private float panelScale = 1/3f;
+    private float UIScale = 2.0f;
 
     // Start is called before the first frame update
     void Start(){
@@ -97,6 +94,9 @@ public class EarthMapper : MonoBehaviour
                 // Display city profile
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
+                    //
+                    float distanceScale = (raycastHit.collider.transform.position - referenceOrigin).magnitude/1000;
+
                     // Display the panel before the other sprites by shifting a very small value so that it is not occluded
                     panelPrefab.transform.position = raycastHit.collider.transform.position * 0.99f;
 
@@ -112,7 +112,7 @@ public class EarthMapper : MonoBehaviour
                     StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
 
                     // Scale the panel
-                    panelPrefab.transform.localScale = new Vector2(panelScale * globalScale, panelScale * globalScale);
+                    panelPrefab.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
 
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
@@ -206,9 +206,9 @@ public class EarthMapper : MonoBehaviour
         #region EARTH_MAPPING
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
-        Vector3 refOrigin = placementPose.position;
-        mappedEarth = Instantiate(earthObjectToCopy, refOrigin, Quaternion.identity);
-        earthHorizon = Instantiate(earthHorizonPrefab, refOrigin, Quaternion.identity);
+        referenceOrigin = placementPose.position;
+        mappedEarth = Instantiate(earthObjectToCopy, referenceOrigin, Quaternion.identity);
+        earthHorizon = Instantiate(earthHorizonPrefab, referenceOrigin, Quaternion.identity);
 
         Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
         Transform refTop = mappedEarth.transform.Find("Ref_Top");
@@ -267,10 +267,7 @@ public class EarthMapper : MonoBehaviour
 
                 GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
                 float geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
-
-                // Compute the relative position
-                //pin.position = (pin.position - preciseRefPosition).normalized;
-                pin.position = globalScale * pinDistanceScale * (pin.position - refOrigin).normalized;
+                float distanceScale = (pin.position - referenceOrigin).magnitude/1000;
 
                 #region CITY_LANDMARK_IMAGE
                 // Instantiate the landmark prefab
@@ -282,24 +279,23 @@ public class EarthMapper : MonoBehaviour
                 //StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "LandmarkIcons/", UTIL.FileNameParser(currentPinLocation.name) + ".png"), "Image_CityLandmark"));
                 landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
 
-                landmarkImage.name = pin.name;
+                // Rescale the landmark
+                landmark.transform.localScale *= distanceScale;
 
                 // Change the color based on the geographical distance
                 if (geoDistance > 5)
                 {
                     landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
-                    landmark.transform.localScale = new Vector2(0.1f, 0.1f);
+                    //landmark.transform.localScale = new Vector2(0.1f, 0.1f);
                 }
                 else
                 {
                     landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
-                    float rescale = 0.3f - geoDistance * 0.04f;
-                    landmark.transform.localScale = new Vector2(rescale, rescale);
+                    //float rescale = 0.3f - geoDistance * 0.04f;
+                    //landmark.transform.localScale = new Vector2(rescale, rescale);
                 }
 
-                // Rescale the landmark
-                landmark.transform.localScale *= globalScale;
-
+                landmarkImage.name = pin.name;
                 landmarkList.Add(landmark);
                 #endregion
 
@@ -322,8 +318,7 @@ public class EarthMapper : MonoBehaviour
                 label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
                 // Rescale the label
-                label.transform.localScale = new Vector3(labelScale * globalScale, labelScale * globalScale, labelScale * globalScale);
-
+                label.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
                 labelList.Add(label);
                 #endregion
             }
@@ -336,7 +331,7 @@ public class EarthMapper : MonoBehaviour
         panelPrefab.transform.SetAsLastSibling();
         #endregion
 
-        // Destroy it
+        // Destroy it since it is no longer needed
         Destroy(mappedEarth);
 
     }
