@@ -34,7 +34,7 @@ public class GLOBAL: MonoBehaviour
     public struct PlanetInfo
     {
         public string planet;
-        public string sturcture;
+        public string structure;
         public string state;
         public string thickness;
         public string temperature;

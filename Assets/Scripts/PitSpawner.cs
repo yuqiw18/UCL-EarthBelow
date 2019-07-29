@@ -12,8 +12,7 @@ public class PitSpawner : MonoBehaviour
     public GameObject indicatorPrefab;
     public GameObject pitPrefab;
 
-    public GameObject canvasWorld;
-    public GameObject panelPrefab;
+    public GameObject detailPanel;
 
     public UnityEvent onClick;
 
@@ -46,13 +45,6 @@ public class PitSpawner : MonoBehaviour
             UpdatePlacementIndicator();
         }
 
-        //Panel is always facing to the camera
-        if (panelPrefab.activeSelf)
-        {
-            panelPrefab.transform.LookAt(Camera.main.transform);
-            panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
-        }
-
         // Detect tapping
         if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Began))
         {
@@ -60,28 +52,21 @@ public class PitSpawner : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
-                //if (raycastHit.collider.CompareTag("Layer"))
-                //{
-                //    panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
-  
-                //    GLOBAL.LayerInfo selectedLayer = GLOBAL.LAYER_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
+                if (raycastHit.collider.CompareTag("Layer"))
+                {
+                    GLOBAL.PlanetInfo selectedLayer = GLOBAL.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
 
-                //    // Assign information to the panel
-                //    panelPrefab.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.term;
-                //    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.extra;
-                //    panelPrefab.transform.Find("Label_StructureDescription").GetComponent<Text>().text = selectedLayer.detail;
+                    detailPanel.transform.Find("Structure").Find("Text").GetComponent<Text>().text = selectedLayer.structure;
+                    detailPanel.transform.Find("State").Find("Text").GetComponent<Text>().text = selectedLayer.state;
+                    detailPanel.transform.Find("Thickness").Find("Text").GetComponent<Text>().text = selectedLayer.thickness;
+                    detailPanel.transform.Find("Temperature").Find("Text").GetComponent<Text>().text = selectedLayer.temperature;
+                    detailPanel.transform.Find("Composition").Find("Text").GetComponent<Text>().text = selectedLayer.composition;
+                    detailPanel.transform.Find("Highlight").Find("Text").GetComponent<Text>().text = selectedLayer.highlight;
 
-                //    // Scale the panel
-                //    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
+                    // Show the panel
+                    detailPanel.SetActive(true);
 
-                //    // Rotate the panel to face the user
-                //    panelPrefab.transform.LookAt(Camera.main.transform);
-                //    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
-
-                //    // Show the panel
-                //    panelPrefab.SetActive(true);
-
-                //}
+                }
             }
         }
 
@@ -133,8 +118,6 @@ public class PitSpawner : MonoBehaviour
             highlightedIndicator.SetActive(false);
         }
         spawnerOptions.SetActive(false);
-        canvasWorld.SetActive(false);
-        panelPrefab.SetActive(false);
     }
 
     private void OnEnable()
@@ -151,7 +134,6 @@ public class PitSpawner : MonoBehaviour
             }
         }
         spawnerOptions.SetActive(true);
-        canvasWorld.SetActive(true);
     }
 
 
@@ -191,7 +173,7 @@ public class PitSpawner : MonoBehaviour
     {
         if (placementPoseIsValid)
         {
-            panelPrefab.SetActive(false);
+            detailPanel.SetActive(false);
 
             // Only spawn one hole
             Destroy(spawnedPit);
