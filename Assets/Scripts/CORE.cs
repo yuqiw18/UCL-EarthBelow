@@ -8,8 +8,8 @@ using UnityEngine.Networking;
 // Global Variables and Public Access Functions
 public class CORE
 {
-    #region JSON_DATABASE_SERIALISATION
-    #region GEOGRAPHICAL_DATA
+    #region CORE.DATA.STRUCTURE
+    // Geographical data
     [Serializable]
     public struct LocationInfo
     {
@@ -26,9 +26,8 @@ public class CORE
     }
 
     public static List<LocationInfo> LOCATION_DATABASE = new List<LocationInfo>();
-    #endregion
 
-    #region GEOLOGICAL_DATA
+    // Geological data
     [Serializable]
     public struct PlanetInfo
     {
@@ -48,29 +47,28 @@ public class CORE
     }
 
     public static List<PlanetInfo> PLANET_DATABASE = new List<PlanetInfo>();
-    #endregion
 
     #endregion
 
-    #region DATA_LIST
+    #region CORE.PARAMETER
+    //
     public static Vector2 USER_LATLONG = new Vector2(51.507351f, -0.127758f); // Default UK latitude and longitude
     public static List<GameObject> PIN_LIST = new List<GameObject>();
     public static Quaternion ROTATE_TO_TOP;
-    #endregion
 
-    #region EARTH_GEOLOGY_PARAMETERS
+    // Geological parameters
     public static readonly float EARTH_INNER_CORE_RADIUS = 1216000f;
     public static readonly float EARTH_OUTER_CORE_RADIUS = EARTH_INNER_CORE_RADIUS + 2270000f;
     public static readonly float EARTH_LOWER_MANTLE_RADIUS = EARTH_OUTER_CORE_RADIUS + 2885000f;
     public static readonly float EARTH_CRUST_RADIUS = 6371000f;
-    #endregion
 
-    #region EARTH_MATH_PARAMETERS
+    // Geographical parameters
     public static readonly float EARTH_PREFAB_RADIUS = 0.5f;
     public static readonly float EARTH_FLATTENING = 1.0f / 298.257224f;
     public static readonly float EARTH_PREFAB_SCALE_TO_REAL = (1.0f / EARTH_PREFAB_RADIUS) * EARTH_CRUST_RADIUS;
     #endregion
 
+    #region CORE.JSON.LOADER
     // JSON requires a very strict key-value pair formatting together with special characters escaping
     // This process can be simplified using Visual Studio Code with extensions such as JSON Escaper
     // location.json data source: https://www.latlong.net/
@@ -124,7 +122,9 @@ public class CORE
         locationDatabase.serializableList = PLANET_DATABASE;
         return JsonUtility.ToJson(locationDatabase);
     }
+    #endregion
 
+    #region CORE.ALGORITHM
     // Convert latitude and longitude to ECEF coordniate
     // *MUST USE HIGH-POLY SPHERE MESH*
     // *LOW-POLY SPHERE WILL RESULT IN INCORRECT TEXTURE MAPPING*
@@ -158,12 +158,14 @@ public class CORE
 
         return Mathf.RoundToInt(r * c);
     }
+    #endregion
 
+    #region CORE.UTILITY
     // Convert file name for loading files
     public static string FileNameParser(string fileName)
     {
         return (fileName.Replace(" ", "-")).ToLower();
     }
+    #endregion
 
 }
- 

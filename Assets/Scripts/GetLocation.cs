@@ -12,7 +12,7 @@ public class GetLocation : MonoBehaviour
 
 
     private void Awake()
-    { 
+    {
         StartCoroutine(CORE.InitialiseLocationDataFromJSON());
         StartCoroutine(CORE.InitialisePlanetDataFromJSON());
     }
