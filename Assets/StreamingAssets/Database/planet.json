@@ -1,0 +1,40 @@
+{
+    "serializableList": [
+        {
+            "planet": "Earth",
+            "sturcture": "Crust",
+            "state": "Solid",
+            "thickness": "10~60KM",
+            "temperature": "200~400°C",
+            "composition": "Granite, Basalt, Diorite",
+            "highlight": "Theory of Plate Tectonics"
+        },
+        {
+            "planet": "Earth",
+            "sturcture": "Mentle",
+            "state": "Solid",
+            "thickness": "2900KM",
+            "temperature": "3000°C",
+            "composition": "Iron, Magnesium, Sulphides, Oxides of Silicon and Magnesium",
+            "highlight": "Theory of Plate Tectonics"
+        },
+        {
+            "planet": "Earth",
+            "sturcture": "Outer Core",
+            "state": "Liquid",
+            "thickness": "2200KM",
+            "temperature": "4000~5000°C",
+            "composition": "Iron, Nikel",
+            "highlight": "Earth's Magnetism is created here"
+        },
+        {
+            "planet": "Earth",
+            "sturcture": "Inner Core",
+            "state": "Solid",
+            "thickness": "1250KM",
+            "temperature": "5000~6000°C",
+            "composition": "Granite, Basalt, Diorite",
+            "highlight": "Solidd"
+        }
+    ]
+}

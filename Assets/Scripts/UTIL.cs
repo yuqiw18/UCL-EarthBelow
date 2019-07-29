@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 // Public Access Functions
-public class UTIL : MonoBehaviour
+public static class UTIL
 {
     // Convert latitude and longitude to ECEF coordniate
     // *MUST USE HIGH-POLY SPHERE MESH*

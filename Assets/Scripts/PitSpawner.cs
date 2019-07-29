@@ -60,28 +60,28 @@ public class PitSpawner : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
-                if (raycastHit.collider.CompareTag("Layer"))
-                {
-                    panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
+                //if (raycastHit.collider.CompareTag("Layer"))
+                //{
+                //    panelPrefab.transform.position = Vector3.ProjectOnPlane(raycastHit.collider.transform.position - Camera.main.transform.position, Vector3.up).normalized * panelDistanceScale + yAxisOffset;
   
-                    GLOBAL.LayerInfo selectedLayer = GLOBAL.LAYER_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
+                //    GLOBAL.LayerInfo selectedLayer = GLOBAL.LAYER_INFO[int.Parse(raycastHit.collider.transform.parent.name)];
 
-                    // Assign information to the panel
-                    panelPrefab.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.term;
-                    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.extra;
-                    panelPrefab.transform.Find("Label_StructureDescription").GetComponent<Text>().text = selectedLayer.detail;
+                //    // Assign information to the panel
+                //    panelPrefab.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.term;
+                //    panelPrefab.transform.Find("Label_StructureExtraInfo").GetComponent<Text>().text = selectedLayer.extra;
+                //    panelPrefab.transform.Find("Label_StructureDescription").GetComponent<Text>().text = selectedLayer.detail;
 
-                    // Scale the panel
-                    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
+                //    // Scale the panel
+                //    panelPrefab.transform.localScale = new Vector3(panelScale, panelScale);
 
-                    // Rotate the panel to face the user
-                    panelPrefab.transform.LookAt(Camera.main.transform);
-                    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+                //    // Rotate the panel to face the user
+                //    panelPrefab.transform.LookAt(Camera.main.transform);
+                //    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
 
-                    // Show the panel
-                    panelPrefab.SetActive(true);
+                //    // Show the panel
+                //    panelPrefab.SetActive(true);
 
-                }
+                //}
             }
         }
 
