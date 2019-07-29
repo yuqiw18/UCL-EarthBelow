@@ -54,7 +54,7 @@ public class PitSpawner : MonoBehaviour
             {
                 if (raycastHit.collider.CompareTag("Layer"))
                 {
-                    GLOBAL.PlanetInfo selectedLayer = GLOBAL.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
+                    CORE.PlanetInfo selectedLayer = CORE.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
 
                     detailPanel.transform.Find("Structure").Find("Text").GetComponent<Text>().text = selectedLayer.structure;
                     detailPanel.transform.Find("State").Find("Text").GetComponent<Text>().text = selectedLayer.state;

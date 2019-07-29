@@ -101,15 +101,15 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.position = raycastHit.collider.transform.position * 0.99f;
 
                     // Fetch selected landmark information
-                    GLOBAL.LocationInfo selectedLocation = GLOBAL.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
+                    CORE.LocationInfo selectedLocation = CORE.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
                     panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name;
                     panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
-                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", UTIL.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
-                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", UTIL.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
+                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
+                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
@@ -214,11 +214,11 @@ public class EarthMapper : MonoBehaviour
         Transform refTop = mappedEarth.transform.Find("Ref_Top");
 
         // Scale and reposition the Earth
-        mappedEarth.transform.localScale = new Vector3(GLOBAL.EARTH_PREFAB_SCALE_TO_REAL, GLOBAL.EARTH_PREFAB_SCALE_TO_REAL, GLOBAL.EARTH_PREFAB_SCALE_TO_REAL);
+        mappedEarth.transform.localScale = new Vector3(CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL);
         
         // Rotate the Earth so that the current position is facing up so that we can do the following calculations
         // Use the pre-calculated value
-        mappedEarth.transform.rotation = GLOBAL.ROTATE_TO_TOP;
+        mappedEarth.transform.rotation = CORE.ROTATE_TO_TOP;
 
         // Rotate the Earth so that the current north direction is aligned geographically
         // First, find the current device facing direction (projection on z axis)
@@ -243,18 +243,18 @@ public class EarthMapper : MonoBehaviour
 
         // OR 2. Use QUATERNION
         // Those steps need to be combined backwards to get the correct result
-        mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * GLOBAL.ROTATE_TO_TOP;
+        mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * CORE.ROTATE_TO_TOP;
 
         // Fix the floating point imprecision issue due to the large scale
         Vector3 impreciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
-        float preciseScaleFactor = GLOBAL.EARTH_CRUST_RADIUS / impreciseRefPosition.y;
+        float preciseScaleFactor = CORE.EARTH_CRUST_RADIUS / impreciseRefPosition.y;
 
         foreach (Transform pin in pinGroup) {
             pin.position *= preciseScaleFactor;
         }
 
         // Shift the mapped earth down so that the y value of current position is the same as the selected surface for mapping
-        mappedEarth.transform.position -= new Vector3(0, GLOBAL.EARTH_CRUST_RADIUS, 0);
+        mappedEarth.transform.position -= new Vector3(0, CORE.EARTH_CRUST_RADIUS, 0);
         #endregion
 
         #region PIN_ASSIGNMENT
@@ -265,8 +265,8 @@ public class EarthMapper : MonoBehaviour
             if (pin.position != preciseRefPosition)
             {
 
-                GLOBAL.LocationInfo currentPinLocation = GLOBAL.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
-                float geoDistance = UTIL.DistanceBetweenLatLong(currentPinLocation.coord, GLOBAL.USER_LATLONG);
+                CORE.LocationInfo currentPinLocation = CORE.LOCATION_DATABASE[int.Parse(pin.gameObject.name)];
+                float geoDistance = CORE.DistanceBetweenLatLong(currentPinLocation.coord, CORE.USER_LATLONG);
                 float distanceScale = (pin.position - referenceOrigin).magnitude/1000;
 
                 #region CITY_LANDMARK_IMAGE

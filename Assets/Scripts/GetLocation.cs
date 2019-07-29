@@ -10,6 +10,13 @@ public class GetLocation : MonoBehaviour
     private Vector3 earthCenter;
     private List<Vector3> pinPosition = new List<Vector3>();
 
+
+    private void Awake()
+    { 
+        StartCoroutine(CORE.InitialiseLocationDataFromJSON());
+        StartCoroutine(CORE.InitialisePlanetDataFromJSON());
+    }
+
     // Use this for initialization
     IEnumerator Start()
     {
@@ -24,7 +31,7 @@ public class GetLocation : MonoBehaviour
                 pinPosition.Clear();
             }
 
-            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            pinPosition.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
             LoadPredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
@@ -56,7 +63,7 @@ public class GetLocation : MonoBehaviour
         else
         {
             // Use values from the GPS
-            GLOBAL.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+            CORE.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
 
             if (pinPosition.Count != 0)
             {
@@ -64,7 +71,7 @@ public class GetLocation : MonoBehaviour
             }
 
             // Add current location to the list for futher computation
-            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(GLOBAL.USER_LATLONG, GLOBAL.EARTH_PREFAB_RADIUS));
+            pinPosition.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
 
             // Add featured location values to the list 
             LoadPredefinedPinLocation();
@@ -78,12 +85,12 @@ public class GetLocation : MonoBehaviour
         Input.location.Stop();
     }
 
-    // Load predefined locations from the GLOBAL
+    // Load predefined locations from the CORE
     private void LoadPredefinedPinLocation()
     {
-        foreach (GLOBAL.LocationInfo L in GLOBAL.LOCATION_DATABASE)
+        foreach (CORE.LocationInfo L in CORE.LOCATION_DATABASE)
         {
-            pinPosition.Add(UTIL.ECEFCoordinateFromLatLong(L.coord, GLOBAL.EARTH_PREFAB_RADIUS));
+            pinPosition.Add(CORE.ECEFCoordinateFromLatLong(L.coord, CORE.EARTH_PREFAB_RADIUS));
         }   
     }
 
@@ -113,15 +120,15 @@ public class GetLocation : MonoBehaviour
             }
 
             // Keep track of pins
-            GLOBAL.PIN_LIST.Add(pin);
+            CORE.PIN_LIST.Add(pin);
         }
     }
 
     private void ComputeRotation()
     {
-        Vector3 currentPinPosition = GLOBAL.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
-        Vector3 targetPinPosition = Vector3.up * GLOBAL.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
-        GLOBAL.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
+        Vector3 currentPinPosition = CORE.PIN_LIST[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
+        Vector3 targetPinPosition = Vector3.up * CORE.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
+        CORE.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
     }
 
 }
