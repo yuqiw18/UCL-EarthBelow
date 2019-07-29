@@ -13,8 +13,9 @@ public class MainMenuControl : MonoBehaviour
 
     private Vector3 originPostion;
     private Vector3 targetPosition;
-    
+
     private float speed = 100.0f;
+    private float speedMultiplier = 2.0f;
     private bool canMove = false;
     private string state = "IDLE";
 
@@ -29,8 +30,7 @@ public class MainMenuControl : MonoBehaviour
     void Update()
     {
          if (canMove){
-            float step =  speed * Time.deltaTime;
-            menuBackground.transform.position = Vector3.MoveTowards(menuBackground.transform.position, targetPosition, step);
+            menuBackground.transform.position = Vector3.MoveTowards(menuBackground.transform.position, targetPosition, speed * speedMultiplier * Time.deltaTime);
             Vector3 tempPosition = menuBackground.transform.position;
             if (tempPosition == targetPosition){
                 canMove = false;
@@ -78,8 +78,5 @@ public class MainMenuControl : MonoBehaviour
         }
         canMove = true;
         speed = Vector3.Distance(menuBackground.transform.position, targetPosition);
-
-        Debug.Log("New Speed:" + speed);
-        Debug.Log("Triggered");
     }
 }

@@ -13,7 +13,6 @@ public class PitSpawner : MonoBehaviour
     public GameObject pitPrefab;
 
     public GameObject canvasWorld;
-    public LineRenderer lineRenderer;
     public GameObject panelPrefab;
 
     public UnityEvent onClick;
@@ -82,10 +81,6 @@ public class PitSpawner : MonoBehaviour
                     // Show the panel
                     panelPrefab.SetActive(true);
 
-                    // ?
-                    lineRenderer.SetPosition(0, raycastHit.collider.transform.position);
-                    lineRenderer.SetPosition(1, panelPrefab.transform.position);
-                    lineRenderer.gameObject.SetActive(true);
                 }
             }
         }
@@ -140,7 +135,6 @@ public class PitSpawner : MonoBehaviour
         spawnerOptions.SetActive(false);
         canvasWorld.SetActive(false);
         panelPrefab.SetActive(false);
-        lineRenderer.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -197,7 +191,6 @@ public class PitSpawner : MonoBehaviour
     {
         if (placementPoseIsValid)
         {
-            lineRenderer.gameObject.SetActive(false);
             panelPrefab.SetActive(false);
 
             // Only spawn one hole
