@@ -108,8 +108,15 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
-                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), "Image_CityLandmark"));
-                    StartCoroutine(LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), "Image_CountryFlag"));
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
+                    {
+                        panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = result;
+                    }));
+
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), (result) =>
+                    {
+                        panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
+                    }));
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
@@ -342,32 +349,5 @@ public class EarthMapper : MonoBehaviour
         highlightedIndicator.SetActive(toggle);
     }
 
-    // Load a local image and return as a 2D sprite
-    private IEnumerator LoadImageToSprite(string filePath, string targetSprite)
-    {
-        byte[] imageData;
-        Texture2D texture = new Texture2D(2, 2);
-
-        // Read bytes using UnityWebRequest or File.ReadAllBytes
-        if (filePath.Contains("://") || filePath.Contains(":///"))
-        {
-            UnityWebRequest www = UnityWebRequest.Get(filePath);
-            yield return www.SendWebRequest();
-            imageData = www.downloadHandler.data;
-        }
-        else
-        {
-            imageData = File.ReadAllBytes(filePath);
-        }
-
-        // Load raw data into Texture2D 
-        texture.LoadImage(imageData);
-
-        // Convert Texture2D to Sprite
-        Vector2 pivot = new Vector2(0.5f, 0.5f);
-        Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), pivot, 100.0f);
-
-        panelPrefab.transform.Find(targetSprite).gameObject.GetComponent<Image>().sprite = sprite;
-
-    }
+   
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GetLocation : MonoBehaviour
@@ -10,11 +11,19 @@ public class GetLocation : MonoBehaviour
     private Vector3 earthCenter;
     private List<Vector3> pinPosition = new List<Vector3>();
 
-
     private void Awake()
     {
-        StartCoroutine(CORE.InitialiseLocationDataFromJSON());
-        StartCoroutine(CORE.InitialisePlanetDataFromJSON());
+        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "location.json"),(data)=>{
+            // Load data into the serializable class and transfer it to the non-serialisable list
+            CORE.LocationDatabase locationDatabase = JsonUtility.FromJson<CORE.LocationDatabase>(data);
+            CORE.LOCATION_DATABASE = locationDatabase.serializableList;
+        }));
+
+        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "planet.json"), (data) => {
+            // Load data into the serializable class and transfer it to the non-serialisable list
+            CORE.PlanetDatabase planetDatabase = JsonUtility.FromJson<CORE.PlanetDatabase>(data);
+            CORE.PLANET_DATABASE = planetDatabase.serializableList;
+        }));
     }
 
     // Use this for initialization

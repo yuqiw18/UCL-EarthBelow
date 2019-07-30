@@ -73,9 +73,9 @@ public class CORE
     // This process can be simplified using Visual Studio Code with extensions such as JSON Escaper
     // location.json data source: https://www.latlong.net/
     // layer.json data source: Wikipedia
-    public static IEnumerator InitialiseLocationDataFromJSON() {
-        
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Database/" ,"location.json");
+    // 
+    public static IEnumerator LoadDataFromJSON(string filePath, Action<string> callback)
+    {
         string jsonContent;
 
         // Read pure text using UnityWebRequest or File.ReadAllText
@@ -90,33 +90,11 @@ public class CORE
             jsonContent = File.ReadAllText(filePath);
         }
 
-        // Load data into the serializable class and transfer it to the non-serialisable list
-        LocationDatabase locationDatabase = JsonUtility.FromJson<LocationDatabase>(jsonContent);
-        LOCATION_DATABASE = locationDatabase.serializableList;
+        yield return null;
+        callback(jsonContent);
     }
 
-    public static IEnumerator InitialisePlanetDataFromJSON() {
-
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Database/", "planet.json");
-        string jsonContent;
-
-        // Read pure text using UnityWebRequest or File.ReadAllText
-        if (filePath.Contains("://") || filePath.Contains(":///"))
-        {
-            UnityWebRequest www = UnityWebRequest.Get(filePath);
-            yield return www.SendWebRequest();
-            jsonContent = www.downloadHandler.text;
-        }
-        else
-        {
-            jsonContent = File.ReadAllText(filePath);
-        }
-
-        // Load data into the serializable class and transfer it to the non-serialisable list
-        PlanetDatabase planetDatabase = JsonUtility.FromJson<PlanetDatabase>(jsonContent);
-        PLANET_DATABASE = planetDatabase.serializableList;
-    }
-
+    // JSON saving function template
     private string SaveToJSON() {
         PlanetDatabase locationDatabase = new PlanetDatabase();
         locationDatabase.serializableList = PLANET_DATABASE;
@@ -157,6 +135,37 @@ public class CORE
         float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1.0f - a));
 
         return Mathf.RoundToInt(r * c);
+    }
+    #endregion
+
+    #region CORE.SPRITE.LOADER
+    // Load any local image and return it as a 2D sprite using callback
+    public static IEnumerator LoadImageToSprite(string filePath, Action<Sprite> callback)
+    {
+        byte[] imageData;
+        Texture2D texture = new Texture2D(2, 2);
+
+        // Read bytes using UnityWebRequest or File.ReadAllBytes
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            UnityWebRequest www = UnityWebRequest.Get(filePath);
+            yield return www.SendWebRequest();
+            imageData = www.downloadHandler.data;
+        }
+        else
+        {
+            imageData = File.ReadAllBytes(filePath);
+        }
+
+        // Load raw data into Texture2D 
+        texture.LoadImage(imageData);
+
+        // Convert Texture2D to Sprite
+        Vector2 pivot = new Vector2(0.5f, 0.5f);
+        Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), pivot, 100.0f);
+
+        yield return null;
+        callback(sprite);
     }
     #endregion
 
