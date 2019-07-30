@@ -53,7 +53,7 @@ public class CORE
     #region CORE.PARAMETER
     //
     public static Vector2 USER_LATLONG = new Vector2(51.507351f, -0.127758f); // Default UK latitude and longitude
-    public static List<GameObject> PIN_LIST = new List<GameObject>();
+    public static List<GameObject> PIN_LIST = new List<GameObject>(); // MAY BE REMOVED IN FUTURE UPDATE
     public static Quaternion ROTATE_TO_TOP;
 
     // Geological parameters

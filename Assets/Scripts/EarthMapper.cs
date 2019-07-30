@@ -282,9 +282,13 @@ public class EarthMapper : MonoBehaviour
 
                 // Set the landmark image
                 Transform landmarkImage = landmark.transform.Find("UI_Landmark_Image");
+                landmarkImage.name = pin.name;
 
-                //StartCoroutine(LoadImageAsSprite(Path.Combine(Application.streamingAssetsPath, "LandmarkIcons/", UTIL.FileNameParser(currentPinLocation.name) + ".png"), "Image_CityLandmark"));
-                landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
+                //landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
+                StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "0.png"), (result) =>
+                {
+                    landmarkImage.GetComponent<Image>().sprite = result;
+                }));
 
                 // Rescale the landmark
                 landmark.transform.localScale *= distanceScale;
@@ -302,7 +306,7 @@ public class EarthMapper : MonoBehaviour
                     //landmark.transform.localScale = new Vector2(rescale, rescale);
                 }
 
-                landmarkImage.name = pin.name;
+              
                 landmarkList.Add(landmark);
                 #endregion
 
