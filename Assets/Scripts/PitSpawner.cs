@@ -25,10 +25,6 @@ public class PitSpawner : MonoBehaviour
     private GameObject highlightedIndicator;
     private float pitScale = 1.0f;
 
-    private float panelDistanceScale = 40f;
-    private float panelScale = 1 / 10f;
-    private Vector3 yAxisOffset = new Vector3(0, 0, 0);
-
     // Start is called before the first frame update
     void Start()
     {
