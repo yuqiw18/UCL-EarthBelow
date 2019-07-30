@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.Networking;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -20,11 +19,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject panelPrefab;
     public GameObject landmarkPrefab;
 
-    public Text[] debugOutput;
-
     public UnityEvent onClick;
-
-    public Sprite[] cityLandmark;
 
     private ARRaycastManager arRaycastManager;
     private Pose placementPose;
@@ -49,9 +44,6 @@ public class EarthMapper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        debugOutput[0].text = Screen.height.ToString();
-
         // Update the indicator location
         if (placementIndicatorEnabled)
         {
