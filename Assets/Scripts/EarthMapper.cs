@@ -19,6 +19,8 @@ public class EarthMapper : MonoBehaviour
     public GameObject panelPrefab;
     public GameObject landmarkPrefab;
 
+    public Text debugOutput;
+
     public UnityEvent onClick;
 
     private ARRaycastManager arRaycastManager;
@@ -90,7 +92,7 @@ public class EarthMapper : MonoBehaviour
                 // Display city profile
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
-                    //
+                    // Compute the scaling factor
                     float distanceScale = (raycastHit.collider.transform.position - referenceOrigin).magnitude/1000;
 
                     // Display the panel before the other sprites by shifting a very small value so that it is not occluded
