@@ -26,11 +26,15 @@ public class EarthPreviewer : MonoBehaviour
     private Vector3 startDirection, targetDirection;
     private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
 
+    private bool ARMode = false;
+    private Transform earthSpawnPoint;
+
     // Start is called before the first frame update
     void Start()
     {
         earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
-        
+        earthSpawnPoint = earthObject.transform.parent.parent;
+
     }
 
     // Update is called once per frame
@@ -73,33 +77,44 @@ public class EarthPreviewer : MonoBehaviour
         //    }
         //}
 
-        // Rotate the Earth manually
-        if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
+        if (!ARMode)
         {
-            // Get the displacement delta
-            Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
+            // Rotate the Earth manually in non-AR mode
+            if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
+            {
+                // Get the displacement delta
+                Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
 
-            // Use the parent's local axis direction as reference without messing up its own transform
-            earthObject.transform.Rotate(earthObject.transform.parent.transform.up, -deltaPosition.x * rotationSpeed, Space.World);
-            earthObject.transform.Rotate(earthObject.transform.parent.transform.right, deltaPosition.y * rotationSpeed, Space.World);
+                // Use the parent's local axis direction as reference without messing up its own transform
+                earthObject.transform.Rotate(earthObject.transform.parent.up, -deltaPosition.x * rotationSpeed, Space.World);
+                earthObject.transform.Rotate(earthObject.transform.parent.right, deltaPosition.y * rotationSpeed, Space.World);
+            }
+
+            // Scale the Earth manually in non-AR mode
+            if (Input.touchCount == 2)
+            {
+                // Get the touch
+                Touch firstTouch = Input.GetTouch(0);
+                Touch secondTouch = Input.GetTouch(1);
+
+                Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+                Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+
+                float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+                float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+
+                float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
+
+                earthObject.transform.parent.localScale += new Vector3(zoomSpeed* touchMagnitudeDifference, zoomSpeed* touchMagnitudeDifference, zoomSpeed* touchMagnitudeDifference);
+
+                if (earthObject.transform.parent.localScale.x < 0.1f) {
+                    earthObject.transform.parent.localScale = Vector3.one * 0.1f;
+                }
+            }
         }
-
-        // Scale the Earth
-        if (Input.touchCount == 2)
+        else
         {
-            // Get the touch
-            Touch firstTouch = Input.GetTouch(0);
-            Touch secondTouch = Input.GetTouch(1);
 
-            Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
-            Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
-
-            float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
-            float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
-
-            float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
-
-            earthObject.transform.parent.gameObject.transform.localPosition += new Vector3(0, 0, zoomSpeed * touchMagnitudeDifference);
         }
 
         // Transition between day and night (smoothing the material change)
@@ -213,5 +228,24 @@ public class EarthPreviewer : MonoBehaviour
             showCountryBorder = true;
         }
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(showCountryBorder);
+    }
+
+
+    public void SwitchARMode()
+    {
+        if (!ARMode)
+        {
+            // Detach the earth model from the camera
+            earthObject.transform.parent.parent = null;
+            ARMode = true;
+        }
+        else
+        {
+            // Attch the earth model to the camera
+            earthObject.transform.parent.SetParent(earthSpawnPoint);
+            earthObject.transform.parent.transform.localPosition = Vector3.zero;
+            earthObject.transform.parent.transform.localScale = Vector3.one;
+            ARMode = false;
+        }
     }
 }

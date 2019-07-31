@@ -35,17 +35,15 @@ public class MainMenuControl : MonoBehaviour
             if (tempPosition == targetPosition){
                 canMove = false;
                 switch (state) {
-                    case "ABOUT":
+                    case "DOWN":
                         aboutPanel.SetActive(true);
                         backButton.SetActive(true);
                         break;
-                    case "HINTS":
-                        hintsPanel.SetActive(true);
+                    case "UP":
                         backButton.SetActive(true);
                         break;
                     case "IDLE":
                         aboutPanel.SetActive(false);
-                        hintsPanel.SetActive(false);
                         backButton.SetActive(false);
                         options.SetActive(false);
                         options.SetActive(true);
@@ -58,10 +56,10 @@ public class MainMenuControl : MonoBehaviour
     public void MoveBackground(string operation) {
         state = operation;
         switch (operation) {
-            case "ABOUT":
+            case "DOWN":
                 targetPosition = originPostion + new Vector3(0, Screen.height / 2, 0);
                 break;
-            case "HINTS":
+            case "UP":
                 targetPosition = originPostion + new Vector3(0, -Screen.height / 2, 0);
                 break;
             case "PLACEHOLDER1":
