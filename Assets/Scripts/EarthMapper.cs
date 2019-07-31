@@ -35,10 +35,14 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> landmarkList = new List<GameObject>();
     private float UIScale = 2.0f;
 
+    private Sprite defaultFlag, defaultLandmark;
+
     // Start is called before the first frame update
     void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
+        defaultLandmark = panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite;
+        defaultFlag = panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite;
     }
 
     // Update is called once per frame
@@ -100,6 +104,11 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
 
+                    // Reset images just in case the target images are not available
+                    panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = defaultLandmark;
+                    panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = defaultFlag;
+
+                    // Load images from local resources
                     StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
                     {
                         panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = result;
