@@ -36,6 +36,7 @@ public class EarthMapper : MonoBehaviour
 
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
+    private string url;
     private float UIScale = 2.0f;
 
     private Sprite defaultFlag, defaultLandmark;
@@ -121,6 +122,8 @@ public class EarthMapper : MonoBehaviour
                     {
                         panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
                     }));
+
+                    url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
                     panelPrefab.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
@@ -357,6 +360,10 @@ public class EarthMapper : MonoBehaviour
     {
         placementIndicatorEnabled = toggle;
         highlightedIndicator.SetActive(toggle);
+    }
+
+    public void OpenBrowser() {
+        Application.OpenURL(url);
     }
 
    

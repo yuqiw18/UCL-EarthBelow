@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3764150172005659119}
   - component: {fileID: 3764150172005658896}
   - component: {fileID: 3764150172005658897}
-  - component: {fileID: 261075016411235351}
   m_Layer: 0
   m_Name: Earth_Mantle
   m_TagString: Untagged
@@ -92,16 +91,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &261075016411235351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3764150172005658898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cd90b43fdcd84823a1df75a276d52d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  materialList: []

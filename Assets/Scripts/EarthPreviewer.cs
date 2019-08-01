@@ -7,6 +7,7 @@ public class EarthPreviewer : MonoBehaviour
 {
     public GameObject previewerOptions;
     public GameObject earthObject;
+    public Material[] earthMaterialList;
 
     private bool showMagneticField = false;
     private bool showCountryBorder = false;
@@ -14,31 +15,61 @@ public class EarthPreviewer : MonoBehaviour
     private readonly float rotationSpeed = 0.25f;
     private readonly float zoomSpeed = 0.005f;
 
-    private Material earthMaterial;
+    //private Material earthMaterial;
+    private Renderer earthRenderer;
     private float transitionDirection = 1;
     private readonly float transitionSpeed = 0.5f;
     private float currentAlpha = 0;
     private bool inTransition = false;
 
+    private float currentValue = 1;
+    private float speed = 0.5f;
+
+    private GameObject pinGroup;
+
     private bool isSpawned = false;
+    private bool canSpawn = false;
 
     private bool initRotation, targetTransformReached = false;
     private Vector3 startDirection, targetDirection;
     private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
 
-    private bool ARMode = false;
     private Transform earthSpawnPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
         earthSpawnPoint = earthObject.transform.parent.parent;
+        pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
+        earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
+        ChangeMaterial(0);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (canSpawn)
+        {
+            if (currentValue > 0)
+            {
+                currentValue -= speed * Time.deltaTime;
+                if (currentValue < 0)
+                {
+                    currentValue = 0;
+
+                    earthRenderer.material.SetFloat("_Dissolve", currentValue);
+                    canSpawn = false;
+                    pinGroup.SetActive(true);
+                    ChangeMaterial(1);
+                }
+                else
+                {
+                    earthRenderer.material.SetFloat("_Dissolve", currentValue);
+                }
+            }
+        }
+
+        //if (earthMaterial)
         //// Rotate to the current location automatically once
         //if (!initRotation)
         //{
@@ -75,12 +106,6 @@ public class EarthPreviewer : MonoBehaviour
         //        Debug.Log("Reached");
         //    }
         //}
-
-
-
-
-
-
 
         if (isSpawned)
         {
@@ -129,19 +154,19 @@ public class EarthPreviewer : MonoBehaviour
 
             if (currentAlpha < 0)
             {
-                earthMaterial.SetFloat("_AlphaBlending", 0);
+                earthRenderer.material.SetFloat("_AlphaBlending", 0);
                 inTransition = false;
                 currentAlpha = 0;
             }
             else if (currentAlpha > 1)
             {
-                earthMaterial.SetFloat("_AlphaBlending", 1);
+                earthRenderer.material.SetFloat("_AlphaBlending", 1);
                 inTransition = false;
                 currentAlpha = 1;
             }
             else
             {
-                earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
+                earthRenderer.material.SetFloat("_AlphaBlending", currentAlpha);
             }
         }
     }
@@ -159,13 +184,6 @@ public class EarthPreviewer : MonoBehaviour
             earthObject.SetActive(true);
         }
         previewerOptions.SetActive(true);
-    }
-
-    public void ChangeMaterial(int index)
-    {
-        earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<AlternativeMaterial>().materialList[index];
-        earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
-        earthMaterial.SetFloat("_AlphaBlending", currentAlpha);
     }
 
     public void TransitionMaterial()
@@ -236,20 +254,39 @@ public class EarthPreviewer : MonoBehaviour
     }
 
     public void SpawnEarth() {
-        if (!isSpawned)
-        {
-            earthObject.transform.parent.parent = null;
-            earthObject.SetActive(true);
-            isSpawned = true;
-        }
-        else
-        {
-            // Relocation
-            earthObject.transform.parent.SetParent(earthSpawnPoint);
-            earthObject.transform.parent.transform.localPosition = Vector3.zero;
-            earthObject.transform.parent.transform.localScale = Vector3.one;
-            earthObject.transform.parent.parent = null;
-            isSpawned = true;
-        }
+        earthObject.transform.parent.parent = null;
+        earthObject.transform.parent.SetParent(earthSpawnPoint);
+        earthObject.transform.parent.transform.localPosition = Vector3.zero;
+        earthObject.transform.parent.transform.localScale = Vector3.one;
+        earthObject.transform.parent.parent = null;
+        pinGroup.SetActive(false);
+        earthObject.SetActive(true);
+        isSpawned = true;
+        canSpawn = true;
+    }
+
+    public void ChangeMaterial(int index)
+    {
+        earthRenderer.material = earthMaterialList[index];
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        earthRenderer.material.SetFloat("_AlphaBlending", alpha);
+    }
+
+    public void ResetEarth()
+    {
+        SwitchLayer(0);
+        earthObject.transform.Find("Group_Layers").Find("Earth_MagneticField").gameObject.SetActive(false);
+        earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(false);
+        showMagneticField = false;
+        showCountryBorder = false;
+        ChangeMaterial(0);
+        currentValue = 1.0f;
+        SetAlpha(currentValue);
+        earthObject.SetActive(false);
+        isSpawned = false;
+        canSpawn = false;
     }
 }

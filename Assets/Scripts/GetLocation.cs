@@ -124,8 +124,7 @@ public class GetLocation : MonoBehaviour
             // Set color for the current location pin
             if (i == 0)
             {
-                pin.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                pin.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red);
+                pin.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
             }
 
             // Keep track of pins

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 // Global Variables and Public Access Functions
-public class CORE
+public static class CORE
 {
     #region CORE.DATA.STRUCTURE
     // Geographical data
@@ -95,7 +95,7 @@ public class CORE
     }
 
     // JSON saving function template
-    private string SaveToJSON() {
+    private static string SaveToJSON() {
         PlanetDatabase locationDatabase = new PlanetDatabase();
         locationDatabase.serializableList = PLANET_DATABASE;
         return JsonUtility.ToJson(locationDatabase);
@@ -173,7 +173,7 @@ public class CORE
     // Convert file name for loading files
     public static string FileNameParser(string fileName)
     {
-        return (fileName.Replace(" ", "-")).ToLower();
+        return (fileName.Replace(" ", "_")).ToLower();
     }
     #endregion
 
