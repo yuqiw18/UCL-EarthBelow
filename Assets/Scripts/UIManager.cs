@@ -3,43 +3,80 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIControl : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static UIManager instance;
+
+    private void Awake()
     {
-        
+        instance = this;
     }
 
+    #region DYNAMIC
+    // For accessing through event system
     public void FadeIn(Text text)
     {
-        StartCoroutine(FadeToAlpha(text));
+        instance.StartCoroutine(FadeToAlpha(text));
     }
 
     public void FadeIn(Image image)
     {
-        StartCoroutine(FadeToAlpha(image));
+        instance.StartCoroutine(FadeToAlpha(image));
     }
 
     public void FadeIn(SVGImage svg)
     {
-        StartCoroutine(FadeToAlpha(svg));
+        instance.StartCoroutine(FadeToAlpha(svg));
     }
 
     public void FadeOut(Text text)
     {
-        StartCoroutine(FadeToZeroAlpha(text));
+        instance.StartCoroutine(FadeToZeroAlpha(text));
     }
 
     public void FadeOut(Image image)
     {
-        StartCoroutine(FadeToZeroAlpha(image));
+        instance.StartCoroutine(FadeToZeroAlpha(image));
     }
 
     public void FadeOut(SVGImage svg)
     {
-        StartCoroutine(FadeToZeroAlpha(svg));
+        instance.StartCoroutine(FadeToZeroAlpha(svg));
     }
+    #endregion
+
+    #region STATIC
+    // For accessing through script
+    public static void StaticFadeIn(Text text)
+    {
+        instance.StartCoroutine(FadeToAlpha(text));
+    }
+
+    public static void StaticFadeIn(Image image)
+    {
+        instance.StartCoroutine(FadeToAlpha(image));
+    }
+
+    public static void StaticFadeIn(SVGImage svg)
+    {
+        instance.StartCoroutine(FadeToAlpha(svg));
+    }
+
+    public static void StaticFadeOut(Text text)
+    {
+        instance.StartCoroutine(FadeToZeroAlpha(text));
+    }
+
+    public static void StaticFadeOut(Image image)
+    {
+        instance.StartCoroutine(FadeToZeroAlpha(image));
+    }
+
+    public static void StaticFadeOut(SVGImage svg)
+    {
+        instance.StartCoroutine(FadeToZeroAlpha(svg));
+    }
+    #endregion
 
     #region OVERLOAD_TEXT
     private static IEnumerator FadeToAlpha(Text text)

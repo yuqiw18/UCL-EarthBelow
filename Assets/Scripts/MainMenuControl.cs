@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuControl : MonoBehaviour
 {
     public GameObject aboutPanel;
-    public GameObject hintsPanel;
     public GameObject backButton;
-    public GameObject options;
+    public Text startText, aboutText;
 
     private GameObject menuBackground;
 
@@ -40,13 +40,13 @@ public class MainMenuControl : MonoBehaviour
                         backButton.SetActive(true);
                         break;
                     case "UP":
-                        backButton.SetActive(true);
+                        this.gameObject.SetActive(false);
                         break;
                     case "IDLE":
                         aboutPanel.SetActive(false);
                         backButton.SetActive(false);
-                        options.SetActive(false);
-                        options.SetActive(true);
+                        UIManager.StaticFadeIn(startText);
+                        UIManager.StaticFadeIn(aboutText);
                         break;
                 }
             }

@@ -18,6 +18,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject labelPrefab;
     public GameObject panelPrefab;
     public GameObject landmarkPrefab;
+    public GameObject legendPanel;
 
     public Text debugOutput;
 
@@ -344,6 +345,8 @@ public class EarthMapper : MonoBehaviour
 
         panelPrefab.transform.SetAsLastSibling();
         #endregion
+
+        legendPanel.SetActive(true);
 
         // Destroy it since it is no longer needed
         Destroy(mappedEarth);

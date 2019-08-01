@@ -8,8 +8,6 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject previewerOptions;
     public GameObject earthObject;
 
-    public UnityEvent onClick;
-
     private bool showMagneticField = false;
     private bool showCountryBorder = false;
 
@@ -21,6 +19,8 @@ public class EarthPreviewer : MonoBehaviour
     private readonly float transitionSpeed = 0.5f;
     private float currentAlpha = 0;
     private bool inTransition = false;
+
+    private bool isSpawned = false;
 
     private bool initRotation, targetTransformReached = false;
     private Vector3 startDirection, targetDirection;
@@ -34,7 +34,6 @@ public class EarthPreviewer : MonoBehaviour
     {
         earthMaterial = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>().material;
         earthSpawnPoint = earthObject.transform.parent.parent;
-
     }
 
     // Update is called once per frame
@@ -77,7 +76,13 @@ public class EarthPreviewer : MonoBehaviour
         //    }
         //}
 
-        if (!ARMode)
+
+
+
+
+
+
+        if (isSpawned)
         {
             // Rotate the Earth manually in non-AR mode
             if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
@@ -143,16 +148,16 @@ public class EarthPreviewer : MonoBehaviour
 
     private void OnDisable()
     {
-        if (earthObject != null) {
-            earthObject.SetActive(false);
-        }
-        
+        earthObject.SetActive(false);
         previewerOptions.SetActive(false);
     }
 
     private void OnEnable()
     {
-        earthObject.SetActive(true);
+        if (isSpawned)
+        {
+            earthObject.SetActive(true);
+        }
         previewerOptions.SetActive(true);
     }
 
@@ -230,22 +235,21 @@ public class EarthPreviewer : MonoBehaviour
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(showCountryBorder);
     }
 
-
-    public void SwitchARMode()
-    {
-        if (!ARMode)
+    public void SpawnEarth() {
+        if (!isSpawned)
         {
-            // Detach the earth model from the camera
             earthObject.transform.parent.parent = null;
-            ARMode = true;
+            earthObject.SetActive(true);
+            isSpawned = true;
         }
         else
         {
-            // Attch the earth model to the camera
+            // Relocation
             earthObject.transform.parent.SetParent(earthSpawnPoint);
             earthObject.transform.parent.transform.localPosition = Vector3.zero;
             earthObject.transform.parent.transform.localScale = Vector3.one;
-            ARMode = false;
+            earthObject.transform.parent.parent = null;
+            isSpawned = true;
         }
     }
 }
