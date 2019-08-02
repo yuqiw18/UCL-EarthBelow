@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
 {
     public GameObject previewerOptions;
     public GameObject earthObject;
     public Material[] earthMaterialList;
+
+    public Text debugOutput;
 
     private bool showMagneticField = false;
     private bool showCountryBorder = false;
@@ -34,12 +37,16 @@ public class EarthPreviewer : MonoBehaviour
     private Vector3 startDirection, targetDirection;
     private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
 
+    private Transform earthTransformPoint;
     private Transform earthSpawnPoint;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        earthTransformPoint = earthObject.transform.parent;
         earthSpawnPoint = earthObject.transform.parent.parent;
+       
         pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
         ChangeMaterial(0);
@@ -48,6 +55,7 @@ public class EarthPreviewer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Spawn animation control
         if (canSpawn)
         {
             if (currentValue > 0)
@@ -107,6 +115,7 @@ public class EarthPreviewer : MonoBehaviour
         //    }
         //}
 
+        // Gesture control
         if (isSpawned)
         {
             // Rotate the Earth manually in non-AR mode
@@ -119,9 +128,7 @@ public class EarthPreviewer : MonoBehaviour
                 earthObject.transform.Rotate(earthObject.transform.parent.up, -deltaPosition.x * rotationSpeed, Space.World);
                 earthObject.transform.Rotate(earthObject.transform.parent.right, deltaPosition.y * rotationSpeed, Space.World);
             }
-
-            // Scale the Earth manually in non-AR mode
-            if (Input.touchCount == 2)
+            else if (Input.touchCount == 2)
             {
                 // Get the touch
                 Touch firstTouch = Input.GetTouch(0);
@@ -135,11 +142,20 @@ public class EarthPreviewer : MonoBehaviour
 
                 float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
 
-                earthObject.transform.parent.localScale += new Vector3(zoomSpeed* touchMagnitudeDifference, zoomSpeed* touchMagnitudeDifference, zoomSpeed* touchMagnitudeDifference);
+                earthObject.transform.parent.localScale += new Vector3(zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference);
 
-                if (earthObject.transform.parent.localScale.x < 0.1f) {
+                if (earthObject.transform.parent.localScale.x < 0.1f)
+                {
                     earthObject.transform.parent.localScale = Vector3.one * 0.1f;
                 }
+            }
+            else
+            {
+                // Update the tranform parent
+                earthObject.transform.parent = null;
+                earthTransformPoint.transform.LookAt(Camera.main.transform);
+                earthTransformPoint.transform.Rotate(new Vector3(0, 180, 0));
+                earthObject.transform.SetParent(earthTransformPoint);
             }
         }
         else
@@ -253,12 +269,19 @@ public class EarthPreviewer : MonoBehaviour
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(showCountryBorder);
     }
 
+    // Spawn a new earth
     public void SpawnEarth() {
-        earthObject.transform.parent.parent = null;
+
+        // Attach to the camera-related spawn point
         earthObject.transform.parent.SetParent(earthSpawnPoint);
+
+        // Reset transform
         earthObject.transform.parent.transform.localPosition = Vector3.zero;
         earthObject.transform.parent.transform.localScale = Vector3.one;
+
+        // Detach from the camera-related spawn point
         earthObject.transform.parent.parent = null;
+
         pinGroup.SetActive(false);
         earthObject.SetActive(true);
         isSpawned = true;
@@ -275,6 +298,7 @@ public class EarthPreviewer : MonoBehaviour
         earthRenderer.material.SetFloat("_AlphaBlending", alpha);
     }
 
+    // Reset earth
     public void ResetEarth()
     {
         SwitchLayer(0);
