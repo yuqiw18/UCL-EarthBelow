@@ -291,29 +291,29 @@ public class EarthMapper : MonoBehaviour
                 Transform landmarkImage = landmark.transform.Find("UI_Landmark_Image");
                 landmarkImage.name = pin.name;
 
-                //landmarkImage.GetComponent<Image>().sprite = cityLandmark[int.Parse(pin.gameObject.name)];
-                StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "0.png"), (result) =>
-                {
-                    landmarkImage.GetComponent<Image>().sprite = result;
-                }));
-
                 // Rescale the landmark
                 landmark.transform.localScale *= distanceScale;
 
                 // Change the color based on the geographical distance
                 if (geoDistance > 5)
                 {
-                    landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
-                    //landmark.transform.localScale = new Vector2(0.1f, 0.1f);
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "Far.png"), (result) =>
+                    {
+                        landmarkImage.GetComponent<Image>().sprite = result;
+                    }));
+                    //landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
                 }
                 else
                 {
-                    landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
-                    //float rescale = 0.3f - geoDistance * 0.04f;
-                    //landmark.transform.localScale = new Vector2(rescale, rescale);
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "Near.png"), (result) =>
+                    {
+                        landmarkImage.GetComponent<Image>().sprite = result;
+                    }));
+                    
                 }
 
-              
+                landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
+
                 landmarkList.Add(landmark);
                 #endregion
 
