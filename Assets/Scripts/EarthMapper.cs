@@ -107,6 +107,7 @@ public class EarthMapper : MonoBehaviour
                     panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name;
                     panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
                     panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
+                    panelPrefab.transform.Find("Button_Portal").gameObject.SetActive(selectedLocation.panorama);
 
                     // Reset images just in case the target images are not available
                     panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = defaultLandmark;
@@ -121,6 +122,12 @@ public class EarthMapper : MonoBehaviour
                     StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), (result) =>
                     {
                         panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
+                    }));
+
+                    StartCoroutine(CORE.LoadImageToTexture(Path.Combine(Application.streamingAssetsPath, "Images/Panorama/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
+                    {
+                        earthHorizon.transform.Find("Portal_Panorama").GetComponent<Renderer>().material.SetTexture("_Texture", result);
+                        Debug.Log("Called");
                     }));
 
                     url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
@@ -362,9 +369,28 @@ public class EarthMapper : MonoBehaviour
         highlightedIndicator.SetActive(toggle);
     }
 
-    public void OpenBrowser() {
+    public void OpenBrowser()
+    {
         Application.OpenURL(url);
     }
 
+    public void TogglePanorama(bool active)
+    {
+        if (active)
+        {
+            earthHorizon.transform.Find("Portal_Panorama").gameObject.SetActive(true);
+            earthHorizon.transform.Find("Mapping_Grid").gameObject.SetActive(false);
+            earthHorizon.transform.Find("Mapping_Reference").gameObject.SetActive(false);
+            canvasWorld.SetActive(false);
+        }
+        else
+        {
+            earthHorizon.transform.Find("Portal_Panorama").gameObject.SetActive(false);
+            earthHorizon.transform.Find("Mapping_Grid").gameObject.SetActive(true);
+            earthHorizon.transform.Find("Mapping_Reference").gameObject.SetActive(true);
+            canvasWorld.SetActive(true);
+        }
+        
+    }
    
 }

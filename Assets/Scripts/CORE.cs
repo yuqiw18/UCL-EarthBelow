@@ -17,6 +17,7 @@ public static class CORE
         public string country;
         public Vector2 coord;
         public string description;
+        public bool panorama;
     }
 
     [Serializable]
@@ -166,6 +167,33 @@ public static class CORE
 
         yield return null;
         callback(sprite);
+    }
+    #endregion
+
+    #region CORE.TEXTURE.LOADER
+    // Load any local image and return it as a 2D texture using callback
+    public static IEnumerator LoadImageToTexture(string filePath, Action<Texture2D> callback)
+    {
+        byte[] imageData;
+        Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+
+        // Read bytes using UnityWebRequest or File.ReadAllBytes
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            UnityWebRequest www = UnityWebRequest.Get(filePath);
+            yield return www.SendWebRequest();
+            imageData = www.downloadHandler.data;
+        }
+        else
+        {
+            imageData = File.ReadAllBytes(filePath);
+        }
+
+        // Load raw data into Texture2D 
+        texture.LoadImage(imageData);
+
+        yield return null;
+        callback(texture);
     }
     #endregion
 

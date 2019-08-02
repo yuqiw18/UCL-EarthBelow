@@ -7,7 +7,8 @@
                 "x": 48.864715576171878,
                 "y": 2.3490140438079836
             },
-            "description": "Paris, France's capital, is a major European city and a global center for art, fashion, gastronomy and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine."
+            "description": "Paris, France's capital, is a major European city and a global center for art, fashion, gastronomy and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine.",
+            "panorama": true
         },
         {
             "name": "Washington D.C.",
@@ -16,7 +17,8 @@
                 "x": 38.907192,
                 "y": -77.036873
             },
-            "description": "Washington, DC, the U.S. capital, is a compact city on the Potomac River, bordering the states of Maryland and Virginia. It’s defined by imposing neoclassical monuments and buildings – including the iconic ones that house the federal government’s 3 branches: The Capitol, White House and Supreme Court."
+            "description": "Washington, DC, the U.S. capital, is a compact city on the Potomac River, bordering the states of Maryland and Virginia. It’s defined by imposing neoclassical monuments and buildings – including the iconic ones that house the federal government’s 3 branches: The Capitol, White House and Supreme Court.",
+            "panorama": false
         },
         {
             "name": "Canberra",
@@ -25,7 +27,8 @@
                 "x": -35.28093719482422,
                 "y": 149.1300048828125
             },
-            "description": "Canberra is the capital city of Australia. Founded following the federation of the colonies of Australia as the seat of government for the new nation, it is Australia's largest inland city and the eighth-largest city overall."
+            "description": "Canberra is the capital city of Australia. Founded following the federation of the colonies of Australia as the seat of government for the new nation, it is Australia's largest inland city and the eighth-largest city overall.",
+            "panorama": true
         },
         {
             "name": "Tokyo",
@@ -34,7 +37,8 @@
                 "x": 35.65283203125,
                 "y": 139.8394775390625
             },
-            "description":"Tokyo, Japan’s busy capital, mixes the ultramodern and the traditional, from neon-lit skyscrapers to historic temples. The opulent Meiji Shinto Shrine is known for its towering gate and surrounding woods. The Imperial Palace sits amid large public gardens."
+            "description":"Tokyo, Japan’s busy capital, mixes the ultramodern and the traditional, from neon-lit skyscrapers to historic temples. The opulent Meiji Shinto Shrine is known for its towering gate and surrounding woods. The Imperial Palace sits amid large public gardens.",
+            "panorama": true
         },
         {
             "name": "Wellington",
@@ -43,7 +47,8 @@
                 "x": -41.286461,
                 "y": 174.776230
             },
-            "description":"Wellington, the capital of New Zealand, sits near the North Island’s southernmost point on the Cook Strait. A compact city, it encompasses a waterfront promenade, sandy beaches, a working harbour and colourful timber houses on surrounding hills. From Lambton Quay, the iconic red Wellington Cable Car heads to the Wellington Botanic Gardens."
+            "description":"Wellington, the capital of New Zealand, sits near the North Island’s southernmost point on the Cook Strait. A compact city, it encompasses a waterfront promenade, sandy beaches, a working harbour and colourful timber houses on surrounding hills. From Lambton Quay, the iconic red Wellington Cable Car heads to the Wellington Botanic Gardens.",
+            "panorama": false
         },
         {
             "name": "Beijing",
@@ -52,7 +57,8 @@
                 "x": 39.90420150756836,
                 "y": 116.40739440917969
             },
-            "description":"Beijing, China’s sprawling capital, has history stretching back 3 millennia. Yet it’s known as much for modern architecture as its ancient sites such as the grand Forbidden City complex, the imperial palace during the Ming and Qing dynasties."
+            "description":"Beijing, China’s sprawling capital, has history stretching back 3 millennia. Yet it’s known as much for modern architecture as its ancient sites such as the grand Forbidden City complex, the imperial palace during the Ming and Qing dynasties.",
+            "panorama": true
         },
         {
             "name": "Ottawa",
@@ -61,7 +67,8 @@
                 "x": 45.421532,
                 "y": -75.697189
             },
-            "description":"Ottawa is Canada’s capital, in the east of southern Ontario, near the city of Montréal and the U.S. border. Sitting on the Ottawa River, it has at its centre Parliament Hill, with grand Victorian architecture and museums such as the National Gallery of Canada, with noted collections of indigenous and other Canadian art."
+            "description":"Ottawa is Canada’s capital, in the east of southern Ontario, near the city of Montréal and the U.S. border. Sitting on the Ottawa River, it has at its centre Parliament Hill, with grand Victorian architecture and museums such as the National Gallery of Canada, with noted collections of indigenous and other Canadian art.",
+            "panorama": true
         },
         {
             "name": "Moscow",
@@ -70,7 +77,8 @@
                 "x": 55.751243591308597,
                 "y": 37.61842346191406
             },
-            "description":"Moscow, on the Moskva River in western Russia, is the nation’s cosmopolitan capital. In its historic core is the Kremlin, a complex that’s home to the president and tsarist treasures in the Armoury. Outside its walls is Red Square, Russia's symbolic center."
+            "description":"Moscow, on the Moskva River in western Russia, is the nation’s cosmopolitan capital. In its historic core is the Kremlin, a complex that’s home to the president and tsarist treasures in the Armoury. Outside its walls is Red Square, Russia's symbolic center.",
+            "panorama": true
         },
         {
             "name": "London",
@@ -79,7 +87,8 @@
                 "x": 51.50735092163086,
                 "y": -0.1277579963207245
             },
-            "description":"London, the capital of England and the United Kingdom, is a 21st-century city with history stretching back to Roman times. At its centre stand the imposing Houses of Parliament, the iconic Big Ben clock tower and Westminster Abbey, site of British monarch coronations."
+            "description":"London, the capital of England and the United Kingdom, is a 21st-century city with history stretching back to Roman times. At its centre stand the imposing Houses of Parliament, the iconic Big Ben clock tower and Westminster Abbey, site of British monarch coronations.",
+            "panorama": true
         },
         {
             "name": "Berlin",
@@ -88,7 +97,8 @@
                 "x": 52.5200080871582,
                 "y": 13.404953956604004
             },
-            "description":"Berlin, Germany’s capital, dates to the 13th century. Reminders of the city's turbulent 20th-century history include its Holocaust memorial and the Berlin Wall's graffitied remains. Divided during the Cold War, its 18th-century Brandenburg Gate has become a symbol of reunification."
+            "description":"Berlin, Germany’s capital, dates to the 13th century. Reminders of the city's turbulent 20th-century history include its Holocaust memorial and the Berlin Wall's graffitied remains. Divided during the Cold War, its 18th-century Brandenburg Gate has become a symbol of reunification.",
+            "panorama": true
         },
         {
             "name": "Kuala Lumpur",
@@ -97,7 +107,8 @@
                 "x": 3.139003,
                 "y": 101.686852
             },
-            "description": "Kuala Lumpur is the capital of Malaysia. Its modern skyline is dominated by the 451m-tall Petronas Twin Towers, a pair of glass-and-steel-clad skyscrapers with Islamic motifs. The towers also offer a public skybridge and observation deck."
+            "description": "Kuala Lumpur is the capital of Malaysia. Its modern skyline is dominated by the 451m-tall Petronas Twin Towers, a pair of glass-and-steel-clad skyscrapers with Islamic motifs. The towers also offer a public skybridge and observation deck.",
+            "panorama": false
         }
     ]
 }

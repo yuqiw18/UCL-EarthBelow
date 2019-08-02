@@ -10,8 +10,6 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject earthObject;
     public Material[] earthMaterialList;
 
-    public Text debugOutput;
-
     private bool showMagneticField = false;
     private bool showCountryBorder = false;
 
