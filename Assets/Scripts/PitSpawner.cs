@@ -11,10 +11,7 @@ public class PitSpawner : MonoBehaviour
 
     public GameObject indicatorPrefab;
     public GameObject pitPrefab;
-
     public GameObject detailPanel;
-
-    public UnityEvent onClick;
 
     private Pose placementPose;
     private ARRaycastManager arRaycastManager;
@@ -61,7 +58,6 @@ public class PitSpawner : MonoBehaviour
 
                     // Show the panel
                     detailPanel.SetActive(true);
-
                 }
             }
         }
@@ -193,5 +189,4 @@ public class PitSpawner : MonoBehaviour
             spawnedPit.transform.position = tempPosition;
         }
     }
-
 }

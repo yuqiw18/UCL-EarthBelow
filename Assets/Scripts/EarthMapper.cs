@@ -20,24 +20,21 @@ public class EarthMapper : MonoBehaviour
     public GameObject landmarkPrefab;
     public GameObject legendPanel;
 
-    public Text debugOutput;
-
-    public UnityEvent onClick;
-
     private ARRaycastManager arRaycastManager;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
     private GameObject highlightedIndicator;
     private bool placementIndicatorEnabled = true;
 
-    private GameObject mappedEarth;
+    private GameObject referenceEarth;
     private GameObject earthHorizon;
     private Vector3 referenceOrigin = Vector3.zero;
 
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
     private string url;
-    private float UIScale = 2.0f;
+    private float UILabelScale = 2.0f;
+    private float UIPanelScale = 3.0f;
 
     private Sprite defaultFlag, defaultLandmark;
 
@@ -133,7 +130,7 @@ public class EarthMapper : MonoBehaviour
                     url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
-                    panelPrefab.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
+                    panelPrefab.transform.localScale = new Vector3(UIPanelScale * distanceScale, UIPanelScale * distanceScale, UIPanelScale * distanceScale);
 
                     // Rotate the panel to face the user
                     panelPrefab.transform.LookAt(Camera.main.transform);
@@ -212,6 +209,7 @@ public class EarthMapper : MonoBehaviour
 
         // Clear old variables
         Destroy(earthHorizon);
+
         foreach (GameObject l in landmarkList)
         {
             Destroy(l);
@@ -228,23 +226,23 @@ public class EarthMapper : MonoBehaviour
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         referenceOrigin = placementPose.position;
-        mappedEarth = Instantiate(earthObjectToCopy, referenceOrigin, Quaternion.identity);
+        referenceEarth = Instantiate(earthObjectToCopy, referenceOrigin, Quaternion.identity);
         earthHorizon = Instantiate(earthHorizonPrefab, referenceOrigin, Quaternion.identity);
 
-        Transform pinGroup = mappedEarth.transform.Find("Group_Pins");
-        Transform refTop = mappedEarth.transform.Find("Ref_Top");
+        Transform pinGroup = referenceEarth.transform.Find("Group_Pins");
+        Transform refTop = referenceEarth.transform.Find("Ref_Top");
 
         // Scale and reposition the Earth
-        mappedEarth.transform.localScale = new Vector3(CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL);
-        
+        referenceEarth.transform.localScale = new Vector3(CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL);
+
         // Rotate the Earth so that the current position is facing up so that we can do the following calculations
         // Use the pre-calculated value
-        mappedEarth.transform.rotation = CORE.ROTATE_TO_TOP;
+        referenceEarth.transform.rotation = CORE.ROTATE_TO_TOP;
 
         // Rotate the Earth so that the current north direction is aligned geographically
         // First, find the current device facing direction (projection on z axis)
         Vector3 facingDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
-        Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - mappedEarth.transform.position, Vector3.up).normalized;
+        Vector3 prefabNorthDirection = Vector3.ProjectOnPlane(refTop.position - referenceEarth.transform.position, Vector3.up).normalized;
 
         // Then, compute the degree required to rotate the earth to the facing direction
         Quaternion rotateToFacingDirection = Quaternion.FromToRotation(prefabNorthDirection, facingDirection);
@@ -264,7 +262,7 @@ public class EarthMapper : MonoBehaviour
 
         // OR 2. Use QUATERNION
         // Those steps need to be combined backwards to get the correct result
-        mappedEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * CORE.ROTATE_TO_TOP;
+        referenceEarth.transform.rotation = rotateToGeographicalNorth * rotateToFacingDirection * CORE.ROTATE_TO_TOP;
 
         // Fix the floating point imprecision issue due to the large scale
         Vector3 impreciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
@@ -275,7 +273,7 @@ public class EarthMapper : MonoBehaviour
         }
 
         // Shift the mapped earth down so that the y value of current position is the same as the selected surface for mapping
-        mappedEarth.transform.position -= new Vector3(0, CORE.EARTH_CRUST_RADIUS, 0);
+        referenceEarth.transform.position -= new Vector3(0, CORE.EARTH_CRUST_RADIUS, 0);
         #endregion
 
         #region PIN_ASSIGNMENT
@@ -308,7 +306,6 @@ public class EarthMapper : MonoBehaviour
                     {
                         landmarkImage.GetComponent<Image>().sprite = result;
                     }));
-                    //landmarkImage.GetComponent<Image>().color = new Color32(51, 102, 0, 255);
                 }
                 else
                 {
@@ -316,7 +313,6 @@ public class EarthMapper : MonoBehaviour
                     {
                         landmarkImage.GetComponent<Image>().sprite = result;
                     }));
-                    
                 }
 
                 landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
@@ -343,7 +339,7 @@ public class EarthMapper : MonoBehaviour
                 label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
                 // Rescale the label
-                label.transform.localScale = new Vector3(UIScale * distanceScale, UIScale * distanceScale, UIScale * distanceScale);
+                label.transform.localScale = new Vector3(UILabelScale * distanceScale, UILabelScale * distanceScale, UILabelScale * distanceScale);
                 labelList.Add(label);
                 #endregion
             }
@@ -359,7 +355,7 @@ public class EarthMapper : MonoBehaviour
         legendPanel.SetActive(true);
 
         // Destroy it since it is no longer needed
-        Destroy(mappedEarth);
+        Destroy(referenceEarth);
 
     }
 
