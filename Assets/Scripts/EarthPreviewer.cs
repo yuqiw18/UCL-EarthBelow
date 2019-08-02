@@ -118,35 +118,43 @@ public class EarthPreviewer : MonoBehaviour
         // Gesture control
         if (isSpawned)
         {
-            // Rotate the Earth manually in non-AR mode
+            // Rotate the Earth manually 
             if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
             {
-                // Get the displacement delta
-                Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
+                // Only when the earth is visible
+                if (earthObject.GetComponent<Renderer>().isVisible)
+                {
+                    // Get the displacement delta
+                    Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
 
-                // Use the parent's local axis direction as reference without messing up its own transform
-                earthObject.transform.Rotate(earthObject.transform.parent.up, -deltaPosition.x * rotationSpeed, Space.World);
-                earthObject.transform.Rotate(earthObject.transform.parent.right, deltaPosition.y * rotationSpeed, Space.World);
+                    // Use the parent's local axis direction as reference without messing up its own transform
+                    earthObject.transform.Rotate(earthObject.transform.parent.up, -deltaPosition.x * rotationSpeed, Space.World);
+                    earthObject.transform.Rotate(earthObject.transform.parent.right, deltaPosition.y * rotationSpeed, Space.World);
+                }
             }
             else if (Input.touchCount == 2)
             {
-                // Get the touch
-                Touch firstTouch = Input.GetTouch(0);
-                Touch secondTouch = Input.GetTouch(1);
-
-                Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
-                Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
-
-                float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
-                float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
-
-                float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
-
-                earthObject.transform.parent.localScale += new Vector3(zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference);
-
-                if (earthObject.transform.parent.localScale.x < 0.1f)
+                // Only when the earth is visible
+                if (earthObject.GetComponent<Renderer>().isVisible)
                 {
-                    earthObject.transform.parent.localScale = Vector3.one * 0.1f;
+                    // Get the touch
+                    Touch firstTouch = Input.GetTouch(0);
+                    Touch secondTouch = Input.GetTouch(1);
+
+                    Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+                    Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+
+                    float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+                    float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+
+                    float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
+
+                    earthObject.transform.parent.localScale += new Vector3(zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference);
+
+                    if (earthObject.transform.parent.localScale.x < 0.1f)
+                    {
+                        earthObject.transform.parent.localScale = Vector3.one * 0.1f;
+                    }
                 }
             }
             else
@@ -157,10 +165,6 @@ public class EarthPreviewer : MonoBehaviour
                 earthTransformPoint.transform.Rotate(new Vector3(0, 180, 0));
                 earthObject.transform.SetParent(earthTransformPoint);
             }
-        }
-        else
-        {
-
         }
 
         // Transition between day and night (smoothing the material change)
