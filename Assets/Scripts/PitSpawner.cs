@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PitSpawner : MonoBehaviour
@@ -18,8 +17,7 @@ public class PitSpawner : MonoBehaviour
     private bool placementPoseIsValid = false;
     private bool placementIndicatorEnabled = true;
 
-    private GameObject spawnedPit;
-    private GameObject highlightedIndicator;
+    private GameObject spawnedPit, highlightedIndicator;
     private float pitScale = 1.0f;
 
     // Start is called before the first frame update
@@ -184,6 +182,7 @@ public class PitSpawner : MonoBehaviour
     {
         if (spawnedPit != null)
         {
+            // Reposition the hole to the target surface after rescaling
             Vector3 tempPosition = spawnedPit.transform.position;
             spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
             spawnedPit.transform.position = tempPosition;

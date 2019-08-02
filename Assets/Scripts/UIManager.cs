@@ -16,17 +16,17 @@ public class UIManager : MonoBehaviour
     // For accessing through event system
     public void FadeIn(Text text)
     {
-        instance.StartCoroutine(FadeToAlpha(text));
+        instance.StartCoroutine(FadeToAlpha(text, 1.0f));
     }
 
     public void FadeIn(Image image)
     {
-        instance.StartCoroutine(FadeToAlpha(image));
+        instance.StartCoroutine(FadeToAlpha(image, 1.0f));
     }
 
     public void FadeIn(SVGImage svg)
     {
-        instance.StartCoroutine(FadeToAlpha(svg));
+        instance.StartCoroutine(FadeToAlpha(svg, 1.0f));
     }
 
     public void FadeOut(Text text)
@@ -47,19 +47,19 @@ public class UIManager : MonoBehaviour
 
     #region STATIC
     // For accessing through script
-    public static void StaticFadeIn(Text text)
+    public static void StaticFadeIn(Text text, float alpha)
     {
-        instance.StartCoroutine(FadeToAlpha(text));
+        instance.StartCoroutine(FadeToAlpha(text, alpha));
     }
 
-    public static void StaticFadeIn(Image image)
+    public static void StaticFadeIn(Image image, float alpha)
     {
-        instance.StartCoroutine(FadeToAlpha(image));
+        instance.StartCoroutine(FadeToAlpha(image, alpha));
     }
 
-    public static void StaticFadeIn(SVGImage svg)
+    public static void StaticFadeIn(SVGImage svg, float alpha)
     {
-        instance.StartCoroutine(FadeToAlpha(svg));
+        instance.StartCoroutine(FadeToAlpha(svg, alpha));
     }
 
     public static void StaticFadeOut(Text text)
@@ -79,10 +79,10 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region OVERLOAD_TEXT
-    private static IEnumerator FadeToAlpha(Text text)
+    private static IEnumerator FadeToAlpha(Text text, float alpha)
     {
         text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
-        while (text.color.a < 1.0f)
+        while (text.color.a < alpha)
         {
             text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a + Time.deltaTime * 2.0f);
             yield return null;
@@ -100,10 +100,10 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region OVERLAOD_IMAGE
-    private static IEnumerator FadeToAlpha(Image image)
+    private static IEnumerator FadeToAlpha(Image image, float alpha)
     {
         image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
-        while (image.color.a < 1.0f)
+        while (image.color.a < alpha)
         {
             image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + Time.deltaTime * 2.0f);
             yield return null;
@@ -122,10 +122,10 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region OVERLOAD_SVGIMAGE
-    private static IEnumerator FadeToAlpha(SVGImage image)
+    private static IEnumerator FadeToAlpha(SVGImage image, float alpha)
     {
         image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
-        while (image.color.a < 1.0f)
+        while (image.color.a < alpha)
         {
             image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + Time.deltaTime * 2.0f);
             yield return null;

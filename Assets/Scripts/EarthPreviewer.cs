@@ -10,34 +10,28 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject earthObject;
     public Material[] earthMaterialList;
 
+    private GameObject pinGroup;
     private bool showMagneticField = false;
     private bool showCountryBorder = false;
 
+    private Transform earthTransformPoint;
+    private Transform earthSpawnPoint;
     private readonly float rotationSpeed = 0.25f;
-    private readonly float zoomSpeed = 0.005f;
+    private readonly float scaleSpeed = 0.005f;
 
-    //private Material earthMaterial;
     private Renderer earthRenderer;
-    private float transitionDirection = 1;
-    private readonly float transitionSpeed = 0.5f;
-    private float currentAlpha = 0;
     private bool inTransition = false;
-
-    private float currentValue = 1;
-    private float speed = 0.5f;
-
-    private GameObject pinGroup;
+    private int currentMaterialIndex;
 
     private bool isSpawned = false;
     private bool canSpawn = false;
+    private float currentSpawnProgress = 1.0f;
+    private readonly float spawnSpeed = 0.5f;
 
-    private bool initRotation, targetTransformReached = false;
+    private bool initRotation = false;
+    private bool targetTransformReached = false;
     private Vector3 startDirection, targetDirection;
     private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
-
-    private Transform earthTransformPoint;
-    private Transform earthSpawnPoint;
-
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +41,7 @@ public class EarthPreviewer : MonoBehaviour
        
         pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
-        ChangeMaterial(0);
+        SetMaterial(0);
     }
 
     // Update is called once per frame
@@ -56,21 +50,21 @@ public class EarthPreviewer : MonoBehaviour
         // Spawn animation control
         if (canSpawn)
         {
-            if (currentValue > 0)
+            if (currentSpawnProgress > 0)
             {
-                currentValue -= speed * Time.deltaTime;
-                if (currentValue < 0)
+                currentSpawnProgress -= spawnSpeed * Time.deltaTime;
+                if (currentSpawnProgress < 0)
                 {
-                    currentValue = 0;
+                    currentSpawnProgress = 0;
 
-                    earthRenderer.material.SetFloat("_Dissolve", currentValue);
+                    earthRenderer.material.SetFloat("_Dissolve", currentSpawnProgress);
                     canSpawn = false;
                     pinGroup.SetActive(true);
-                    ChangeMaterial(1);
+                    SetMaterial(1);
                 }
                 else
                 {
-                    earthRenderer.material.SetFloat("_Dissolve", currentValue);
+                    earthRenderer.material.SetFloat("_Dissolve", currentSpawnProgress);
                 }
             }
         }
@@ -147,8 +141,9 @@ public class EarthPreviewer : MonoBehaviour
 
                     float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
 
-                    earthObject.transform.parent.localScale += new Vector3(zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference, zoomSpeed * touchMagnitudeDifference);
+                    earthObject.transform.parent.localScale += new Vector3(scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference);
 
+                    // Limit the scale to 0.1f so that it will not disappear
                     if (earthObject.transform.parent.localScale.x < 0.1f)
                     {
                         earthObject.transform.parent.localScale = Vector3.one * 0.1f;
@@ -162,29 +157,6 @@ public class EarthPreviewer : MonoBehaviour
                 earthTransformPoint.transform.LookAt(Camera.main.transform);
                 earthTransformPoint.transform.Rotate(new Vector3(0, 180, 0));
                 earthObject.transform.SetParent(earthTransformPoint);
-            }
-        }
-
-        // Transition between day and night (smoothing the material change)
-        if (inTransition)
-        {
-            currentAlpha += transitionDirection * transitionSpeed * Time.deltaTime;
-
-            if (currentAlpha < 0)
-            {
-                earthRenderer.material.SetFloat("_AlphaBlending", 0);
-                inTransition = false;
-                currentAlpha = 0;
-            }
-            else if (currentAlpha > 1)
-            {
-                earthRenderer.material.SetFloat("_AlphaBlending", 1);
-                inTransition = false;
-                currentAlpha = 1;
-            }
-            else
-            {
-                earthRenderer.material.SetFloat("_AlphaBlending", currentAlpha);
             }
         }
     }
@@ -204,21 +176,105 @@ public class EarthPreviewer : MonoBehaviour
         previewerOptions.SetActive(true);
     }
 
-    public void TransitionMaterial()
+    public void TransitionMaterial(int index)
     {
-        // Only begin transition when it is not already in the process of transition
+        // Only begin transition when it is not in the process of transition
         if (!inTransition)
         {
-            if (Mathf.RoundToInt(currentAlpha) == 1)
+            inTransition = true;
+            if (currentMaterialIndex != index)
             {
-                transitionDirection = -1;
+                if (Mathf.RoundToInt(GetMaterialAlpha()) == 0)
+                {
+                    // Replace the material and start transition
+                    SetMaterial(index);
+                    StartCoroutine(AlphaBlendToOne());
+                }
+                else
+                {
+                    // Transition from 1 to 0 for the first material and then 0 to 1 for the second material
+                    StartCoroutine(AlphaBlendOneToOne(index));
+                }
             }
             else
             {
-                transitionDirection = 1;
-            }
-            inTransition = true;
+                // Transition between 0 and 1 for the same material
+                if (Mathf.RoundToInt(GetMaterialAlpha()) == 0 )
+                {
+                    StartCoroutine(AlphaBlendToOne());
+                }
+                else
+                {
+                    StartCoroutine(AlphaBlendToZero());
+                }
+            } 
         }
+    }
+
+    private IEnumerator AlphaBlendToZero()
+    {
+        SetMaterialAlpha(1);
+        while (GetMaterialAlpha() > 0.0f)
+        {
+            SetMaterialAlpha(GetMaterialAlpha() - Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    private IEnumerator AlphaBlendToOne()
+    {
+        SetMaterialAlpha(0);
+        while (GetMaterialAlpha() < 1.0f)
+        {
+            SetMaterialAlpha(GetMaterialAlpha() + Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    private IEnumerator AlphaBlendOneToOne(int index)
+    {
+        // Fade to zero
+        SetMaterialAlpha(1);
+        while (GetMaterialAlpha() > 0.0f)
+        {
+            SetMaterialAlpha(GetMaterialAlpha() - Time.deltaTime * 0.5f);
+            yield return null;
+        }
+
+        // Switch to the target material
+        SetMaterial(index);
+
+        // Fade to one again
+        SetMaterialAlpha(0);
+        while (GetMaterialAlpha() < 1.0f)
+        {
+            SetMaterialAlpha(GetMaterialAlpha() + Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    public void SetMaterial(int index)
+    {
+        earthRenderer.material = earthMaterialList[index];
+        currentMaterialIndex = index;
+    }
+
+    public void SetMaterialAlpha(float alpha)
+    {
+        earthRenderer.material.SetFloat("_AlphaBlending", alpha);
+    }
+
+    public float GetMaterialAlpha()
+    {
+        return earthRenderer.material.GetFloat("_AlphaBlending");
+    }
+
+    public Material GetMaterial()
+    {
+        return earthRenderer.material;
     }
 
     public void SwitchLayer(int i)
@@ -247,7 +303,8 @@ public class EarthPreviewer : MonoBehaviour
         }
     }
 
-    public void ToggleMagneticField() {
+    public void ToggleMagneticField()
+    {
         if (showMagneticField)
         {
             showMagneticField = false;
@@ -290,16 +347,6 @@ public class EarthPreviewer : MonoBehaviour
         canSpawn = true;
     }
 
-    public void ChangeMaterial(int index)
-    {
-        earthRenderer.material = earthMaterialList[index];
-    }
-
-    public void SetAlpha(float alpha)
-    {
-        earthRenderer.material.SetFloat("_AlphaBlending", alpha);
-    }
-
     // Reset earth
     public void ResetEarth()
     {
@@ -308,9 +355,9 @@ public class EarthPreviewer : MonoBehaviour
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(false);
         showMagneticField = false;
         showCountryBorder = false;
-        ChangeMaterial(0);
-        currentValue = 1.0f;
-        SetAlpha(currentValue);
+        SetMaterial(0);
+        currentSpawnProgress = 1.0f;
+        SetMaterialAlpha(currentSpawnProgress);
         earthObject.SetActive(false);
         isSpawned = false;
         canSpawn = false;

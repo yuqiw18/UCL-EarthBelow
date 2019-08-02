@@ -4,7 +4,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 public class EarthMapper : MonoBehaviour
 {
@@ -26,16 +25,16 @@ public class EarthMapper : MonoBehaviour
     private GameObject highlightedIndicator;
     private bool placementIndicatorEnabled = true;
 
-    private GameObject referenceEarth;
-    private GameObject earthHorizon;
+    private GameObject referenceEarth, mappedEarth;
     private Vector3 referenceOrigin = Vector3.zero;
 
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
-    private string url;
-    private float UILabelScale = 2.0f;
-    private float UIPanelScale = 3.0f;
+    
+    private readonly float UILabelScale = 2.0f;
+    private readonly float UIPanelScale = 2.5f;
 
+    private string url;
     private Sprite defaultFlag, defaultLandmark;
 
     // Start is called before the first frame update
@@ -88,6 +87,7 @@ public class EarthMapper : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(raycast, out raycastHit))
             {
+                #region SHOW_CITY_PROFILE
                 // Display city profile
                 if (raycastHit.collider.CompareTag("Pin"))
                 {
@@ -123,10 +123,11 @@ public class EarthMapper : MonoBehaviour
 
                     StartCoroutine(CORE.LoadImageToTexture(Path.Combine(Application.streamingAssetsPath, "Images/Panorama/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
                     {
-                        earthHorizon.transform.Find("Portal_Panorama").GetComponent<Renderer>().material.SetTexture("_Texture", result);
+                        mappedEarth.transform.Find("Portal_Panorama").GetComponent<Renderer>().material.SetTexture("_Texture", result);
                         Debug.Log("Called");
                     }));
 
+                    // Append formatted string to the url
                     url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
@@ -139,6 +140,7 @@ public class EarthMapper : MonoBehaviour
                     // Show the panel
                     panelPrefab.SetActive(true);
                 }
+                #endregion
             }
         }
     }
@@ -154,9 +156,9 @@ public class EarthMapper : MonoBehaviour
                 highlightedIndicator.SetActive(true);
             }
         }
-        if (earthHorizon != null)
+        if (mappedEarth != null)
         {
-            earthHorizon.SetActive(true);
+            mappedEarth.SetActive(true);
         }
     }
 
@@ -166,9 +168,9 @@ public class EarthMapper : MonoBehaviour
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
         panelPrefab.SetActive(false);
-        if (earthHorizon != null)
+        if (mappedEarth != null)
         {
-            earthHorizon.SetActive(false);
+            mappedEarth.SetActive(false);
         }
     }
 
@@ -208,7 +210,7 @@ public class EarthMapper : MonoBehaviour
     public void MapEarth() {
 
         // Clear old variables
-        Destroy(earthHorizon);
+        Destroy(mappedEarth);
 
         foreach (GameObject l in landmarkList)
         {
@@ -227,7 +229,7 @@ public class EarthMapper : MonoBehaviour
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         referenceOrigin = placementPose.position;
         referenceEarth = Instantiate(earthObjectToCopy, referenceOrigin, Quaternion.identity);
-        earthHorizon = Instantiate(earthHorizonPrefab, referenceOrigin, Quaternion.identity);
+        mappedEarth = Instantiate(earthHorizonPrefab, referenceOrigin, Quaternion.identity);
 
         Transform pinGroup = referenceEarth.transform.Find("Group_Pins");
         Transform refTop = referenceEarth.transform.Find("Ref_Top");
@@ -374,19 +376,17 @@ public class EarthMapper : MonoBehaviour
     {
         if (active)
         {
-            earthHorizon.transform.Find("Portal_Panorama").gameObject.SetActive(true);
-            earthHorizon.transform.Find("Mapping_Grid").gameObject.SetActive(false);
-            earthHorizon.transform.Find("Mapping_Reference").gameObject.SetActive(false);
+            mappedEarth.transform.Find("Portal_Panorama").gameObject.SetActive(true);
+            mappedEarth.transform.Find("Mapping_Grid").gameObject.SetActive(false);
+            mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(false);
             canvasWorld.SetActive(false);
         }
         else
         {
-            earthHorizon.transform.Find("Portal_Panorama").gameObject.SetActive(false);
-            earthHorizon.transform.Find("Mapping_Grid").gameObject.SetActive(true);
-            earthHorizon.transform.Find("Mapping_Reference").gameObject.SetActive(true);
+            mappedEarth.transform.Find("Portal_Panorama").gameObject.SetActive(false);
+            mappedEarth.transform.Find("Mapping_Grid").gameObject.SetActive(true);
+            mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(true);
             canvasWorld.SetActive(true);
-        }
-        
+        } 
     }
-   
 }

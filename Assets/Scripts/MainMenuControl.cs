@@ -11,26 +11,22 @@ public class MainMenuControl : MonoBehaviour
 
     private GameObject menuBackground;
 
-    private Vector3 originPostion;
-    private Vector3 targetPosition;
-
-    private float speed = 100.0f;
+    private Vector3 originalPostion, targetPosition;
+    private float moveSpeed = 100.0f;
     private float speedMultiplier = 2.0f;
     private bool canMove = false;
     private string state = "IDLE";
 
-    // Start is called before the first frame update
     void Start()
     {
         menuBackground = this.transform.Find("Image_Background").gameObject;
-        originPostion = menuBackground.transform.position;
+        originalPostion = menuBackground.transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
          if (canMove){
-            menuBackground.transform.position = Vector3.MoveTowards(menuBackground.transform.position, targetPosition, speed * speedMultiplier * Time.deltaTime);
+            menuBackground.transform.position = Vector3.MoveTowards(menuBackground.transform.position, targetPosition, moveSpeed * speedMultiplier * Time.deltaTime);
             Vector3 tempPosition = menuBackground.transform.position;
             if (tempPosition == targetPosition){
                 canMove = false;
@@ -45,8 +41,8 @@ public class MainMenuControl : MonoBehaviour
                     case "IDLE":
                         aboutPanel.SetActive(false);
                         backButton.SetActive(false);
-                        UIManager.StaticFadeIn(startText);
-                        UIManager.StaticFadeIn(aboutText);
+                        UIManager.StaticFadeIn(startText, 1.0f);
+                        UIManager.StaticFadeIn(aboutText, 1.0f);
                         break;
                 }
             }
@@ -57,24 +53,24 @@ public class MainMenuControl : MonoBehaviour
         state = operation;
         switch (operation) {
             case "DOWN":
-                targetPosition = originPostion + new Vector3(0, Screen.height / 2, 0);
+                targetPosition = originalPostion + new Vector3(0, Screen.height / 2, 0);
                 break;
             case "UP":
-                targetPosition = originPostion + new Vector3(0, -Screen.height / 2, 0);
+                targetPosition = originalPostion + new Vector3(0, -Screen.height / 2, 0);
                 break;
             case "PLACEHOLDER1":
-                targetPosition = originPostion + new Vector3(-Screen.width / 2, 0, 0);
+                targetPosition = originalPostion + new Vector3(-Screen.width / 2, 0, 0);
                 break;
             case "PLACEHOLDER2":
-                targetPosition = originPostion + new Vector3(Screen.width / 2, 0, 0);
+                targetPosition = originalPostion + new Vector3(Screen.width / 2, 0, 0);
                 break;
             case "IDLE":
-                targetPosition = originPostion;
+                targetPosition = originalPostion;
                 break;
             default: 
                 break;
         }
         canMove = true;
-        speed = Vector3.Distance(menuBackground.transform.position, targetPosition);
+        moveSpeed = Vector3.Distance(menuBackground.transform.position, targetPosition);
     }
 }
