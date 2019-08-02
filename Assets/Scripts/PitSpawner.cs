@@ -59,40 +59,41 @@ public class PitSpawner : MonoBehaviour
                 }
             }
         }
-
-        // Detect scaling
-        if (Input.touchCount == 2)
+        else if (Input.touchCount == 2)
         {
             if (spawnedPit != null)
             {
-                // Get the touch
-                Touch firstTouch = Input.GetTouch(0);
-                Touch secondTouch = Input.GetTouch(1);
-
-                Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
-                Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
-
-                float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
-                float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
-
-                float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
-
-                Vector3 tempPosition = spawnedPit.transform.position;
-
-                pitScale += -0.005f * touchMagnitudeDifference;
-                if (pitScale < 1)
+                if (spawnedPit.GetComponent<Renderer>().isVisible)
                 {
-                    pitScale = 1;
+                    // Get the touch
+                    Touch firstTouch = Input.GetTouch(0);
+                    Touch secondTouch = Input.GetTouch(1);
+
+                    Vector2 firstTouchPreviousPosition = firstTouch.position - firstTouch.deltaPosition;
+                    Vector2 secondTouchPreviousPosition = secondTouch.position - secondTouch.deltaPosition;
+
+                    float previousTouchDeltaMagnitude = (firstTouchPreviousPosition - secondTouchPreviousPosition).magnitude;
+                    float currentTouchDeltaMagnitude = (firstTouch.position - secondTouch.position).magnitude;
+
+                    float touchMagnitudeDifference = previousTouchDeltaMagnitude - currentTouchDeltaMagnitude;
+
+                    Vector3 tempPosition = spawnedPit.transform.position;
+
+                    pitScale += -0.005f * touchMagnitudeDifference;
+                    if (pitScale < 1)
+                    {
+                        pitScale = 1;
+                    }
+
+                    // Adjust the tiling of materials so that they do not appear pixelated/blurry while scaling up
+                    spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[1].SetFloat("_Tiling", 3 + pitScale);
+                    spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[3].SetFloat("_Tiling", 3 + pitScale);
+                    spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
+
+                    // Awayls snap the pit to the surface
+                    spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+                    spawnedPit.transform.position = tempPosition;
                 }
-
-                // Adjust the tiling of materials so that they do not appear pixelated/blurry while scaling up
-                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[1].SetFloat("_Tiling", 3 + pitScale);
-                spawnedPit.transform.Find("Pit").Find("Structure").GetComponent<Renderer>().materials[3].SetFloat("_Tiling", 3 + pitScale);
-                spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
-
-                // Awayls snap the pit to the surface
-                spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
-                spawnedPit.transform.position = tempPosition;
             }
         }
     }
