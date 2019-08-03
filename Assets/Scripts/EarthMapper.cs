@@ -278,6 +278,8 @@ public class EarthMapper : MonoBehaviour
         referenceEarth.transform.position -= new Vector3(0, CORE.EARTH_CRUST_RADIUS, 0);
         #endregion
 
+        mappedEarth.transform.Find("Mapping_Border").rotation = referenceEarth.transform.rotation;
+
         #region PIN_ASSIGNMENT
         Vector3 preciseRefPosition = pinGroup.GetChild(0).gameObject.transform.position;
         foreach (Transform pin in pinGroup)
@@ -378,6 +380,7 @@ public class EarthMapper : MonoBehaviour
         {
             mappedEarth.transform.Find("Portal_Panorama").gameObject.SetActive(true);
             mappedEarth.transform.Find("Mapping_Grid").gameObject.SetActive(false);
+            mappedEarth.transform.Find("Mapping_Border").gameObject.SetActive(false);
             mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(false);
             canvasWorld.SetActive(false);
         }
@@ -385,6 +388,7 @@ public class EarthMapper : MonoBehaviour
         {
             mappedEarth.transform.Find("Portal_Panorama").gameObject.SetActive(false);
             mappedEarth.transform.Find("Mapping_Grid").gameObject.SetActive(true);
+            mappedEarth.transform.Find("Mapping_Border").gameObject.SetActive(true);
             mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(true);
             canvasWorld.SetActive(true);
         } 

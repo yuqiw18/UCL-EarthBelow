@@ -2,7 +2,8 @@
 {
     SubShader
     {
-        Tags { 
+        Tags 
+        { 
             "Queue"="Background" 
         }
         ZWrite On
