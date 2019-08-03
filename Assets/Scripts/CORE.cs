@@ -18,6 +18,7 @@ public static class CORE
         public Vector2 coord;
         public string description;
         public bool panorama;
+        public string landmark;
     }
 
     [Serializable]

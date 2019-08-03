@@ -18,6 +18,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject panelPrefab;
     public GameObject landmarkPrefab;
     public GameObject legendPanel;
+    public GameObject panoramaPanel;
 
     private ARRaycastManager arRaycastManager;
     private Pose placementPose;
@@ -126,6 +127,8 @@ public class EarthMapper : MonoBehaviour
                         mappedEarth.transform.Find("Portal_Panorama").GetComponent<Renderer>().material.SetTexture("_Texture", result);
                         Debug.Log("Called");
                     }));
+
+                    panoramaPanel.transform.Find("Text").GetComponent<Text>().text = selectedLocation.landmark;
 
                     // Append formatted string to the url
                     url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));

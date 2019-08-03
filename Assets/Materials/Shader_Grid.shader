@@ -5,7 +5,7 @@
         _GridThickness ("Grid Thickness", Float) = 0.025
         _GridSpacing ("Grid Spacing", Float) = 0.25
         _GridColour ("Grid Colour", Color) = (1.0, 1.0, 1.0, 0.5)
-        _BaseColour ("Base Colour", Color) = (0.0, 0.0, 0.0, 0.0)
+        _BackgroundColor ("Background Colour", Color) = (0.0, 0.0, 0.0, 0.0)
     }
 
     SubShader 
@@ -30,7 +30,7 @@
             uniform float _GridThickness;
             uniform float _GridSpacing;
             uniform float4 _GridColour;
-            uniform float4 _BaseColour;
+            uniform float4 _BackgroundColor;
 
             // Input into the vertex shader
             struct vertexInput 
@@ -45,7 +45,7 @@
                 float4 worldPos : TEXCOORD0;
             };
 
-            // VERTEX SHADER
+            // Vertex Shader
             vertexOutput vert(vertexInput input) 
             {
                 vertexOutput output;
@@ -55,20 +55,28 @@
                 return output;
             }
 
-            // FRAGMENT SHADER
+            // Fragment Shader
             float4 frag(vertexOutput input) : COLOR 
             {
-                if (frac(input.worldPos.x/_GridSpacing) < _GridThickness || frac(input.worldPos.y/_GridSpacing) < _GridThickness) 
+                if ((frac(input.worldPos.x/_GridSpacing - input.worldPos.z/_GridSpacing)) < _GridThickness)
                 {
                     return _GridColour;
                 }
-                else if (frac(input.worldPos.x/_GridSpacing) < _GridThickness || frac(input.worldPos.z/_GridSpacing) < _GridThickness) 
+                else if (frac(-input.worldPos.z/_GridSpacing - input.worldPos.x/_GridSpacing) < _GridThickness)
                 {
                     return _GridColour;
                 }
-                else 
+                else if (frac(input.worldPos.x/_GridSpacing) < _GridThickness || frac(input.worldPos.y/_GridSpacing) < _GridThickness) 
                 {
-                    return _BaseColour;
+                    return _GridColour;
+                }
+                else if (frac(input.worldPos.z/_GridSpacing) < _GridThickness || frac(input.worldPos.z/_GridSpacing) < _GridThickness) 
+                {
+                    return _GridColour;
+                }
+                else
+                {
+                    return _BackgroundColor;
                 }
             }
             ENDCG
