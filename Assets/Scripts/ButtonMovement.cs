@@ -9,7 +9,7 @@ public class ButtonMovement : MonoBehaviour
     public int speedMultiplier = 1;
 
     private Image icon;
-    private Vector3 targetPosition, originalPosition;
+    private Vector3 originalPosition;
     private bool canMove = false;
     private bool isMovingBack = false;
     private float moveSpeed, originalAlpha;
@@ -18,7 +18,6 @@ public class ButtonMovement : MonoBehaviour
     {
         icon = this.transform.Find("Image_Icon").GetComponent<Image>();
         originalAlpha = icon.color.a;
-        targetPosition = Vector3.zero;
         originalPosition = this.transform.position;
         moveSpeed = (UITargetPositon.position - originalPosition).magnitude;
         StartMovement();
@@ -26,33 +25,29 @@ public class ButtonMovement : MonoBehaviour
 
     public void StartMovement() {
         if (!canMove) {
+            canMove = true;
             if (!isMovingBack)
             {
                 isMovingBack = true;
-                targetPosition = UITargetPositon.position;
                 UIManager.StaticFadeOut(icon);
+                StartCoroutine(Move(UITargetPositon.position));
             }
             else
             {
                 isMovingBack = false;
-                targetPosition = originalPosition;
                 UIManager.StaticFadeIn(icon, originalAlpha);
+                StartCoroutine(Move(originalPosition));
             }
-            canMove = true;
-            StartCoroutine(Move());
         }
     }
 
-    private IEnumerator Move()
+    private IEnumerator Move(Vector3 targetPosition)
     {
-        while (canMove)
+        while (this.transform.position != targetPosition)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, moveSpeed * speedMultiplier * Time.deltaTime);
-            Vector3 tempPosition = this.transform.position;
-            if (tempPosition == targetPosition) {
-                canMove = false;
-            }
             yield return null;
         }
+        canMove = false;
     }
 }

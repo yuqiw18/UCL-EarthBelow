@@ -23,92 +23,21 @@ public class EarthPreviewer : MonoBehaviour
     private bool inTransition = false;
     private int currentMaterialIndex;
 
-    private bool isSpawned = false;
-    private bool canSpawn = false;
-    private float currentSpawnProgress = 1.0f;
-    private readonly float spawnSpeed = 0.5f;
+    private bool spawned = false;
 
-    private bool initRotation = false;
-    private bool targetTransformReached = false;
-    private Vector3 startDirection, targetDirection;
-    private Quaternion startQuaternion, targetQuaternion, lastRotation, currentRotation;
-
-    // Start is called before the first frame update
     void Start()
     {
         earthTransformPoint = earthObject.transform.parent;
         earthSpawnPoint = earthObject.transform.parent.parent;
-       
         pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
         SetMaterial(0);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Spawn animation control
-        if (canSpawn)
-        {
-            if (currentSpawnProgress > 0)
-            {
-                currentSpawnProgress -= spawnSpeed * Time.deltaTime;
-                if (currentSpawnProgress < 0)
-                {
-                    currentSpawnProgress = 0;
-
-                    earthRenderer.material.SetFloat("_Dissolve", currentSpawnProgress);
-                    canSpawn = false;
-                    pinGroup.SetActive(true);
-                    SetMaterial(1);
-                }
-                else
-                {
-                    earthRenderer.material.SetFloat("_Dissolve", currentSpawnProgress);
-                }
-            }
-        }
-
-        //if (earthMaterial)
-        //// Rotate to the current location automatically once
-        //if (!initRotation)
-        //{
-        //    if (earthObject.transform.Find("Group_Pins").childCount != 0)
-        //    {
-        //        earthObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        //        startDirection = (earthObject.transform.Find("Group_Pins").GetChild(0).position - earthObject.transform.position).normalized;
-        //        targetDirection = (Camera.main.transform.position - earthObject.transform.position).normalized;
-        //        targetQuaternion = Quaternion.FromToRotation(startDirection, targetDirection);
-        //        startQuaternion = earthObject.transform.rotation;
-        //        initRotation = true;
-        //    }
-        //}
-
-        //if (initRotation && !targetTransformReached)
-        //{
-        //    earthObject.transform.rotation = Quaternion.Lerp(startQuaternion, targetQuaternion, Time.time * 0.2f);
-        //    currentRotation = earthObject.transform.rotation;
-
-        //    earthObject.transform.localScale += new Vector3(0.025f, 0.025f, 0.025f) * Time.time;
-
-        //    if (earthObject.transform.localScale.x > 1)
-        //    {
-        //        earthObject.transform.localScale = new Vector3(1, 1, 1);
-        //    }
-
-        //    if (currentRotation != lastRotation)
-        //    {
-        //        lastRotation = currentRotation;
-        //    }
-        //    else if (currentRotation == lastRotation && earthObject.transform.localScale == new Vector3(1, 1, 1))
-        //    {
-        //        targetTransformReached = true;
-        //        Debug.Log("Reached");
-        //    }
-        //}
-
         // Gesture control
-        if (isSpawned)
+        if (spawned)
         {
             // Rotate the Earth manually 
             if ((Input.touchCount == 1) && (Input.GetTouch(0).phase == TouchPhase.Moved))
@@ -169,7 +98,7 @@ public class EarthPreviewer : MonoBehaviour
 
     private void OnEnable()
     {
-        if (isSpawned)
+        if (spawned)
         {
             earthObject.SetActive(true);
         }
@@ -184,7 +113,7 @@ public class EarthPreviewer : MonoBehaviour
             inTransition = true;
             if (currentMaterialIndex != index)
             {
-                if (Mathf.RoundToInt(GetMaterialAlpha()) == 0)
+                if (Mathf.RoundToInt(GetMaterialValue("_AlphaBlending")) == 0)
                 {
                     // Replace the material and start transition
                     SetMaterial(index);
@@ -199,7 +128,7 @@ public class EarthPreviewer : MonoBehaviour
             else
             {
                 // Transition between 0 and 1 for the same material
-                if (Mathf.RoundToInt(GetMaterialAlpha()) == 0 )
+                if (Mathf.RoundToInt(GetMaterialValue("_AlphaBlending")) == 0 )
                 {
                     StartCoroutine(AlphaBlendToOne());
                 }
@@ -209,72 +138,6 @@ public class EarthPreviewer : MonoBehaviour
                 }
             } 
         }
-    }
-
-    private IEnumerator AlphaBlendToZero()
-    {
-        SetMaterialAlpha(1);
-        while (GetMaterialAlpha() > 0.0f)
-        {
-            SetMaterialAlpha(GetMaterialAlpha() - Time.deltaTime * 0.5f);
-            yield return null;
-        }
-        inTransition = false;
-    }
-
-    private IEnumerator AlphaBlendToOne()
-    {
-        SetMaterialAlpha(0);
-        while (GetMaterialAlpha() < 1.0f)
-        {
-            SetMaterialAlpha(GetMaterialAlpha() + Time.deltaTime * 0.5f);
-            yield return null;
-        }
-        inTransition = false;
-    }
-
-    private IEnumerator AlphaBlendOneToOne(int index)
-    {
-        // Fade to zero
-        SetMaterialAlpha(1);
-        while (GetMaterialAlpha() > 0.0f)
-        {
-            SetMaterialAlpha(GetMaterialAlpha() - Time.deltaTime * 0.5f);
-            yield return null;
-        }
-
-        // Switch to the target material
-        SetMaterial(index);
-
-        // Fade to one again
-        SetMaterialAlpha(0);
-        while (GetMaterialAlpha() < 1.0f)
-        {
-            SetMaterialAlpha(GetMaterialAlpha() + Time.deltaTime * 0.5f);
-            yield return null;
-        }
-        inTransition = false;
-    }
-
-    public void SetMaterial(int index)
-    {
-        earthRenderer.material = earthMaterialList[index];
-        currentMaterialIndex = index;
-    }
-
-    public void SetMaterialAlpha(float alpha)
-    {
-        earthRenderer.material.SetFloat("_AlphaBlending", alpha);
-    }
-
-    public float GetMaterialAlpha()
-    {
-        return earthRenderer.material.GetFloat("_AlphaBlending");
-    }
-
-    public Material GetMaterial()
-    {
-        return earthRenderer.material;
     }
 
     public void SwitchLayer(int i)
@@ -343,8 +206,8 @@ public class EarthPreviewer : MonoBehaviour
 
         pinGroup.SetActive(false);
         earthObject.SetActive(true);
-        isSpawned = true;
-        canSpawn = true;
+
+        StartCoroutine(AlphaClipToZero());
     }
 
     // Reset earth
@@ -356,10 +219,88 @@ public class EarthPreviewer : MonoBehaviour
         showMagneticField = false;
         showCountryBorder = false;
         SetMaterial(0);
-        currentSpawnProgress = 1.0f;
-        SetMaterialAlpha(currentSpawnProgress);
         earthObject.SetActive(false);
-        isSpawned = false;
-        canSpawn = false;
+        spawned = false;
     }
+
+    // Material manipulation
+    private IEnumerator AlphaBlendToZero()
+    {
+        SetMaterialValue("_AlphaBlending", 1);
+        while (GetMaterialValue("_AlphaBlending") > 0.0f)
+        {
+            SetMaterialValue("_AlphaBlending", GetMaterialValue("_AlphaBlending") - Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    private IEnumerator AlphaBlendToOne()
+    {
+        SetMaterialValue("_AlphaBlending", 0);
+        while (GetMaterialValue("_AlphaBlending") < 1.0f)
+        {
+            SetMaterialValue("_AlphaBlending", GetMaterialValue("_AlphaBlending") + Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    private IEnumerator AlphaBlendOneToOne(int index)
+    {
+        // Fade to zero
+        SetMaterialValue("_AlphaBlending", 1);
+        while (GetMaterialValue("_AlphaBlending") > 0.0f)
+        {
+            SetMaterialValue("_AlphaBlending", GetMaterialValue("_AlphaBlending") - Time.deltaTime * 0.5f);
+            yield return null;
+        }
+
+        // Switch to the target material
+        SetMaterial(index);
+
+        // Fade to one again
+        SetMaterialValue("_AlphaBlending", 0);
+        while (GetMaterialValue("_AlphaBlending") < 1.0f)
+        {
+            SetMaterialValue("_AlphaBlending", GetMaterialValue("_AlphaBlending") + Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        inTransition = false;
+    }
+
+    private IEnumerator AlphaClipToZero()
+    {
+        SetMaterialValue("_Dissolve", 1);
+        while (GetMaterialValue("_Dissolve") > 0)
+        {
+            SetMaterialValue("_Dissolve", GetMaterialValue("_Dissolve") - Time.deltaTime * 0.5f);
+            yield return null;
+        }
+        pinGroup.SetActive(true);
+        SetMaterial(1);
+        spawned = true;
+    }
+
+    public Material GetMaterial()
+    {
+        return earthRenderer.material;
+    }
+
+    public void SetMaterial(int index)
+    {
+        earthRenderer.material = earthMaterialList[index];
+        currentMaterialIndex = index;
+    }
+
+    public void SetMaterialValue(string property, float value)
+    {
+        earthRenderer.material.SetFloat(property, value);
+    }
+
+    public float GetMaterialValue(string property)
+    {
+        return earthRenderer.material.GetFloat(property);
+    }
+
 }
