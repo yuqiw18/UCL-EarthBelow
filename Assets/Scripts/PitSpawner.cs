@@ -87,7 +87,7 @@ public class PitSpawner : MonoBehaviour
                         detailPanel.SetActive(true);
 
                         // Scale the panel
-                        profilePanel.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
+                        profilePanel.transform.localScale = new Vector3(0.00125f, 0.00125f, 0.00125f);
 
                         // Rotate the panel to face the user
                         profilePanel.transform.LookAt(Camera.main.transform);

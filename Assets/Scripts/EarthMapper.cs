@@ -31,8 +31,8 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> labelList = new List<GameObject>();
     private List<GameObject> landmarkList = new List<GameObject>();
     
-    private readonly float UILabelScale = 2.0f;
-    private readonly float UIPanelScale = 2.5f;
+    private readonly float UILabelScale = 1.0f;
+    private readonly float UIPanelScale = 1.25f;
 
     private string url;
     private Sprite defaultFlag, defaultLandmark;
