@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_Dirt
-  m_Shader: {fileID: -6465566751694194690, guid: a2b2f6f5725e9438aacd6afc1391f03d,
+  m_Shader: {fileID: -6465566751694194690, guid: 0cd55d941052d4337b39223105480ffa,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -33,6 +33,22 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_1378B5FA:
+        m_Texture: {fileID: 2800000, guid: a14562b7f933249b6b8bc8c6ac24e78c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_19879139:
+        m_Texture: {fileID: 2800000, guid: 0f243ce73f58443e7bc79f9807ca8317, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_7F41DB5F:
+        m_Texture: {fileID: 2800000, guid: 65a74e4e842e64cd5aab5610e5e15150, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_E24089FA:
+        m_Texture: {fileID: 2800000, guid: a41ff88b976294489a959b9fa36cfaec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -70,6 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_17657614: 0.25
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

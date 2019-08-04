@@ -123,7 +123,6 @@ public class PitSpawner : MonoBehaviour
         }
     }
 
-
     private void UpdatePlacementPose()
     {
         Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));

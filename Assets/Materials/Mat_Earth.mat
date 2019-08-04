@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_Earth
-  m_Shader: {fileID: -6465566751694194690, guid: cceb4b3a6d71e4a48a1a00a7fe40b289,
+  m_Shader: {fileID: -6465566751694194690, guid: 2b2706d8ce47147ab951246ccd8d4269,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -33,6 +33,30 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_3C40CF35:
+        m_Texture: {fileID: 2800000, guid: 07acfc3ff88d84d76a9c93d46fb3230f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_58E1841D:
+        m_Texture: {fileID: 2800000, guid: 5aad3fb6f294248e780659fac3bf4ff4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_703CA057:
+        m_Texture: {fileID: 2800000, guid: 8682bcfa89c974088b2070f8f38f99e9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_AAC5D26:
+        m_Texture: {fileID: 2800000, guid: 25c63a278ec52447fa828b9fe985d959, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_DFF8685D:
+        m_Texture: {fileID: 2800000, guid: b9da456c9c60f48a28e8c21bed7339fe, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_F26C3E45:
+        m_Texture: {fileID: 2800000, guid: 8682bcfa89c974088b2070f8f38f99e9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -106,6 +130,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_156AB438: {r: 0.4009434, g: 0.4290242, b: 1, a: 0}
+    - Color_E9D9EB07: {r: 0.05490196, g: 0.2627451, b: 0, a: 0}
+    - Vector2_A20F1912: {r: -0.23, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
