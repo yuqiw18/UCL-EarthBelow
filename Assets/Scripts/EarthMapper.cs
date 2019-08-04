@@ -13,7 +13,7 @@ public class EarthMapper : MonoBehaviour
 
     public GameObject canvasWorld;
     public GameObject labelPrefab;
-    public GameObject panelPrefab;
+    public GameObject profilePanel;
     public GameObject landmarkPrefab;
 
     public GameObject legendPanel;
@@ -41,8 +41,8 @@ public class EarthMapper : MonoBehaviour
     void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
-        defaultLandmark = panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite;
-        defaultFlag = panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite;
+        defaultLandmark = profilePanel.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite;
+        defaultFlag = profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite;
     }
 
     // Update is called once per frame
@@ -74,10 +74,10 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
-        if (panelPrefab.activeSelf)
+        if (profilePanel.activeSelf)
         {
-            panelPrefab.transform.LookAt(Camera.main.transform);
-            panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+            profilePanel.transform.LookAt(Camera.main.transform);
+            profilePanel.transform.Rotate(new Vector3(0, 180, 0));
         }
 
         // Detect tapping
@@ -95,30 +95,30 @@ public class EarthMapper : MonoBehaviour
                     float distanceScale = (raycastHit.collider.transform.position - referenceOrigin).magnitude/1000;
 
                     // Display the panel before the other sprites by shifting a very small value so that it is not occluded
-                    panelPrefab.transform.position = raycastHit.collider.transform.position * 0.99f;
+                    profilePanel.transform.position = raycastHit.collider.transform.position * 0.99f;
 
                     // Fetch selected landmark information
                     CORE.LocationInfo selectedLocation = CORE.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
 
                     // Assign information to the panel
-                    panelPrefab.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name;
-                    panelPrefab.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
-                    panelPrefab.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
-                    panelPrefab.transform.Find("Button_Portal").gameObject.SetActive(selectedLocation.panorama);
+                    profilePanel.transform.Find("Label_CityName").GetComponent<Text>().text = selectedLocation.name;
+                    profilePanel.transform.Find("Label_CityCountry").GetComponent<Text>().text = selectedLocation.country + "";
+                    profilePanel.transform.Find("Label_CityDescription").GetComponent<Text>().text = selectedLocation.description;
+                    profilePanel.transform.Find("Button_Portal").gameObject.SetActive(selectedLocation.panorama);
 
                     // Reset images just in case the target images are not available
-                    panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = defaultLandmark;
-                    panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = defaultFlag;
+                    profilePanel.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = defaultLandmark;
+                    profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = defaultFlag;
 
                     // Load images from local resources
                     StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
                     {
-                        panelPrefab.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = result;
+                        profilePanel.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = result;
                     }));
 
                     StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), (result) =>
                     {
-                        panelPrefab.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
+                        profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
                     }));
 
                     StartCoroutine(CORE.LoadImageToTexture(Path.Combine(Application.streamingAssetsPath, "Images/Panorama/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
@@ -133,14 +133,14 @@ public class EarthMapper : MonoBehaviour
                     url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
-                    panelPrefab.transform.localScale = new Vector3(UIPanelScale * distanceScale, UIPanelScale * distanceScale, UIPanelScale * distanceScale);
+                    profilePanel.transform.localScale = new Vector3(UIPanelScale * distanceScale, UIPanelScale * distanceScale, UIPanelScale * distanceScale);
 
                     // Rotate the panel to face the user
-                    panelPrefab.transform.LookAt(Camera.main.transform);
-                    panelPrefab.transform.Rotate(new Vector3(0, 180, 0));
+                    profilePanel.transform.LookAt(Camera.main.transform);
+                    profilePanel.transform.Rotate(new Vector3(0, 180, 0));
 
                     // Show the panel
-                    panelPrefab.SetActive(true);
+                    profilePanel.SetActive(true);
                 }
                 #endregion
             }
@@ -167,7 +167,6 @@ public class EarthMapper : MonoBehaviour
     {
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
-        panelPrefab.SetActive(false);
         if (mappedEarth != null)
         {
             mappedEarth.SetActive(false);
@@ -208,6 +207,8 @@ public class EarthMapper : MonoBehaviour
     }
 
     public void MapEarth() {
+
+        profilePanel.SetActive(false);
 
         // Clear old variables
         Destroy(mappedEarth);
@@ -353,7 +354,7 @@ public class EarthMapper : MonoBehaviour
             }
         }
 
-        panelPrefab.transform.SetAsLastSibling();
+        profilePanel.transform.SetAsLastSibling();
         #endregion
 
         legendPanel.SetActive(true);
