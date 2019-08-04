@@ -164,12 +164,13 @@ public class EarthPreviewer : MonoBehaviour
 
     private void GenerateLabels()
     {
-        foreach (GameObject p in pinList) {
+        foreach (GameObject p in pinList)
+        {
             if (!p.name.Equals("-1"))
             {
                 GameObject label = Instantiate(labelPrefab, p.transform.position, Quaternion.identity, canvasWorld.transform);
                 label.name = p.name;
-                label.transform.Find("Label").GetComponent<Text>().text = CORE.LOCATION_DATABASE[int.Parse(label.name)].name;
+                label.GetComponent<Text>().text = CORE.LOCATION_DATABASE[int.Parse(label.name)].name;
                 pinLabelList.Add(label);
             }
             
@@ -184,8 +185,14 @@ public class EarthPreviewer : MonoBehaviour
             foreach (GameObject l in pinLabelList)
             {
                 GameObject linkedPin = pinList[int.Parse(l.name) + 1];
-                l.transform.position = linkedPin.transform.position;
-                l.transform.localScale = linkedPin.transform.localScale / 10;
+
+                // Shift the label forwards a little bit so that it will not collide with the earth object
+                l.transform.position = linkedPin.transform.position + (linkedPin.transform.position - earthObject.transform.position).normalized * linkedPin.transform.localScale.x;
+
+                // Scale the label
+                l.transform.localScale = linkedPin.transform.localScale / 5;
+
+                // Update the facing direction
                 l.transform.LookAt(earthObject.transform.position);
             }
         }
