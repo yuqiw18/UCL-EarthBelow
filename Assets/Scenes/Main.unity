@@ -3866,7 +3866,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5942a6e7dcc406abf431ec09cfca1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewerOptions: {fileID: 1900500117}
   earthObject: {fileID: 316080947}
   pinPrefab: {fileID: 621629459070395488, guid: 88fd93632faca4173a9bc1598aa2ac09,
     type: 3}
@@ -6725,7 +6724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa688314b93f64cb19e05416dbd8ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerOptions: {fileID: 2027868404}
   indicatorPrefab: {fileID: 5552406040995942088, guid: d41b63579a2e14b97bd1e78dc5842d71,
     type: 3}
   pitPrefab: {fileID: 1870414860458295726, guid: 4d325895b32c24069877863325685f60,
@@ -9674,6 +9672,10 @@ MonoBehaviour:
   - {fileID: 463930438}
   - {fileID: 854905462}
   - {fileID: 1985308836}
+  modeOptions:
+  - {fileID: 1900500117}
+  - {fileID: 2027868404}
+  - {fileID: 153887107}
   modeIcons:
   - {fileID: 1019878616}
   - {fileID: 1043187798}
@@ -13015,7 +13017,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89e2bf01d8984b0fa4ac3b9e16b4a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapperOptions: {fileID: 153887107}
   indicatorPrefab: {fileID: 5552406040995942088, guid: 2eec7faaf10d44d49888d220b8ade55e,
     type: 3}
   earthObjectToCopy: {fileID: 316080947}

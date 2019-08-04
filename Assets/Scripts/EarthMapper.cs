@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class EarthMapper : MonoBehaviour
 {
-    public GameObject mapperOptions;
-
     public GameObject indicatorPrefab;
     public GameObject earthObjectToCopy;
     public GameObject earthHorizonPrefab;
@@ -150,7 +148,6 @@ public class EarthMapper : MonoBehaviour
 
     private void OnEnable()
     {
-        mapperOptions.SetActive(true);
         canvasWorld.SetActive(true);
         if (highlightedIndicator != null)
         {
@@ -167,7 +164,6 @@ public class EarthMapper : MonoBehaviour
 
     private void OnDisable()
     {
-        mapperOptions.SetActive(false);
         highlightedIndicator.SetActive(false);
         canvasWorld.SetActive(false);
         panelPrefab.SetActive(false);

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ModeManager : MonoBehaviour
 {
     public GameObject[] modes;
+    public GameObject[] modeOptions;
     public Image[] modeIcons;
 
     void Start()
@@ -20,6 +21,7 @@ public class ModeManager : MonoBehaviour
             ResetMode();
             modes[modeIndex].SetActive(true);
             modeIcons[modeIndex].color = new Color(1, 0.8f, 0, modeIcons[modeIndex].color.a);
+            modeOptions[modeIndex].SetActive(true);
         }
     }
 
@@ -30,8 +32,14 @@ public class ModeManager : MonoBehaviour
             mode.SetActive(false);
         }
 
-        foreach (Image icon in modeIcons) {
+        foreach (Image icon in modeIcons)
+        {
             icon.color = new Color(1,1,1, 0.75f);
+        }
+
+        foreach (GameObject option in modeOptions)
+        {
+            option.SetActive(false);
         }
     }
 }

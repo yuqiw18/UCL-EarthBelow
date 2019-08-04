@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
 {
-    public GameObject previewerOptions;
     public GameObject earthObject;
     public GameObject pinPrefab;
     public Material[] earthMaterialList;
@@ -214,7 +213,6 @@ public class EarthPreviewer : MonoBehaviour
     private void OnDisable()
     {
         earthObject.SetActive(false);
-        previewerOptions.SetActive(false);
     }
 
     private void OnEnable()
@@ -223,7 +221,6 @@ public class EarthPreviewer : MonoBehaviour
         {
             earthObject.SetActive(true);
         }
-        previewerOptions.SetActive(true);
     }
 
     public void TransitionMaterial(int index)

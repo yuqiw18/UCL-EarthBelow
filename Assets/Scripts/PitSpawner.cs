@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class PitSpawner : MonoBehaviour
 {
-    public GameObject spawnerOptions;
-
     public GameObject indicatorPrefab;
     public GameObject pitPrefab;
     public GameObject detailPanel;
@@ -108,7 +106,6 @@ public class PitSpawner : MonoBehaviour
         {
             highlightedIndicator.SetActive(false);
         }
-        spawnerOptions.SetActive(false);
     }
 
     private void OnEnable()
@@ -124,7 +121,6 @@ public class PitSpawner : MonoBehaviour
                 highlightedIndicator.SetActive(true);
             }
         }
-        spawnerOptions.SetActive(true);
     }
 
 
