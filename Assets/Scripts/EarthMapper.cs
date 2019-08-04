@@ -8,13 +8,14 @@ using UnityEngine.UI;
 public class EarthMapper : MonoBehaviour
 {
     public GameObject indicatorPrefab;
-    public GameObject earthObjectToCopy;
+    public GameObject earthToReference;
     public GameObject earthHorizonPrefab;
 
     public GameObject canvasWorld;
     public GameObject labelPrefab;
     public GameObject panelPrefab;
     public GameObject landmarkPrefab;
+
     public GameObject legendPanel;
     public GameObject panoramaPanel;
 
@@ -227,7 +228,7 @@ public class EarthMapper : MonoBehaviour
         // Initialise the earth object and the horizon
         // The horizon (range) is 5km x 5km as suggested for a 1.7m human
         referenceOrigin = placementPose.position;
-        referenceEarth = Instantiate(earthObjectToCopy, referenceOrigin, Quaternion.identity);
+        referenceEarth = Instantiate(earthToReference, referenceOrigin, Quaternion.identity);
         mappedEarth = Instantiate(earthHorizonPrefab, referenceOrigin, Quaternion.identity);
 
         Transform pinGroup = referenceEarth.transform.Find("Group_Pins");

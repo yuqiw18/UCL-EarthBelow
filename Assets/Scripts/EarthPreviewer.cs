@@ -11,9 +11,13 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject pinPrefab;
     public Material[] earthMaterialList;
 
+    public GameObject canvasWorld;
+    public GameObject labelPrefab;
+
     private Vector3 earthCenter;
     private List<Vector3> tempPinCoord = new List<Vector3>();
     private List<GameObject> pinList = new List<GameObject>();
+    private List<GameObject> pinLabelList = new List<GameObject>();
 
     private GameObject pinGroup;
     private bool showMagneticField = false;
@@ -49,6 +53,7 @@ public class EarthPreviewer : MonoBehaviour
         pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
         SetMaterial(0);
+        canvasWorld.SetActive(false);
     }
 
     IEnumerator Start()
@@ -104,6 +109,9 @@ public class EarthPreviewer : MonoBehaviour
 
             // Compute the rotation required for rotating the current location to the top
             ComputeRotation();
+
+            // Generate labels
+            GenerateLabels();
         }
         Input.location.Stop();
     }
@@ -154,8 +162,34 @@ public class EarthPreviewer : MonoBehaviour
         CORE.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
     }
 
+    private void GenerateLabels()
+    {
+        foreach (GameObject p in pinList) {
+            if (!p.name.Equals("-1"))
+            {
+                GameObject label = Instantiate(labelPrefab, p.transform.position, Quaternion.identity, canvasWorld.transform);
+                label.name = p.name;
+                label.transform.Find("Label").GetComponent<Text>().text = CORE.LOCATION_DATABASE[int.Parse(label.name)].name;
+                pinLabelList.Add(label);
+            }
+            
+        }
+    }
+
     void Update()
     {
+        // Pin label always faces forwards
+        if (pinLabelList.Count != 0)
+        {
+            foreach (GameObject l in pinLabelList)
+            {
+                GameObject linkedPin = pinList[int.Parse(l.name) + 1];
+                l.transform.position = linkedPin.transform.position;
+                l.transform.localScale = linkedPin.transform.localScale / 10;
+                l.transform.LookAt(earthObject.transform.position);
+            }
+        }
+
         // Gesture control
         if (spawned)
         {
@@ -213,6 +247,8 @@ public class EarthPreviewer : MonoBehaviour
     private void OnDisable()
     {
         earthObject.SetActive(false);
+        canvasWorld.SetActive(false);
+
     }
 
     private void OnEnable()
@@ -220,6 +256,7 @@ public class EarthPreviewer : MonoBehaviour
         if (spawned)
         {
             earthObject.SetActive(true);
+            canvasWorld.SetActive(true);
         }
     }
 
@@ -338,6 +375,7 @@ public class EarthPreviewer : MonoBehaviour
         showCountryBorder = false;
         SetMaterial(0);
         earthObject.SetActive(false);
+        canvasWorld.SetActive(false);
         spawned = false;
     }
 
@@ -396,6 +434,7 @@ public class EarthPreviewer : MonoBehaviour
             yield return null;
         }
         pinGroup.SetActive(true);
+        canvasWorld.SetActive(true);
         SetMaterial(1);
         spawned = true;
     }
