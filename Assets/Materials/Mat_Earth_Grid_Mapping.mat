@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Earth_Grid_No_Label
+  m_Name: Mat_Earth_Grid_Mapping
   m_Shader: {fileID: -6465566751694194690, guid: e5a27cc35d7594bc98647665debe8e30,
     type: 3}
   m_ShaderKeywords: _EMISSION
@@ -100,5 +100,5 @@ Material:
     - Vector2_AE49007E: {r: -0.23, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 1.9999998, b: 1.1099476, a: 1}
+    - _EmissionColor: {r: 0, g: 1.254902, b: 2, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
