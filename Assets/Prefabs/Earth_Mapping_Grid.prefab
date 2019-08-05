@@ -158,12 +158,12 @@ GameObject:
   - component: {fileID: 7326304162557695001}
   - component: {fileID: 6022284946394717363}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3289706515735185023
 Transform:
   m_ObjectHideFlags: 0
@@ -203,7 +203,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b5c30d011ba842d183c611b87c4f2cb, type: 2}
+  - {fileID: 2100000, guid: 36ae4c7c82cd0402485f7057dec813a2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

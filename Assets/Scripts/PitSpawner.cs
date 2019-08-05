@@ -8,7 +8,6 @@ public class PitSpawner : MonoBehaviour
 {
     public GameObject indicatorPrefab;
     public GameObject pitPrefab;
-    public GameObject detailPanel;
 
     public GameObject canvasWorld;
     public GameObject profilePanel;
@@ -23,6 +22,8 @@ public class PitSpawner : MonoBehaviour
     private float newTime;
     private readonly float doubleTapInterval = 0.25f;
     private float pitScale = 1.0f;
+
+    private readonly float panelScale = 0.00125f;
 
     // Start is called before the first frame update
     void Start()
@@ -65,29 +66,20 @@ public class PitSpawner : MonoBehaviour
                 {
                     if (raycastHit.collider.CompareTag("Layer"))
                     {
-                        profilePanel.transform.position = spawnedPit.transform.Find("Panel_SpawnPoint").position;
-
+                        profilePanel.transform.position = Camera.main.transform.forward;
+                        
                         CORE.PlanetInfo selectedLayer = CORE.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
 
                         profilePanel.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.structure;
+                        profilePanel.transform.Find("Label_StructurePlanet").GetComponent<Text>().text = selectedLayer.planet;
                         profilePanel.transform.Find("Label_State").Find("Text").GetComponent<Text>().text = selectedLayer.state;
                         profilePanel.transform.Find("Label_Thickness").Find("Text").GetComponent<Text>().text = selectedLayer.thickness;
                         profilePanel.transform.Find("Label_Temperature").Find("Text").GetComponent<Text>().text = selectedLayer.temperature;
                         profilePanel.transform.Find("Label_Composition").Find("Text").GetComponent<Text>().text = selectedLayer.composition;
                         profilePanel.transform.Find("Label_Highlight").Find("Text").GetComponent<Text>().text = selectedLayer.highlight;
 
-                        detailPanel.transform.Find("Structure").Find("Text").GetComponent<Text>().text = selectedLayer.structure;
-                        detailPanel.transform.Find("State").Find("Text").GetComponent<Text>().text = selectedLayer.state;
-                        detailPanel.transform.Find("Thickness").Find("Text").GetComponent<Text>().text = selectedLayer.thickness;
-                        detailPanel.transform.Find("Temperature").Find("Text").GetComponent<Text>().text = selectedLayer.temperature;
-                        detailPanel.transform.Find("Composition").Find("Text").GetComponent<Text>().text = selectedLayer.composition;
-                        detailPanel.transform.Find("Highlight").Find("Text").GetComponent<Text>().text = selectedLayer.highlight;
-
-                        // Show the panel
-                        detailPanel.SetActive(true);
-
                         // Scale the panel
-                        profilePanel.transform.localScale = new Vector3(0.00125f, 0.00125f, 0.00125f);
+                        profilePanel.transform.localScale = new Vector3(panelScale, panelScale, panelScale);
 
                         // Rotate the panel to face the user
                         profilePanel.transform.LookAt(Camera.main.transform);
