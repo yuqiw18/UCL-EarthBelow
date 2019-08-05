@@ -3726,7 +3726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: 26}
   m_SizeDelta: {x: 320, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &476219508
@@ -6266,7 +6266,6 @@ MonoBehaviour:
     type: 3}
   canvasWorld: {fileID: 2062256831}
   profilePanel: {fileID: 1935835340}
-  debugOutput: {fileID: 1240719703}
 --- !u!4 &854905464
 Transform:
   m_ObjectHideFlags: 0
@@ -8402,9 +8401,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Map the virtual earth to the real one under the feet.
+  m_Text: 'Map the virtual Earth to the real one under the feet.
 
-    It displays city information upon interaction.'
+    The city profile can be toggled on by touching.'
 --- !u!222 &1152322484
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8501,7 +8500,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Spawn the earth at desired facing direction.
 
-    You can scale, rotate and change its appearance.'
+    The globe can be rotated and scaled by touch.
+
+'
 --- !u!222 &1188086440
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8620,7 +8621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1222155851
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9562,8 +9563,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -12}
-  m_SizeDelta: {x: 320, y: 40}
+  m_AnchoredPosition: {x: 0, y: -10}
+  m_SizeDelta: {x: 320, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1404614851
 MonoBehaviour:
@@ -9613,9 +9614,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Spawn a pit at the selected surface.
+  m_Text: 'Spawn a pit at the designated surface.
 
-    You can scale and toggle information by touch.'
+    The pit can be scaled, and related details can be revealed by double tapping.'
 --- !u!222 &1404614853
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12350,8 +12351,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 36}
-  m_SizeDelta: {x: 320, y: 64}
+  m_AnchoredPosition: {x: 0, y: 38}
+  m_SizeDelta: {x: 320, y: 68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1993938862
 MonoBehaviour:

@@ -70,13 +70,12 @@ public class PitSpawner : MonoBehaviour
                         
                         CORE.PlanetInfo selectedLayer = CORE.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
 
-                        profilePanel.transform.Find("Label_StructureName").GetComponent<Text>().text = selectedLayer.structure;
-                        profilePanel.transform.Find("Label_StructurePlanet").GetComponent<Text>().text = selectedLayer.planet;
+                        profilePanel.transform.Find("Label_Layer").GetComponent<Text>().text = selectedLayer.layer;
+                        profilePanel.transform.Find("Label_Planet").GetComponent<Text>().text = selectedLayer.planet;
                         profilePanel.transform.Find("Label_State").Find("Text").GetComponent<Text>().text = selectedLayer.state;
                         profilePanel.transform.Find("Label_Thickness").Find("Text").GetComponent<Text>().text = selectedLayer.thickness;
                         profilePanel.transform.Find("Label_Temperature").Find("Text").GetComponent<Text>().text = selectedLayer.temperature;
-                        profilePanel.transform.Find("Label_Composition").Find("Text").GetComponent<Text>().text = selectedLayer.composition;
-                        profilePanel.transform.Find("Label_Highlight").Find("Text").GetComponent<Text>().text = selectedLayer.highlight;
+                        profilePanel.transform.Find("Label_Description").GetComponent<Text>().text = selectedLayer.description;
 
                         // Scale the panel
                         profilePanel.transform.localScale = new Vector3(panelScale, panelScale, panelScale);

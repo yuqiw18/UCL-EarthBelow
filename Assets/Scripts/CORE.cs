@@ -34,12 +34,11 @@ public static class CORE
     public struct PlanetInfo
     {
         public string planet;
-        public string structure;
+        public string layer;
         public string state;
         public string thickness;
         public string temperature;
-        public string composition;
-        public string highlight;
+        public string description;
     }
 
     [Serializable]

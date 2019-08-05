@@ -2,39 +2,35 @@
     "serializableList": [
         {
             "planet": "Earth",
-            "structure": "Crust",
+            "layer": "Crust",
             "state": "Solid",
-            "thickness": "10~60KM",
+            "thickness": "10~60km",
             "temperature": "200~400°C",
-            "composition": "O2 Si Al2O3 Fe Ca Na K Mg",
-            "highlight": "Earthquakes, Volcano Erruptions"
+            "description": "The Crust is the thinnest layer of the Earth and is composed of mainly granite, basalt and diorite rocks. There are two types of Crust, namely the Continental Crust that makes up the land and the Oceanic Crust that forms the oceans. Earthquakes and volcano eruptions happen due to the constant crust shifting caused by lower layers."
         },
         {
             "planet": "Earth",
-            "structure": "Mentle",
+            "layer": "Mentle",
             "state": "Solid",
-            "thickness": "2900KM",
+            "thickness": "2900km",
             "temperature": "3000°C",
-            "composition": "Fe2O4Si MgO3Si S2- SiO2 MgO",
-            "highlight": "Convection Currents"
+            "description": "The Mantle is the second layer of the Earth. It is divided into two sections, namely the Lithosphere (Upper Mantle) and the Asthenosphere (Lower Mantle). It is composed of silicates of iron (Fe2O4Si) and magnesium (MgO3Si), sulphides (S2-) and oxides of silicon (SiO2) and magnesium (MgO). Convection Currents inside the Mantle and are caused by the continuous circular motion of rocks in the Lithosphere being pushed down by hot molasses liquid from the Asthenosphere."
         },
         {
             "planet": "Earth",
-            "structure": "Outer Core",
+            "layer": "Outer Core",
             "state": "Liquid",
-            "thickness": "2200KM",
+            "thickness": "2200km",
             "temperature": "4000~5000°C",
-            "composition": "NiFe",
-            "highlight": "Magnetic Field"
+            "description": "The Outer Core is the third layer of the Earth and is mainly made up of iron (Fe) and nickel (Ni) as well as a small number of other substances. As Earth spins on its axis, the iron inside the liquid outer core moves around which causes powerful electric currents. These currents cause lines of invisible force to stretch around the Earth and thousands of kilometres into space, creating the Magnetic Field which protects the Earth from harmful particles coming from the Sun."
         },
         {
             "planet": "Earth",
-            "structure": "Inner Core",
+            "layer": "Inner Core",
             "state": "Solid",
-            "thickness": "1250KM",
+            "thickness": "1250km",
             "temperature": "5000~6000°C",
-            "composition": "Fe",
-            "highlight": "Aurora Borealis"
+            "description": "The Inner Core is the fourth layer inside the Earth. It is solid due to the pressure caused by the weight put on it by the Earth's other three layers. There is still no direct evidence about the composition of the inner core. However, based on the relative prevalence of various chemical elements in the Solar System, the theory of Planetary Formation, and constraints imposed or implied by the chemistry of the rest of the Earth's volume, the Inner Core is believed to consist primarily of nickel-iron alloy (NiFe)."
         }
     ]
 }
