@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,7 @@ public class UIManager : MonoBehaviour
         instance = this;
     }
 
-    #region DYNAMIC
+    #region DYNAMIC_FUNCTIONS
     // For accessing through event system
     public void FadeIn(Text text)
     {
@@ -45,7 +44,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region STATIC
+    #region STATIC_FUNCTIONS
     // For accessing through script
     public static void StaticFadeIn(Text text, float alpha)
     {

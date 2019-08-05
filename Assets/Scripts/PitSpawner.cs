@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.UI;
@@ -25,14 +24,12 @@ public class PitSpawner : MonoBehaviour
 
     private readonly float panelScale = 0.00125f;
 
-    // Start is called before the first frame update
     void Start()
     {
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (placementIndicatorEnabled)
@@ -128,6 +125,7 @@ public class PitSpawner : MonoBehaviour
             }
         }
 
+        // Reset time for double tapping
         if (Time.time > newTime)
         {
             tapCount = 0;

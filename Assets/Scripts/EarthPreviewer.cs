@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
@@ -36,13 +35,15 @@ public class EarthPreviewer : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "location.json"), (data) => {
+        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "location.json"), (data) =>
+        {
             // Load data into the serializable class and transfer it to the non-serialisable list
             CORE.LocationDatabase locationDatabase = JsonUtility.FromJson<CORE.LocationDatabase>(data);
             CORE.LOCATION_DATABASE = locationDatabase.serializableList;
         }));
 
-        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "planet.json"), (data) => {
+        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "planet.json"), (data) =>
+        {
             // Load data into the serializable class and transfer it to the non-serialisable list
             CORE.PlanetDatabase planetDatabase = JsonUtility.FromJson<CORE.PlanetDatabase>(data);
             CORE.PLANET_DATABASE = planetDatabase.serializableList;
@@ -157,13 +158,16 @@ public class EarthPreviewer : MonoBehaviour
 
     private void ComputeRotation()
     {
+        // Compute the degree required for rotating the current position to the top
         Vector3 currentPinPosition = pinList[0].gameObject.transform.localPosition - earthObject.gameObject.transform.localPosition;
         Vector3 targetPinPosition = Vector3.up * CORE.EARTH_PREFAB_RADIUS - earthObject.gameObject.transform.localPosition;
         CORE.ROTATE_TO_TOP = Quaternion.FromToRotation(currentPinPosition, targetPinPosition);
     }
 
+    
     private void GenerateLabels()
     {
+        // Create a label for each pin
         foreach (GameObject p in pinList)
         {
             if (!p.name.Equals("-1"))
@@ -173,7 +177,6 @@ public class EarthPreviewer : MonoBehaviour
                 label.GetComponent<Text>().text = CORE.LOCATION_DATABASE[int.Parse(label.name)].name;
                 pinLabelList.Add(label);
             }
-            
         }
     }
 
@@ -190,7 +193,7 @@ public class EarthPreviewer : MonoBehaviour
                 l.transform.position = linkedPin.transform.position + (linkedPin.transform.position - earthObject.transform.position).normalized * linkedPin.transform.localScale.x;
 
                 // Scale the label
-                l.transform.localScale = linkedPin.transform.localScale / 5;
+                l.transform.localScale = linkedPin.transform.localScale / 5.0f;
 
                 // Update the facing direction
                 l.transform.LookAt(earthObject.transform.position);
@@ -255,7 +258,6 @@ public class EarthPreviewer : MonoBehaviour
     {
         earthObject.SetActive(false);
         canvasWorld.SetActive(false);
-
     }
 
     private void OnEnable()
@@ -334,7 +336,8 @@ public class EarthPreviewer : MonoBehaviour
         {
             showMagneticField = false;
         }
-        else {
+        else
+        {
             showMagneticField = true;
         }
         earthObject.transform.Find("Group_Layers").Find("Earth_MagneticField").gameObject.SetActive(showMagneticField);
@@ -386,7 +389,8 @@ public class EarthPreviewer : MonoBehaviour
         spawned = false;
     }
 
-    // Material manipulation
+    #region MATERIAL_MANIPULATION
+    // Alpha blending fades to zero
     private IEnumerator AlphaBlendToZero()
     {
         SetMaterialValue("_AlphaBlending", 1);
@@ -398,6 +402,7 @@ public class EarthPreviewer : MonoBehaviour
         inTransition = false;
     }
 
+    // Alpha blending fades to one
     private IEnumerator AlphaBlendToOne()
     {
         SetMaterialValue("_AlphaBlending", 0);
@@ -409,6 +414,7 @@ public class EarthPreviewer : MonoBehaviour
         inTransition = false;
     }
 
+    // Alpha blending fades to zero and then fades to one again
     private IEnumerator AlphaBlendOneToOne(int index)
     {
         // Fade to zero
@@ -432,6 +438,7 @@ public class EarthPreviewer : MonoBehaviour
         inTransition = false;
     }
 
+    // Alpha clipping fades to zero
     private IEnumerator AlphaClipToZero()
     {
         SetMaterialValue("_Dissolve", 1);
@@ -446,6 +453,7 @@ public class EarthPreviewer : MonoBehaviour
         spawned = true;
     }
 
+    // Accessors and mutators
     public Material GetMaterial()
     {
         return earthRenderer.material;
@@ -466,5 +474,6 @@ public class EarthPreviewer : MonoBehaviour
     {
         return earthRenderer.material.GetFloat(property);
     }
+    #endregion
 
 }

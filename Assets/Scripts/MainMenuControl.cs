@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuControl : MonoBehaviour
@@ -13,7 +11,7 @@ public class MainMenuControl : MonoBehaviour
 
     private Vector3 originalPostion, targetPosition;
     private float moveSpeed = 100.0f;
-    private float speedMultiplier = 2.0f;
+    private readonly float speedMultiplier = 2.0f;
     private bool canMove = false;
     private string state = "IDLE";
 
@@ -25,12 +23,15 @@ public class MainMenuControl : MonoBehaviour
 
     void Update()
     {
-         if (canMove){
+        if (canMove)
+        {
             menuBackground.transform.position = Vector3.MoveTowards(menuBackground.transform.position, targetPosition, moveSpeed * speedMultiplier * Time.deltaTime);
             Vector3 tempPosition = menuBackground.transform.position;
-            if (tempPosition == targetPosition){
+            if (tempPosition == targetPosition)
+            {
                 canMove = false;
-                switch (state) {
+                switch (state)
+                {
                     case "DOWN":
                         aboutPanel.SetActive(true);
                         backButton.SetActive(true);
@@ -46,28 +47,25 @@ public class MainMenuControl : MonoBehaviour
                         break;
                 }
             }
-         }
+        }
     }
 
-    public void MoveBackground(string operation) {
+    public void MoveBackground(string operation)
+    {
         state = operation;
-        switch (operation) {
+        switch (operation)
+        {
             case "DOWN":
                 targetPosition = originalPostion + new Vector3(0, Screen.height / 2, 0);
                 break;
             case "UP":
                 targetPosition = originalPostion + new Vector3(0, -Screen.height / 2, 0);
                 break;
-            case "PLACEHOLDER1":
-                targetPosition = originalPostion + new Vector3(-Screen.width / 2, 0, 0);
-                break;
-            case "PLACEHOLDER2":
-                targetPosition = originalPostion + new Vector3(Screen.width / 2, 0, 0);
-                break;
             case "IDLE":
                 targetPosition = originalPostion;
                 break;
-            default: 
+            default:
+                targetPosition = originalPostion;
                 break;
         }
         canMove = true;

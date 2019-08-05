@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -37,7 +36,6 @@ public class EarthMapper : MonoBehaviour
     private string url;
     private Sprite defaultFlag, defaultLandmark;
 
-    // Start is called before the first frame update
     void Start(){
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         highlightedIndicator = Instantiate(indicatorPrefab);
@@ -45,7 +43,6 @@ public class EarthMapper : MonoBehaviour
         defaultFlag = profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Update the indicator location

@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-// Global Variables and Public Access Functions
+// Global variables and public access functions
 public static class CORE
 {
     #region CORE.DATA.STRUCTURE
