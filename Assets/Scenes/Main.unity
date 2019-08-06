@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -12217,6 +12217,8 @@ MonoBehaviour:
   earthHorizonPrefab: {fileID: 4419297878434567063, guid: 47314fb10f04a45d9b24fd2047c0a735,
     type: 3}
   canvasWorld: {fileID: 855536322}
+  spriteNearPin: {fileID: 21300000, guid: ae0f7b70ecbdd4ed7970470f89d9f41e, type: 3}
+  spriteFarPin: {fileID: 21300000, guid: a4f5c86124a69465ab5a90aecd860f21, type: 3}
   labelPrefab: {fileID: 6182984350610274001, guid: db22f06db61424a3da06a525136e6a5f,
     type: 3}
   profilePanel: {fileID: 456503942}

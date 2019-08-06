@@ -48,15 +48,26 @@ public static class CORE
     }
 
     public static List<PlanetInfo> PLANET_DATABASE = new List<PlanetInfo>();
-
     #endregion
 
     #region CORE.PARAMETER
-    //
-    public static readonly string WEB_SERVER_ADDRESS = "https://yuqi.dev/";
-    public static bool DATA_LOADED_FLAG = false;
+    // Database path
+    public static readonly string DATABASE_WEB_SERVER = "https://yuqi.dev/";
+    public static readonly string DATABASE_FOLDER = "database";
+    public static readonly string DATABASE_FILE_LOCATION = "location.json";
+    public static readonly string DATABASE_FILE_LAYER = "planet.json";
+    public static bool DATABASE_LOADED_FLAG = false;
 
-    //
+    // Image path
+    public static readonly string IMAGE_FORMAT = ".png";
+    public static readonly string IMAGE_FOLDER_FLAG = "images/flag";
+    public static readonly string IMAGE_FOLDER_CITY = "images/city";
+    public static readonly string IMAGE_FOLDER_PANORAMA = "images/panorama";
+
+    // Search engine path
+    public static readonly string SEARCH_ENGINE_PATH = "https://en.wikipedia.org/wiki/";
+
+    // Location
     public static Vector2 USER_LATLONG = new Vector2(51.507351f, -0.127758f); // Default UK latitude and longitude
     public static Quaternion ROTATE_TO_TOP;
 
@@ -77,7 +88,6 @@ public static class CORE
     // This process can be simplified using Visual Studio Code with extensions such as JSON Escaper
     // location.json data source: https://www.latlong.net/
     // layer.json data source: Wikipedia
-    // 
     public static IEnumerator LoadDataFromJSON(string filePath, Action<string> callback)
     {
         string jsonContent;
@@ -96,13 +106,6 @@ public static class CORE
 
         yield return null;
         callback(jsonContent);
-    }
-
-    // JSON saving function template
-    private static string SaveToJSON() {
-        PlanetDatabase locationDatabase = new PlanetDatabase();
-        locationDatabase.serializableList = PLANET_DATABASE;
-        return JsonUtility.ToJson(locationDatabase);
     }
     #endregion
 
@@ -207,5 +210,4 @@ public static class CORE
         return (fileName.Replace(" ", "_")).ToLower();
     }
     #endregion
-
 }

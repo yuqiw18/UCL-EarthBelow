@@ -11,6 +11,7 @@ public class EarthMapper : MonoBehaviour
     public GameObject earthHorizonPrefab;
 
     public GameObject canvasWorld;
+    public Sprite spriteNearPin, spriteFarPin;
     public GameObject labelPrefab;
     public GameObject profilePanel;
     public GameObject landmarkPrefab;
@@ -108,26 +109,25 @@ public class EarthMapper : MonoBehaviour
                     profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = defaultFlag;
 
                     // Load images from local resources
-                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/CityThumbnails/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, CORE.IMAGE_FOLDER_CITY, CORE.FileNameParser(selectedLocation.name) + CORE.IMAGE_FORMAT), (result) =>
                     {
                         profilePanel.transform.Find("Image_CityLandmark").gameObject.GetComponent<Image>().sprite = result;
                     }));
 
-                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/Flags/", CORE.FileNameParser(selectedLocation.country) + ".png"), (result) =>
+                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, CORE.IMAGE_FOLDER_FLAG, CORE.FileNameParser(selectedLocation.country) + CORE.IMAGE_FORMAT), (result) =>
                     {
                         profilePanel.transform.Find("Image_CountryFlag").gameObject.GetComponent<Image>().sprite = result;
                     }));
 
-                    StartCoroutine(CORE.LoadImageToTexture(Path.Combine(Application.streamingAssetsPath, "Images/Panorama/", CORE.FileNameParser(selectedLocation.name) + ".png"), (result) =>
+                    StartCoroutine(CORE.LoadImageToTexture(Path.Combine(Application.streamingAssetsPath, CORE.IMAGE_FOLDER_PANORAMA, CORE.FileNameParser(selectedLocation.name) + CORE.IMAGE_FORMAT), (result) =>
                     {
                         mappedEarth.transform.Find("Portal_Panorama").GetComponent<Renderer>().material.SetTexture("_Texture", result);
-                        Debug.Log("Called");
                     }));
 
                     panoramaPanel.transform.Find("Text").GetComponent<Text>().text = selectedLocation.landmark;
 
                     // Append formatted string to the url
-                    url = Path.Combine("https://en.wikipedia.org/wiki/", CORE.FileNameParser(selectedLocation.name));
+                    url = Path.Combine(CORE.SEARCH_ENGINE_PATH, CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
                     profilePanel.transform.localScale = new Vector3(UIPanelScale * distanceScale, UIPanelScale * distanceScale, UIPanelScale * distanceScale);
@@ -301,22 +301,17 @@ public class EarthMapper : MonoBehaviour
                 // Rescale the landmark
                 landmark.transform.localScale *= distanceScale;
 
-                // Change the color based on the geographical distance
+                // Change the sprite based on the geographical distance
                 if (geoDistance > 5)
                 {
-                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "Far.png"), (result) =>
-                    {
-                        landmarkImage.GetComponent<Image>().sprite = result;
-                    }));
+                    landmarkImage.GetComponent<Image>().sprite = spriteFarPin;
                 }
                 else
                 {
-                    StartCoroutine(CORE.LoadImageToSprite(Path.Combine(Application.streamingAssetsPath, "Images/LandmarkIcons/", "Near.png"), (result) =>
-                    {
-                        landmarkImage.GetComponent<Image>().sprite = result;
-                    }));
+                    landmarkImage.GetComponent<Image>().sprite = spriteNearPin;
                 }
 
+                // Fill the color
                 landmarkImage.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
 
                 landmarkList.Add(landmark);

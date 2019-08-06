@@ -111,7 +111,7 @@ public class EarthPreviewer : MonoBehaviour
 
     void Update()
     {
-        if (CORE.DATA_LOADED_FLAG && !dataInitStarted)
+        if (CORE.DATABASE_LOADED_FLAG && !dataInitStarted)
         {
             StartCoroutine(LoadGPS());
             dataInitStarted = true;
