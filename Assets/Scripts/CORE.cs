@@ -53,6 +53,10 @@ public static class CORE
 
     #region CORE.PARAMETER
     //
+    public static readonly string WEB_SERVER_ADDRESS = "https://yuqi.dev/";
+    public static bool DATA_LOADED_FLAG = false;
+
+    //
     public static Vector2 USER_LATLONG = new Vector2(51.507351f, -0.127758f); // Default UK latitude and longitude
     public static Quaternion ROTATE_TO_TOP;
 

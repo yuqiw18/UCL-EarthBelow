@@ -32,89 +32,18 @@ public class EarthPreviewer : MonoBehaviour
     private int currentMaterialIndex;
 
     private bool spawned = false;
+    private bool dataInitStarted = false;
+    private bool dataInitialised = false;
 
-    private void Awake()
+    void Start()
     {
-        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "location.json"), (data) =>
-        {
-            // Load data into the serializable class and transfer it to the non-serialisable list
-            CORE.LocationDatabase locationDatabase = JsonUtility.FromJson<CORE.LocationDatabase>(data);
-            CORE.LOCATION_DATABASE = locationDatabase.serializableList;
-        }));
-
-        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(Application.streamingAssetsPath, "Database/", "planet.json"), (data) =>
-        {
-            // Load data into the serializable class and transfer it to the non-serialisable list
-            CORE.PlanetDatabase planetDatabase = JsonUtility.FromJson<CORE.PlanetDatabase>(data);
-            CORE.PLANET_DATABASE = planetDatabase.serializableList;
-        }));
-
+        earthCenter = earthObject.gameObject.transform.position;
         earthTransformPoint = earthObject.transform.parent;
         earthSpawnPoint = earthObject.transform.parent.parent;
         pinGroup = earthObject.transform.Find("Group_Pins").gameObject;
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
         SetMaterial(0);
         canvasWorld.SetActive(false);
-    }
-
-    IEnumerator Start()
-    {
-        earthCenter = earthObject.gameObject.transform.position;
-
-        if (!Input.location.isEnabledByUser)
-        {
-            Debug.Log("Location service is not enabled: Using default location - UK.");
-
-            tempPinCoord.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
-            LoadPredefinedPinLocation();
-            GeneratePins();
-            ComputeRotation();
-
-            yield break;
-        }
-
-        // Initialise location service
-        Input.compass.enabled = true;
-        Input.location.Start();
-
-        int maxWait = 20;
-        // Use default value if failed
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-        {
-            yield return new WaitForSeconds(1);
-            maxWait--;
-        }
-        if (maxWait < 1)
-        {
-            Debug.Log("Timeout: Using default location - UK.");
-            yield return false;
-        }
-        if (Input.location.status == LocationServiceStatus.Failed)
-        {
-            Debug.Log("Unable to get location information: Using default location - UK.");
-            yield return false;
-        }
-        else
-        {
-            // Use values from the GPS
-            CORE.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
-
-            // Add current location to the list for futher computation
-            tempPinCoord.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
-
-            // Add featured location values to the list 
-            LoadPredefinedPinLocation();
-
-            // Generate pins based on given values
-            GeneratePins();
-
-            // Compute the rotation required for rotating the current location to the top
-            ComputeRotation();
-
-            // Generate labels
-            GenerateLabels();
-        }
-        Input.location.Stop();
     }
 
     // Load predefined locations from the CORE
@@ -182,24 +111,33 @@ public class EarthPreviewer : MonoBehaviour
 
     void Update()
     {
-        // Pin label always faces forwards
-        if (pinLabelList.Count != 0)
+        if (CORE.DATA_LOADED_FLAG && !dataInitStarted)
         {
-            foreach (GameObject l in pinLabelList)
-            {
-                GameObject linkedPin = pinList[int.Parse(l.name) + 1];
-
-                // Shift the label forwards a little bit so that it will not collide with the earth object
-                l.transform.position = linkedPin.transform.position + (linkedPin.transform.position - earthObject.transform.position).normalized * linkedPin.transform.localScale.x;
-
-                // Scale the label
-                l.transform.localScale = linkedPin.transform.localScale / 5.0f;
-
-                // Update the facing direction
-                l.transform.LookAt(earthObject.transform.position);
-            }
+            StartCoroutine(LoadGPS());
+            dataInitStarted = true;
         }
 
+        // Pin label always faces forwards
+        if (dataInitialised)
+        {
+            if (pinLabelList.Count != 0)
+            {
+                foreach (GameObject l in pinLabelList)
+                {
+                    GameObject linkedPin = pinList[int.Parse(l.name) + 1];
+
+                    // Shift the label forwards a little bit so that it will not collide with the earth object
+                    l.transform.position = linkedPin.transform.position + (linkedPin.transform.position - earthObject.transform.position).normalized * linkedPin.transform.localScale.x;
+
+                    // Scale the label
+                    l.transform.localScale = linkedPin.transform.localScale / 5.0f;
+
+                    // Update the facing direction
+                    l.transform.LookAt(earthObject.transform.position);
+                }
+            }
+        }
+        
         // Gesture control
         if (spawned)
         {
@@ -267,6 +205,73 @@ public class EarthPreviewer : MonoBehaviour
             earthObject.SetActive(true);
             canvasWorld.SetActive(true);
         }
+    }
+
+    private IEnumerator LoadGPS()
+    {
+        if (!Input.location.isEnabledByUser)
+        {
+            Debug.Log("Location service is not enabled: Using default location - UK.");
+
+            tempPinCoord.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
+            LoadPredefinedPinLocation();
+            GeneratePins();
+            ComputeRotation();
+            Debug.Log("Init data");
+            yield break;
+        }
+
+        // Initialise location service
+        Input.compass.enabled = true;
+        Input.location.Start();
+
+        int maxWait = 20;
+        // Use default value if failed
+        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        {
+            yield return new WaitForSeconds(1);
+            maxWait--;
+        }
+
+        if (maxWait < 1)
+        {
+            Debug.Log("Timeout: Using default location - UK.");
+            yield return false;
+        }
+
+        if (Input.location.status == LocationServiceStatus.Failed)
+        {
+            Debug.Log("Unable to get location information: Using default location - UK.");
+            yield return false;
+        }
+        else
+        {
+            // Use values from the GPS
+            CORE.USER_LATLONG = new Vector2(Input.location.lastData.latitude, Input.location.lastData.longitude);
+
+            // Add current location to the list for futher computation
+            tempPinCoord.Add(CORE.ECEFCoordinateFromLatLong(CORE.USER_LATLONG, CORE.EARTH_PREFAB_RADIUS));
+
+            // Add featured location values to the list 
+            LoadPredefinedPinLocation();
+
+            // Generate pins based on given values
+            GeneratePins();
+
+            // Compute the rotation required for rotating the current location to the top
+            ComputeRotation();
+
+            // Generate labels
+            GenerateLabels();
+        }
+
+        Input.location.Stop();
+
+        dataInitialised = true;
+
+        Debug.Log("Init data");
+
+        yield return null;
     }
 
     public void TransitionMaterial(int index)
