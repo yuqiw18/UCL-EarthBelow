@@ -60,9 +60,9 @@ public static class CORE
 
     // Image path
     public static readonly string IMAGE_FORMAT = ".png";
-    public static readonly string IMAGE_FOLDER_FLAG = "images/flag";
-    public static readonly string IMAGE_FOLDER_CITY = "images/city";
-    public static readonly string IMAGE_FOLDER_PANORAMA = "images/panorama";
+    public static readonly string IMAGE_FOLDER_FLAG = "image/flag";
+    public static readonly string IMAGE_FOLDER_CITY = "image/city";
+    public static readonly string IMAGE_FOLDER_PANORAMA = "image/panorama";
 
     // Search engine path
     public static readonly string SEARCH_ENGINE_PATH = "https://en.wikipedia.org/wiki/";
