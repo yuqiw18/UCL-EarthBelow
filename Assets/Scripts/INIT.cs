@@ -13,7 +13,7 @@ public class INIT : MonoBehaviour
         // This is an experimental function which can be used for futher development of this application
         // Since Application.streamingAssetsPath is read-only, it is not possible to modify the existing data
         // To overwrite or create new files locally, use Application.persistentDataPath instead
-        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(CORE.DATABASE_WEB_SERVER, CORE.DATABASE_FILE_LOCATION), (webData) =>
+        StartCoroutine(CORE.LoadDataFromJSON(Path.Combine(CORE.DATABASE_WEB_SERVER, CORE.DATABASE_FOLDER, CORE.DATABASE_FILE_LOCATION), (webData) =>
         {
             if (!webData.Equals(""))
             {

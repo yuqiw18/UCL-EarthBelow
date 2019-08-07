@@ -113,6 +113,7 @@ public class EarthPreviewer : MonoBehaviour
     {
         if (CORE.DATABASE_LOADED_FLAG && !dataInitStarted)
         {
+            earthObject.transform.parent = null;
             StartCoroutine(LoadGPS());
             dataInitStarted = true;
         }
@@ -267,9 +268,9 @@ public class EarthPreviewer : MonoBehaviour
 
         Input.location.Stop();
 
-        dataInitialised = true;
+        earthObject.transform.SetParent(earthTransformPoint);
 
-        Debug.Log("Init data");
+        dataInitialised = true;
 
         yield return null;
     }
