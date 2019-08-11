@@ -63,10 +63,12 @@ public class PitSpawner : MonoBehaviour
                 {
                     if (raycastHit.collider.CompareTag("Layer"))
                     {
-                        profilePanel.transform.position = Camera.main.transform.forward;
-                        
+                        // Place the panel in front of the camera
+                        profilePanel.transform.position = Camera.main.transform.position + 1.0f * (raycastHit.point - Camera.main.transform.position).normalized;
+
                         CORE.PlanetInfo selectedLayer = CORE.PLANET_DATABASE[int.Parse(raycastHit.collider.transform.parent.name)];
 
+                        // Fill in the information
                         profilePanel.transform.Find("Label_Layer").GetComponent<Text>().text = selectedLayer.layer;
                         profilePanel.transform.Find("Label_Planet").GetComponent<Text>().text = selectedLayer.planet;
                         profilePanel.transform.Find("Label_State").Find("Text").GetComponent<Text>().text = selectedLayer.state;
