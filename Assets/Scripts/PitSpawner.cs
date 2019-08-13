@@ -77,7 +77,7 @@ public class PitSpawner : MonoBehaviour
                         profilePanel.transform.Find("Label_Description").GetComponent<Text>().text = selectedLayer.description;
 
                         // Scale the panel
-                        profilePanel.transform.localScale = new Vector3(panelScale, panelScale, panelScale);
+                        profilePanel.transform.localScale = Vector3.one * panelScale;
 
                         // Rotate the panel to face the user
                         profilePanel.transform.LookAt(Camera.main.transform);
@@ -121,7 +121,7 @@ public class PitSpawner : MonoBehaviour
                     spawnedPit.transform.Find("Pit").Find("PitEdge").GetComponent<Renderer>().material.SetFloat("_Tiling", 3 + pitScale);
 
                     // Awayls snap the pit to the surface
-                    spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+                    spawnedPit.transform.localScale = Vector3.one * pitScale;
                     spawnedPit.transform.position = tempPosition;
                 }
             }
@@ -220,7 +220,7 @@ public class PitSpawner : MonoBehaviour
         {
             // Reposition the hole to the target surface after rescaling
             Vector3 tempPosition = spawnedPit.transform.position;
-            spawnedPit.transform.localScale = new Vector3(pitScale, pitScale, pitScale);
+            spawnedPit.transform.localScale = Vector3.one * pitScale;
             spawnedPit.transform.position = tempPosition;
         }
     }

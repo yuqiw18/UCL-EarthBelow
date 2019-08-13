@@ -70,7 +70,7 @@ public class EarthPreviewer : MonoBehaviour
         for (int i = 0; i < tempPinCoord.Count; i++)
         {
             // Instantiate the pin and place it under pin group
-            GameObject pin = Instantiate(pinPrefab, new Vector3(0, 0, 0), Quaternion.identity, pinGroup.transform);
+            GameObject pin = Instantiate(pinPrefab, Vector3.zero, Quaternion.identity, pinGroup.transform);
 
             // Shift the pin to the center of the earth
             pin.transform.localPosition += earthCenter;
@@ -181,7 +181,7 @@ public class EarthPreviewer : MonoBehaviour
 
                     float touchMagnitudeDifference = currentTouchDeltaMagnitude - previousTouchDeltaMagnitude;
 
-                    earthObject.transform.parent.localScale += new Vector3(scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference);
+                    earthObject.transform.parent.localScale += Vector3.one * scaleSpeed * touchMagnitudeDifference;
 
                     // Limit the smallest scale to 0.5f 
                     if (earthObject.transform.parent.localScale.x < 0.5f)

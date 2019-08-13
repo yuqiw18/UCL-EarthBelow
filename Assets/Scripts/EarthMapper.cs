@@ -36,7 +36,8 @@ public class EarthMapper : MonoBehaviour
     private List<GameObject> landmarkList = new List<GameObject>();
     
     private readonly float UILabelScale = 1.0f;
-    private readonly float UIPanelScale = 1.25f;
+    private readonly float UIPanelScaleDynamic = 1.25f;
+    private readonly float UIPanelScaleFixed = 0.00125f;
 
     private string url;
     private Sprite defaultFlag, defaultLandmark;
@@ -97,7 +98,11 @@ public class EarthMapper : MonoBehaviour
                     float distanceScale = (raycastHit.collider.transform.position - referenceOrigin).magnitude/1000;
 
                     // Display the panel before the other sprites by shifting a very small value so that it is not occluded
-                    profilePanel.transform.position = raycastHit.collider.transform.position * 0.99f;
+                    // A. Dynamic distance
+                    //profilePanel.transform.position = raycastHit.collider.transform.position * 0.99f;
+
+                    // B. Fixed distance
+                    profilePanel.transform.position = Camera.main.transform.position + 1.0f * (raycastHit.point - Camera.main.transform.position).normalized;
 
                     // Fetch selected landmark information
                     CORE.LocationInfo selectedLocation = CORE.LOCATION_DATABASE[int.Parse(raycastHit.collider.name)];
@@ -134,7 +139,11 @@ public class EarthMapper : MonoBehaviour
                     url = Path.Combine(CORE.SEARCH_ENGINE_PATH, CORE.FileNameParser(selectedLocation.name));
 
                     // Scale the panel
-                    profilePanel.transform.localScale = new Vector3(UIPanelScale * distanceScale, UIPanelScale * distanceScale, UIPanelScale * distanceScale);
+                    // A. Dynamic scale
+                    //profilePanel.transform.localScale = Vector3.one * UIPanelScaleDynamic * distanceScale;
+
+                    // B. Fixed scale
+                    profilePanel.transform.localScale = Vector3.one * UIPanelScaleFixed;
 
                     // Rotate the panel to face the user
                     profilePanel.transform.LookAt(Camera.main.transform);
@@ -240,7 +249,7 @@ public class EarthMapper : MonoBehaviour
         Transform refTop = referenceEarth.transform.Find("Ref_Top");
 
         // Scale and reposition the Earth
-        referenceEarth.transform.localScale = new Vector3(CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL, CORE.EARTH_PREFAB_SCALE_TO_REAL);
+        referenceEarth.transform.localScale = Vector3.one * CORE.EARTH_PREFAB_SCALE_TO_REAL;
 
         // Rotate the Earth so that the current position is facing up so that we can do the following calculations
         // Use the pre-calculated value
@@ -343,7 +352,7 @@ public class EarthMapper : MonoBehaviour
                 label.transform.Find("Label_LandmarkDistance").GetComponent<Text>().text += (geoDistance.ToString() + "km");
 
                 // Rescale the label
-                label.transform.localScale = new Vector3(UILabelScale * distanceScale, UILabelScale * distanceScale, UILabelScale * distanceScale);
+                label.transform.localScale = Vector3.one * UILabelScale * distanceScale;
                 labelList.Add(label);
                 #endregion
             }
