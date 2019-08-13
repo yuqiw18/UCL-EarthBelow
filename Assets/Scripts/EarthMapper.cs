@@ -19,6 +19,10 @@ public class EarthMapper : MonoBehaviour
     public GameObject legendPanel;
     public GameObject panoramaPanel;
 
+    public GameObject viewDistanceSlider;
+    public Text viewDistanceLabel;
+    public GameObject viewDistanceOccluder;
+
     private ARRaycastManager arRaycastManager;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
@@ -157,7 +161,9 @@ public class EarthMapper : MonoBehaviour
         if (mappedEarth != null)
         {
             mappedEarth.SetActive(true);
+            viewDistanceOccluder.SetActive(true);
         }
+        
     }
 
     private void OnDisable()
@@ -166,6 +172,7 @@ public class EarthMapper : MonoBehaviour
         canvasWorld.SetActive(false);
         if (mappedEarth != null)
         {
+            mappedEarth.SetActive(false);
             mappedEarth.SetActive(false);
         }
     }
@@ -376,6 +383,8 @@ public class EarthMapper : MonoBehaviour
             mappedEarth.transform.Find("Mapping_Border").gameObject.SetActive(false);
             mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(false);
             canvasWorld.SetActive(false);
+            viewDistanceSlider.SetActive(false);
+            viewDistanceOccluder.SetActive(false);
         }
         else
         {
@@ -384,6 +393,15 @@ public class EarthMapper : MonoBehaviour
             mappedEarth.transform.Find("Mapping_Border").gameObject.SetActive(true);
             mappedEarth.transform.Find("Mapping_Reference").gameObject.SetActive(true);
             canvasWorld.SetActive(true);
+            viewDistanceSlider.SetActive(true);
+            viewDistanceOccluder.SetActive(true);
         } 
+    }
+
+    public void AdjustRenderingDistance(float distanceScaleFactor)
+    {
+        float scale = distanceScaleFactor * 4;
+        viewDistanceOccluder.transform.localScale = Vector3.one * scale * 1000;
+        viewDistanceLabel.text = ((int)scale).ToString() + "km";
     }
 }
