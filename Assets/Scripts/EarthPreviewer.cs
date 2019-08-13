@@ -113,7 +113,6 @@ public class EarthPreviewer : MonoBehaviour
     {
         if (CORE.DATABASE_LOADED_FLAG && !dataInitStarted)
         {
-            earthObject.transform.parent = null;
             StartCoroutine(LoadGPS());
             dataInitStarted = true;
         }
@@ -218,7 +217,8 @@ public class EarthPreviewer : MonoBehaviour
             LoadPredefinedPinLocation();
             GeneratePins();
             ComputeRotation();
-            Debug.Log("Init data");
+            dataInitialised = true;
+
             yield break;
         }
 
@@ -264,13 +264,11 @@ public class EarthPreviewer : MonoBehaviour
 
             // Generate labels
             GenerateLabels();
+
+            dataInitialised = true;
         }
 
         Input.location.Stop();
-
-        earthObject.transform.SetParent(earthTransformPoint);
-
-        dataInitialised = true;
 
         yield return null;
     }
