@@ -13,6 +13,11 @@ public class EarthPreviewer : MonoBehaviour
     public GameObject canvasWorld;
     public GameObject labelPrefab;
 
+    public Text borderButtonText;
+    public Text magneticButtonText;
+    public Text[] apperanceButtonsText;
+    public Text[] layerButtonsText;
+   
     private Vector3 earthCenter;
     private List<Vector3> tempPinCoord = new List<Vector3>();
     private List<GameObject> pinList = new List<GameObject>();
@@ -35,6 +40,9 @@ public class EarthPreviewer : MonoBehaviour
     private bool dataInitStarted = false;
     private bool dataInitialised = false;
 
+    private Color32 defaultColor = Color.white;
+    private Color32 highlightColor = new Color(0, 219f/255f,129f/219f,1);
+
     void Start()
     {
         earthCenter = earthObject.gameObject.transform.position;
@@ -44,6 +52,8 @@ public class EarthPreviewer : MonoBehaviour
         earthRenderer = earthObject.transform.Find("Group_Layers").Find("Earth_Surface").GetComponent<Renderer>();
         SetMaterial(0);
         canvasWorld.SetActive(false);
+        HighlightLayerButtonText(0);
+        HighlightAppreanceButtonText(-1);
     }
 
     // Load predefined locations from the CORE
@@ -278,6 +288,8 @@ public class EarthPreviewer : MonoBehaviour
         // Only begin transition when it is not in the process of transition
         if (!inTransition)
         {
+            HighlightAppreanceButtonText(index - 1);
+
             inTransition = true;
             if (currentMaterialIndex != index)
             {
@@ -332,6 +344,8 @@ public class EarthPreviewer : MonoBehaviour
         {
             layers.Find("Earth_Border").gameObject.SetActive(true);
         }
+
+        HighlightLayerButtonText(i);
     }
 
     public void ToggleMagneticField()
@@ -339,10 +353,12 @@ public class EarthPreviewer : MonoBehaviour
         if (showMagneticField)
         {
             showMagneticField = false;
+            magneticButtonText.color = defaultColor;
         }
         else
         {
             showMagneticField = true;
+            magneticButtonText.color = highlightColor;
         }
         earthObject.transform.Find("Group_Layers").Find("Earth_MagneticField").gameObject.SetActive(showMagneticField);
     }
@@ -352,12 +368,37 @@ public class EarthPreviewer : MonoBehaviour
         if (showCountryBorder)
         {
             showCountryBorder = false;
+            borderButtonText.color = defaultColor;
         }
         else
         {
             showCountryBorder = true;
+            borderButtonText.color = highlightColor;
         }
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(showCountryBorder);
+    }
+
+    public void HighlightLayerButtonText(int index)
+    {
+        foreach (Text t in layerButtonsText)
+        {
+            t.color = defaultColor;
+        }
+
+        layerButtonsText[index].color = highlightColor;
+    }
+
+    public void HighlightAppreanceButtonText(int index)
+    {
+        foreach (Text t in apperanceButtonsText)
+        {
+            t.color = defaultColor;
+        }
+
+        if (index != -1)
+        {
+            apperanceButtonsText[index].color = highlightColor;
+        }
     }
 
     // Spawn a new earth
@@ -387,6 +428,10 @@ public class EarthPreviewer : MonoBehaviour
         earthObject.transform.Find("Group_Layers").Find("Earth_Border").gameObject.SetActive(false);
         showMagneticField = false;
         showCountryBorder = false;
+        magneticButtonText.color = defaultColor;
+        borderButtonText.color = defaultColor;
+        HighlightLayerButtonText(0);
+        HighlightAppreanceButtonText(-1);
         SetMaterial(0);
         earthObject.SetActive(false);
         canvasWorld.SetActive(false);

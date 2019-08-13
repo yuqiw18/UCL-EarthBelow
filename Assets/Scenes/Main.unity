@@ -1198,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &153887108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3739,6 +3739,18 @@ MonoBehaviour:
   canvasWorld: {fileID: 1296997765}
   labelPrefab: {fileID: 7794326964501531999, guid: d41e5062ae7c34f82a5098eb1ce58287,
     type: 3}
+  borderButtonText: {fileID: 938957164}
+  magneticButtonText: {fileID: 1656551302}
+  apperanceButtonsText:
+  - {fileID: 360976230}
+  - {fileID: 1594729239}
+  - {fileID: 1845752927}
+  layerButtonsText:
+  - {fileID: 587539354}
+  - {fileID: 827779572}
+  - {fileID: 1038433194}
+  - {fileID: 2115069924}
+  - {fileID: 1929787412}
 --- !u!1 &476219506
 GameObject:
   m_ObjectHideFlags: 0
@@ -6846,7 +6858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.85882354, b: 0.5066898, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6856,7 +6868,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: cdf3dbc442bba45d58d755d7357df9f9, type: 3}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
@@ -9520,7 +9532,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: cdf3dbc442bba45d58d755d7357df9f9, type: 3}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
@@ -12535,7 +12547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1900500118
 RectTransform:
   m_ObjectHideFlags: 0
