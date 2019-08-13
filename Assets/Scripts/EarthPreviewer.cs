@@ -1,11 +1,12 @@
-﻿using System.IO;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
 {
+    public GameObject ARCamera;
+
     public GameObject earthObject;
     public GameObject pinPrefab;
     public Material[] earthMaterialList;
@@ -228,7 +229,7 @@ public class EarthPreviewer : MonoBehaviour
             GeneratePins();
             ComputeRotation();
             dataInitialised = true;
-
+            ARCamera.SetActive(true);
             yield break;
         }
 
@@ -276,6 +277,7 @@ public class EarthPreviewer : MonoBehaviour
             GenerateLabels();
 
             dataInitialised = true;
+            ARCamera.SetActive(true);
         }
 
         Input.location.Stop();

@@ -3728,6 +3728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5942a6e7dcc406abf431ec09cfca1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ARCamera: {fileID: 780006871}
   earthObject: {fileID: 316080947}
   pinPrefab: {fileID: 621629459070395488, guid: 88fd93632faca4173a9bc1598aa2ac09,
     type: 3}
@@ -5802,7 +5803,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &780006872
 Camera:
   m_ObjectHideFlags: 0
@@ -12547,7 +12548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1900500118
 RectTransform:
   m_ObjectHideFlags: 0
