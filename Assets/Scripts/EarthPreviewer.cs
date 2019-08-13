@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class EarthPreviewer : MonoBehaviour
 {
-    public GameObject ARCamera;
-
     public GameObject earthObject;
     public GameObject pinPrefab;
     public Material[] earthMaterialList;
@@ -185,10 +183,10 @@ public class EarthPreviewer : MonoBehaviour
 
                     earthObject.transform.parent.localScale += new Vector3(scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference, scaleSpeed * touchMagnitudeDifference);
 
-                    // Limit the scale to 0.1f so that it will not disappear
-                    if (earthObject.transform.parent.localScale.x < 0.1f)
+                    // Limit the smallest scale to 0.5f 
+                    if (earthObject.transform.parent.localScale.x < 0.5f)
                     {
-                        earthObject.transform.parent.localScale = Vector3.one * 0.1f;
+                        earthObject.transform.parent.localScale = Vector3.one * 0.5f;
                     }
                 }
             }
@@ -229,7 +227,7 @@ public class EarthPreviewer : MonoBehaviour
             GeneratePins();
             ComputeRotation();
             dataInitialised = true;
-            ARCamera.SetActive(true);
+            CORE.PIN_ASSIGNED_FLAG = true;
             yield break;
         }
 
@@ -277,7 +275,7 @@ public class EarthPreviewer : MonoBehaviour
             GenerateLabels();
 
             dataInitialised = true;
-            ARCamera.SetActive(true);
+            CORE.PIN_ASSIGNED_FLAG = true;
         }
 
         Input.location.Stop();

@@ -57,6 +57,7 @@ public static class CORE
     public static readonly string DATABASE_FILE_LOCATION = "location.json";
     public static readonly string DATABASE_FILE_LAYER = "planet.json";
     public static bool DATABASE_LOADED_FLAG = false;
+    public static bool PIN_ASSIGNED_FLAG = false;
 
     // Image path
     public static readonly string IMAGE_FORMAT = ".png";

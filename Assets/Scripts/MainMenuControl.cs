@@ -6,6 +6,7 @@ public class MainMenuControl : MonoBehaviour
     public GameObject aboutPanel;
     public GameObject backButton;
     public Text startText, aboutText;
+    public GameObject loadingPanel, optionPanel;
 
     private GameObject menuBackground;
 
@@ -37,7 +38,8 @@ public class MainMenuControl : MonoBehaviour
                         backButton.SetActive(true);
                         break;
                     case "UP":
-                        this.gameObject.SetActive(false);
+                        // Dispose the main menu since it is no longer needed
+                        Destroy(this.gameObject);
                         break;
                     case "IDLE":
                         aboutPanel.SetActive(false);
@@ -47,6 +49,12 @@ public class MainMenuControl : MonoBehaviour
                         break;
                 }
             }
+        }
+
+        if (CORE.PIN_ASSIGNED_FLAG)
+        {
+            loadingPanel.SetActive(false);
+            optionPanel.SetActive(true);
         }
     }
 

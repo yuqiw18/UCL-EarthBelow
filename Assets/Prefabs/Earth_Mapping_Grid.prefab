@@ -682,6 +682,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Horizon_Gradient
       objectReference: {fileID: 0}
+    - target: {fileID: 4791541201197143516, guid: 752fc57e5d1d64353a87eb6872d2ce54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8369272010384598991, guid: 752fc57e5d1d64353a87eb6872d2ce54,
         type: 3}
       propertyPath: m_LocalPosition.x
