@@ -1239,7 +1239,7 @@ GameObject:
   - component: {fileID: 161579015}
   - component: {fileID: 161579014}
   m_Layer: 5
-  m_Name: Button_Bathmetry
+  m_Name: Button_Bathymetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12398,7 +12398,7 @@ GameObject:
   - component: {fileID: 1845752927}
   - component: {fileID: 1845752926}
   m_Layer: 5
-  m_Name: Text_Bathmetry
+  m_Name: Text_Bathymetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
