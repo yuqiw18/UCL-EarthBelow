@@ -22,16 +22,14 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 | Main | Main Application Logic |
 
 ### Scirpts
-| Name         | Type   | Description |
+| Name | Type | Description |
 | - | :-: | - |
-| CORE | Logic | Global Variables, I/O Functions, Algorithms|
-| INIT | Logic | Initialisation |
-| ModeManager | Logic | Mode Control|
-| EarthPreviewer | Mode | AR Globe |
-| PitSpawner | Mode | Pit Inspector |
-| EarthMapping | Mode | Earth Mapping |
-| UIManager | Logic | UI Animations |
+| CORE | Logic | Global Variables: Data, Object <br> I/O Functions: Texture Loader, JSON Loader <br> Algorithms: ECEF Conversion, Haversine  <br> |
+| INIT | Logic | Initialisation: Reading Online Database |
+| ModeManager | Logic | Mode Control: Switching Mode|
+| EarthPreviewer | Mode | AR Globe: Reading GPS, Spawning the Globe |
+| PitSpawner | Mode | Pit Inspector: Plane Detection, Placing the Pit |
+| EarthMapping | Mode | Earth Mapping: Plane Detection, Mapping the Earth |
+| UIManager | Logic | UI Control: Fading In/Out |
 | ButtonMovement | UI | Button Animations|
 | MainMenuControl | UI | Main Menu Control|
-
-## Contact
