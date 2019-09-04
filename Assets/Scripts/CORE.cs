@@ -76,7 +76,7 @@ public static class CORE
     public static readonly float EARTH_INNER_CORE_RADIUS = 1216000f;
     public static readonly float EARTH_OUTER_CORE_RADIUS = EARTH_INNER_CORE_RADIUS + 2270000f;
     public static readonly float EARTH_LOWER_MANTLE_RADIUS = EARTH_OUTER_CORE_RADIUS + 2885000f;
-    public static readonly float EARTH_CRUST_RADIUS = 6371000f;
+    public static readonly float EARTH_CRUST_RADIUS = 6378137f;
 
     // Geographical parameters
     public static readonly float EARTH_PREFAB_RADIUS = 0.5f;
