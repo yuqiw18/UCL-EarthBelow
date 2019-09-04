@@ -20,7 +20,7 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 ### Scenes
 | Scene Name | Description |
 | - | - |
-| Main | Main Application Logic |
+| Main | Core Application Scene |
 
 ### Scirpts
 | Script Name | Type | Description |
@@ -31,7 +31,7 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 | EarthPreviewer | Mode | AR Globe: Reading GPS, Spawning the Globe |
 | PitSpawner | Mode | Pit Inspector: Plane Detection, Placing the Pit |
 | EarthMapping | Mode | Earth Mapping: Plane Detection, Mapping the Earth |
-| UIManager | Logic | UI Control: Fading In/Out |
+| UIManager | UI | UI Control: Fading In/Out |
 | ButtonMovement | UI | Button Animations|
 | MainMenuControl | UI | Main Menu Control|
 
@@ -44,5 +44,5 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 | Materials | Shaders, LWRP Materials |
 | Models | Custom Meshes |
 | Prefabs | Reusable Game Objects |
-| StreamingAssets | Local Resources |
+| StreamingAssets | Local Resources, Databases |
 | Textures | Textures, Sprites and Icons |
