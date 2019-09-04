@@ -1,4 +1,4 @@
-# Welcome to EarthBelow
+# Welcome to EarthBelow Development Manual
 EarthBelow is an application designed for iOS and Android handheld devices, serving as an educational tool to convey earth-related information to users through augmented reality. The project aims to prototype an augmented reality application that allows the user to explore the earth both geologically and geographically via the physical environment. The application is built from scratch and serves as a startring point for future development based on evaluation and refinement through continuous usability study.
 
 ## Development/Deployment Environment:
@@ -15,7 +15,7 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 - Lighweight RP 5.6.1
 - Core RP 5.6.1
 
-## Development Manual
+## Documentation
 ### Scenes
 | Name | Description |
 | - | - |
