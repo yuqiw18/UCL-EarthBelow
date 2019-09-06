@@ -1,5 +1,5 @@
 # Welcome to EarthBelow
-EarthBelow is an application designed for iOS and Android handheld devices, serving as an educational tool to convey earth-related information to users through augmented reality. The project aims to prototype an augmented reality application that allows the user to explore the earth both geologically and geographically via the physical environment. The application is built from scratch and serves as a startring point for future development based on evaluation and refinement through continuous usability study.
+EarthBelow is an application designed for iOS and Android handheld devices, serving as an educational tool to convey earth-related information to users through augmented reality. The project aims to prototype an augmented reality application that allows the user to explore the earth both geologically and geographically via the physical environment. The application is built from scratch and serves as a starting point for future development based on evaluation and refinement through continuous usability study.
 
 # System Manual
 ## Development/Deployment Environment:
@@ -27,13 +27,13 @@ EarthBelow is an application designed for iOS and Android handheld devices, serv
 | - | :-: | - |
 | CORE | Logic | Global Variables: Data, Object <br> I/O Functions: Texture Loader, JSON Loader <br> Algorithms: ECEF Conversion, Haversine  <br> |
 | INIT | Logic | Initialisation: Reading Online Database |
-| ModeManager | Logic | Mode Control: Switching Mode|
+| ModeManager | Logic | Mode Control: Switching Mode |
 | EarthPreviewer | Mode | AR Globe: Reading GPS, Spawning the Globe |
 | PitSpawner | Mode | Pit Inspector: Plane Detection, Placing the Pit |
 | EarthMapping | Mode | Earth Mapping: Plane Detection, Mapping the Earth |
 | UIManager | UI | UI Control: Fading In/Out |
-| ButtonMovement | UI | Button Animations|
-| MainMenuControl | UI | Main Menu Control|
+| ButtonMovement | UI | Button Animations |
+| MainMenuControl | UI | Main Menu Control |
 
 ### Other Assets
 | Folder Name | Description |
