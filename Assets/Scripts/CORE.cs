@@ -52,7 +52,7 @@ public static class CORE
 
     #region CORE.PARAMETER
     // Database path
-    public static readonly string DATABASE_WEB_SERVER = "http://earthbelow.yuqi.ninja/";
+    public static readonly string DATABASE_WEB_SERVER = "http://earthbelow.yuqi.dev/";
     public static readonly string DATABASE_FOLDER = "database";
     public static readonly string DATABASE_FILE_LOCATION = "location.json";
     public static readonly string DATABASE_FILE_LAYER = "planet.json";
